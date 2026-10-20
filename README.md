@@ -1,77 +1,120 @@
-# Boericke's Repertory — Digital Edition
+<div align="center">
 
-A single-file, offline web application for **Dr. Oscar E. Boericke's *Repertory*** — the
-clinical companion to William Boericke's *Pocket Manual of Homoeopathic Materia Medica*
-(9th edition, 1927).
+# Boericke's Repertory
 
-Compiled and designed by **Dr. Sohil Momin**.
+### A free, offline digital edition — clinical repertory & repertorisation, in one HTML file
 
-![Search](screenshots/search.png)
-![Repertorisation chart](screenshots/chart.png)
+**Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
+
+[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-drsamonline.github.io-9f1239?style=for-the-badge&logo=githubpages&logoColor=white)](https://drsamonline.github.io/boericke-repertory/)
+[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e?style=for-the-badge)](#-licence)
+
+[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155?style=flat-square)](#-data)
+[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155?style=flat-square)](#-data)
+[![Chapters](https://img.shields.io/badge/chapters-25-334155?style=flat-square)](#-data)
+[![Offline](https://img.shields.io/badge/offline-single%20file-334155?style=flat-square)](#-use-it)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-334155?style=flat-square)](#-use-it)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](#)
+[![No tracking](https://img.shields.io/badge/tracking-none-334155?style=flat-square)](#-use-it)
+[![Made with love](https://img.shields.io/badge/made%20with-%E2%9D%A4-9f1239?style=flat-square)](#-credits)
+
+</div>
 
 ---
 
-## Features
+## ▶️ Live app
 
-**Search**
-- Instant search across 6,110 rubrics by symptom text, parent path or remedy name.
-- Matched terms are highlighted; filter to any of the 25 chapters.
-- Full keyboard control: `/` to focus search, `↑` `↓` to move, `Enter` to add a rubric.
+**<https://drsamonline.github.io/boericke-repertory/>** — open in any browser, nothing to install.
+Works offline once loaded, and on phone, tablet or desktop.
 
-**Repertorise**
-- Tap rubrics to build a chart that scores every remedy across them
-  (italic *grade 2* = 2 points, plain *grade 1* = 1 point) and ranks by total.
-- Sort by total score, rubric count or remedy name; top-10 remedy bars.
-- Print straight from the app (no pop-ups) or export.
+<div align="center">
 
-**Remedy browser**
-- Tap any remedy inside a rubric to see **every rubric that lists it**, with its grade —
-  a fast way to check a remedy's full clinical picture.
+| Search | Repertorisation |
+| :---: | :---: |
+| [![Search](screenshots/search.png)](screenshots/search.png) | [![Repertorisation chart](screenshots/chart.png)](screenshots/chart.png) |
 
-**Cases**
-- Save patient details, notes and prescription alongside the rubric selection and chart.
-- Reload, print, export/import as JSON.
+</div>
 
-**Everything else**
-- Fully **offline** — one HTML file, no server, no build step, no internet, no tracking.
-- Modern responsive UI with light / dark / auto themes and five accent colours.
-- Works on phone, tablet and desktop.
+---
 
-## Use it
+## ✨ Features
 
-Open `index.html` in any modern browser. That's the whole installation.
+**🔎 Search** — instant results across 6,110 rubrics by symptom, path or remedy name, with
+matched terms highlighted and a chapter filter. Full keyboard control: `/` to focus,
+`↑` `↓` to move, `Enter` to add.
 
-To host it free on **GitHub Pages**: Settings → Pages → deploy from the default branch,
-then share the link.
+**🧮 Repertorise** — tap rubrics to build a chart that scores every remedy across them
+(italic *grade 2* = 2 points, plain *grade 1* = 1 point) and ranks by total. Sort by
+total, rubric count or remedy name, with top-10 remedy bars.
 
-## Data
+**🧪 Remedy browser** — tap any remedy inside a rubric to see **every rubric that lists it**,
+with its grade — a fast way to check a remedy's full clinical picture.
+
+**🗂️ Cases** — save patient details, notes and prescription alongside the rubric selection
+and chart; reload, print, export or import as JSON.
+
+**📄 Print & export** — print the chart straight from the app (no pop-ups).
+
+**🎨 Looks** — modern responsive UI, light / dark / auto themes, five accent colours.
+
+**🔒 Private & offline** — one self-contained HTML file. No server, no build step, no
+internet needed after loading, no tracking, no dependencies.
+
+---
+
+## 🚀 Use it
+
+**Online:** open the [live app](https://drsamonline.github.io/boericke-repertory/).
+
+**Offline:** download [`index.html`](index.html) and open it in any modern browser —
+that's the whole installation.
+
+**Self-host:** fork this repo and enable GitHub Pages
+(*Settings → Pages → deploy from the default branch*).
+
+---
+
+## 📊 Data
 
 | | |
-|---|---|
-| Rubrics | 6,110 |
-| Unique remedies | 1,461 |
-| Chapters | 25 |
+| :-- | --: |
+| Rubrics | **6,110** |
+| Unique remedies | **1,461** |
+| Chapters | **25** |
 
 The dataset has been cleaned: remedies are de-duplicated (OCR variants merged into one
 canonical name), duplicate rubrics are merged, and remedy-less category headings are kept
 for structure but never appear in search results — so every rubric shown carries at least
 one remedy.
 
-## Credits
+---
+
+## 🙏 Credits
 
 - **Content** — *Repertory* by **Oscar E. Boericke, M.D.** (1927), companion to the
   *Pocket Manual of Homoeopathic Materia Medica*, 9th ed., by **William Boericke, M.D.**
   Text digitised from the public-domain edition at homeoint.org (presented by Médi-T).
-- **Design and application** — © 2026 **Dr. Sohil Momin**.
+- **Design & application** — © 2026 **Dr. Sohil Momin**.
 
-## Licence
+---
 
-Free to use, copy, modify and distribute, **provided that attribution is given** —
-credit to *Oscar E. Boericke, M.D.* for the content and to *Dr. Sohil Momin* for the
-design and application. See [LICENSE](LICENSE) for the full terms. Attribution is
-**compulsory in all copies and derivative works**.
+## 📜 Licence
 
-## Disclaimer
+**Free to use** — copy, modify and distribute, **provided that attribution is given**:
 
-Provided "as is", for study and reference by qualified practitioners. Not a substitute
-for professional homoeopathic or medical judgment.
+> Content: *Repertory by Oscar E. Boericke, M.D. (1927)*
+> Design & application: *Dr. Sohil Momin*
+
+Attribution is **compulsory in all copies and derivative works**, in both the
+documentation and the user interface. See [LICENSE](LICENSE) for the full terms.
+
+---
+
+<div align="center">
+
+**⚠️ Disclaimer** — Provided *as is*, for study and reference by qualified practitioners.
+Not a substitute for professional homoeopathic or medical judgment.
+
+<sub>Boericke's Repertory · Digital Edition · compiled by Dr. Sohil Momin</sub>
+
+</div>
