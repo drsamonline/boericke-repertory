@@ -6,24 +6,43 @@ clinical companion to William Boericke's *Pocket Manual of Homoeopathic Materia 
 
 Compiled and designed by **Dr. Sohil Momin**.
 
+![Search](screenshots/search.png)
+![Repertorisation chart](screenshots/chart.png)
+
 ---
 
-## What it does
+## Features
 
-- **Search** 6,110 rubrics by symptom text, parent path or remedy name.
-- **Repertorise** — select rubrics and get an automatic chart that scores every remedy
-  across them (italic *grade 2* = 2 points, plain *grade 1* = 1 point) and ranks by total.
-- **Save cases** — patient details, notes and prescription stored together; reload, print,
-  and export/import as JSON.
-- **Works completely offline** — one HTML file, no server, no build step, no internet.
-- Light / dark / auto themes and four accent palettes; mobile friendly.
+**Search**
+- Instant search across 6,110 rubrics by symptom text, parent path or remedy name.
+- Matched terms are highlighted; filter to any of the 25 chapters.
+- Full keyboard control: `/` to focus search, `↑` `↓` to move, `Enter` to add a rubric.
+
+**Repertorise**
+- Tap rubrics to build a chart that scores every remedy across them
+  (italic *grade 2* = 2 points, plain *grade 1* = 1 point) and ranks by total.
+- Sort by total score, rubric count or remedy name; top-10 remedy bars.
+- Print straight from the app (no pop-ups) or export.
+
+**Remedy browser**
+- Tap any remedy inside a rubric to see **every rubric that lists it**, with its grade —
+  a fast way to check a remedy's full clinical picture.
+
+**Cases**
+- Save patient details, notes and prescription alongside the rubric selection and chart.
+- Reload, print, export/import as JSON.
+
+**Everything else**
+- Fully **offline** — one HTML file, no server, no build step, no internet, no tracking.
+- Modern responsive UI with light / dark / auto themes and five accent colours.
+- Works on phone, tablet and desktop.
 
 ## Use it
 
 Open `index.html` in any modern browser. That's the whole installation.
 
-You can also host it for free on **GitHub Pages** (Settings → Pages → deploy from the
-default branch) and share the link.
+To host it free on **GitHub Pages**: Settings → Pages → deploy from the default branch,
+then share the link.
 
 ## Data
 
