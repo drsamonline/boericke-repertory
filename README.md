@@ -6,15 +6,15 @@
 
 **Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
 
-[![Landing page](https://img.shields.io/badge/%F0%9F%93%96%20landing%20page-drsamonline.github.io-7f1d1d?style=for-the-badge&logo=githubpages&logoColor=white)](https://drsamonline.github.io/boericke-repertory/)
-[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239?style=for-the-badge&logo=html5&logoColor=white)](https://drsamonline.github.io/boericke-repertory/play/)
+[![Landing page](https://img.shields.io/badge/%F0%9F%93%96%20landing%20page-drsamonline.github.io-7f1d1d
+[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239
 
-[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155?style=flat-square)](#-data)
-[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155?style=flat-square)](#-data)
-[![Chapters](https://img.shields.io/badge/chapters-25-334155?style=flat-square)](#-data)
-[![Offline](https://img.shields.io/badge/offline-single%20file-334155?style=flat-square)](#-use-it)
-[![Dependencies](https://img.shields.io/badge/dependencies-none-334155?style=flat-square)](#-use-it)
-[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e?style=flat-square)](#-licence)
+[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155
+[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155
+[![Chapters](https://img.shields.io/badge/chapters-25-334155
+[![Offline](https://img.shields.io/badge/offline-single%20file-334155
+[![Dependencies](https://img.shields.io/badge/dependencies-none-334155
+[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e
 
 **Landing page:** <https://drsamonline.github.io/boericke-repertory/>
 &nbsp;·&nbsp;
@@ -26,23 +26,22 @@
 
 <div align="center">
 
-# Boericke's Repertory
 
 ### A free, offline digital edition — clinical repertory & repertorisation, in one HTML file
 
 **Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
 
-[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-drsamonline.github.io-9f1239?style=for-the-badge&logo=githubpages&logoColor=white)](https://drsamonline.github.io/boericke-repertory/)
-[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e?style=for-the-badge)](#-licence)
+[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-drsamonline.github.io-9f1239
+[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e
 
-[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155?style=flat-square)](#-data)
-[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155?style=flat-square)](#-data)
-[![Chapters](https://img.shields.io/badge/chapters-25-334155?style=flat-square)](#-data)
-[![Offline](https://img.shields.io/badge/offline-single%20file-334155?style=flat-square)](#-use-it)
-[![Dependencies](https://img.shields.io/badge/dependencies-none-334155?style=flat-square)](#-use-it)
-[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)](#)
-[![No tracking](https://img.shields.io/badge/tracking-none-334155?style=flat-square)](#-use-it)
-[![Made with love](https://img.shields.io/badge/made%20with-%E2%9D%A4-9f1239?style=flat-square)](#-credits)
+[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155
+[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155
+[![Chapters](https://img.shields.io/badge/chapters-25-334155
+[![Offline](https://img.shields.io/badge/offline-single%20file-334155
+[![Dependencies](https://img.shields.io/badge/dependencies-none-334155
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26
+[![No tracking](https://img.shields.io/badge/tracking-none-334155
+[![Made with love](https://img.shields.io/badge/made%20with-%E2%9D%A4-9f1239
 
 </div>
 
@@ -50,7 +49,7 @@
 
 ## ▶️ Live app
 
-**<https://drsamonline.github.io/boericke-repertory/>** — open in any browser, nothing to install.
+**<https://drsamonline.github.io/boericke-repertory/play/>** — open in any browser, nothing to install.
 Works offline once loaded, and on phone, tablet or desktop.
 
 <div align="center">
@@ -90,7 +89,7 @@ internet needed after loading, no tracking, no dependencies.
 
 ## 🚀 Use it
 
-**Online:** open the [live app](https://drsamonline.github.io/boericke-repertory/).
+**Online:** open the [live app](https://drsamonline.github.io/boericke-repertory/play/).
 
 **Offline:** download [`index.html`](index.html) and open it in any modern browser —
 that's the whole installation.
