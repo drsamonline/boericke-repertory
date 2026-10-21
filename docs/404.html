@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found — Boericke's Repertory</title>
+<meta name="robots" content="noindex,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f6f1e4'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%237f1d1d'%3EB%3C/text%3E%3C/svg%3E">
+<style>
+  :root{--paper:#f6f1e4;--ink:#1a1613;--ink-3:#6b6152;--rule:#cdbfa3;--oxblood:#7f1d1d;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",ui-serif,serif;}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;display:grid;place-items:center;padding:2rem;
+    background:var(--paper);color:var(--ink);font-family:var(--serif);line-height:1.7;
+    background-image:radial-gradient(1000px 500px at 15% -10%,rgba(127,29,29,.05),transparent 60%);}
+  .card{max-width:640px;border:1px solid var(--rule);background:rgba(255,255,255,.45);
+    padding:2.6rem clamp(1.4rem,5vw,3rem);text-align:center;position:relative}
+  .card::after{content:"";position:absolute;inset:7px;border:1px solid #ded2b9;pointer-events:none}
+  .eyebrow{font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--ink-3);margin:0 0 1rem}
+  .code{font-size:clamp(3.4rem,12vw,5.4rem);color:var(--oxblood);line-height:1;margin:0;font-weight:600}
+  h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:500;margin:.4rem 0 .8rem}
+  p{color:#3b332a;margin:0 0 1.4rem}
+  .orn{color:var(--oxblood);letter-spacing:.7em;margin:1.4rem 0}
+  .btn{display:inline-block;font-size:.9rem;letter-spacing:.06em;padding:.72rem 1.35rem;
+    text-decoration:none;background:var(--oxblood);border:1px solid var(--oxblood);color:#fdf8f0;margin:0 .3rem}
+  .btn.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+  .btn:hover{filter:brightness(1.06)}
+</style>
+</head>
+<body>
+  <main class="card">
+    <p class="eyebrow">Boericke&rsquo;s Repertory</p>
+    <p class="code">404</p>
+    <h1>That page is not in the repertory.</h1>
+    <p>The rubric you were looking for could not be found. Return to the front matter, or open the app and search for it directly.</p>
+    <div class="orn" aria-hidden="true">&middot; &middot; &middot;</div>
+    <a class="btn" href="/boericke-repertory/">Back to the landing page</a>
+    <a class="btn ghost" href="/boericke-repertory/play/">Open the app</a>
+  </main>
+</body>
+</html>

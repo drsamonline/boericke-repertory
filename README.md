@@ -2,6 +2,32 @@
 
 # Boericke's Repertory
 
+### A classic repertory, made searchable — a free, offline clinical repertory &amp; repertorisation tool in one HTML file
+
+**Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
+
+[![Landing page](https://img.shields.io/badge/%F0%9F%93%96%20landing%20page-drsamonline.github.io-7f1d1d?style=for-the-badge&logo=githubpages&logoColor=white)](https://drsamonline.github.io/boericke-repertory/)
+[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239?style=for-the-badge&logo=html5&logoColor=white)](https://drsamonline.github.io/boericke-repertory/play/)
+
+[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155?style=flat-square)](#-data)
+[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155?style=flat-square)](#-data)
+[![Chapters](https://img.shields.io/badge/chapters-25-334155?style=flat-square)](#-data)
+[![Offline](https://img.shields.io/badge/offline-single%20file-334155?style=flat-square)](#-use-it)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-334155?style=flat-square)](#-use-it)
+[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e?style=flat-square)](#-licence)
+
+**Landing page:** <https://drsamonline.github.io/boericke-repertory/>
+&nbsp;·&nbsp;
+**Live demo:** <https://drsamonline.github.io/boericke-repertory/play/>
+
+</div>
+
+---
+
+<div align="center">
+
+# Boericke's Repertory
+
 ### A free, offline digital edition — clinical repertory & repertorisation, in one HTML file
 
 **Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
