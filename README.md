@@ -10,11 +10,11 @@
 [![All projects](https://img.shields.io/badge/All%20projects-drsamonline.github.io-7f1d1d)](https://drsamonline.github.io/)
 [![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239)](https://drsamonline.github.io/boericke-repertory/play/)
 
-[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155)](
-[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155)](
-[![Chapters](https://img.shields.io/badge/chapters-25-334155)](
-[![Offline](https://img.shields.io/badge/offline-single%20file-334155)](
-[![Dependencies](https://img.shields.io/badge/dependencies-none-334155)](
+[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155)](#)
+[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155)](#)
+[![Chapters](https://img.shields.io/badge/chapters-25-334155)](#)
+[![Offline](https://img.shields.io/badge/offline-single%20file-334155)](#)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-334155)](#)
 [![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e)](LICENSE)
 
 **Landing page:** <https://drsamonline.github.io/boericke-repertory/>
