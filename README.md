@@ -7,6 +7,7 @@
 **Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
 
 [![Landing page](https://img.shields.io/badge/%F0%9F%93%96%20landing%20page-drsamonline.github.io-7f1d1d)](https://drsamonline.github.io/boericke-repertory/)
+[![All projects](https://img.shields.io/badge/All%20projects-drsamonline.github.io-7f1d1d)](https://drsamonline.github.io/)
 [![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239)](https://drsamonline.github.io/boericke-repertory/play/)
 
 [![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155)](#)
