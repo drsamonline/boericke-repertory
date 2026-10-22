@@ -20,6 +20,8 @@
 &nbsp;·&nbsp;
 **Live demo:** <https://drsamonline.github.io/boericke-repertory/play/>
 
+**Download:** [Windows (.exe)](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe) &nbsp;·&nbsp; [Android (.apk)](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk)
+
 </div>
 
 ---
