@@ -2,6 +2,12 @@
 
 # Boericke's Repertory
 
+<!-- shot:start -->
+
+![Screenshot](docs/shot.png)
+
+<!-- shot:end -->
+
 ### A classic repertory, made searchable — a free, offline clinical repertory &amp; repertorisation tool in one HTML file
 
 **Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
