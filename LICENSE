@@ -1,55 +1,33 @@
-BOERICKE'S REPERTORY — DIGITAL EDITION
-Copyright notice and licence
-======================================
+Free to Use, With Attribution
 
-COPYRIGHT
----------
+Copyright (c) 2026 Dr. Sohil Momin, Vadodara, Gujarat, India.
+All rights reserved except as expressly granted below.
 
-Content — the repertory text and rubric data:
-    © Oscar E. Boericke, M.D. — "Repertory", the clinical companion to
-    William Boericke's "Pocket Manual of Homoeopathic Materia Medica"
-    (9th edition, 1927).
-    This text is in the public domain; copyright in the content is credited
-    to its author, Oscar E. Boericke, M.D. (and, for the underlying Pocket
-    Manual, to William Boericke, M.D.).
+This licence governs the repertory application and its compiled content in this repository (the "Work").
 
-Design and application — the interface, source code, data structures,
-layout and presentation:
-    © 2026 Dr. Sohil Momin. All rights reserved.
+1. WHAT YOU MAY DO
 
+You may use, run, copy, share, redistribute and adapt the Work, in whole or in
+part, for any NON-COMMERCIAL purpose. "Non-commercial" means not primarily
+intended for or directed toward commercial advantage or monetary compensation.
 
-LICENCE — FREE TO USE, ATTRIBUTION REQUIRED
--------------------------------------------
+2. ATTRIBUTION
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this work, to use, copy, modify, merge, publish, distribute, sublicense
-and/or sell copies of the work, and to permit persons to whom the work is
-furnished to do so, subject to the following conditions:
+Any use, copy, or redistribution must credit the author by name - Dr. Sohil
+Momin - and link to this repository. You may not present the Work as your own.
 
-1. ATTRIBUTION IS COMPULSORY.
-   Any copy, redistribution or derivative work must prominently credit BOTH:
+3. WHAT YOU MAY NOT DO
 
-     • the content  — "Repertory by Oscar E. Boericke, M.D. (1927)"; and
-     • the design and application — "Design and application by Dr. Sohil Momin".
+You may not sell the Work, charge for access to it, bundle it into a paid
+product, or use it to provide a paid service, without written permission.
 
-   This credit must appear in the work's documentation and, where the work
-   has a user interface, in that interface (for example, an "About" screen).
+4. NO WARRANTY
 
-2. NOTICE RETENTION.
-   The copyright notices above and this licence must be included in all
-   copies or substantial portions of the work.
+The Work is provided "as is", without warranty of any kind, express or implied.
+The author is not liable for any loss arising from its use.
 
-3. NO ADDITIONAL RESTRICTIONS.
-   You may not apply legal terms or technological measures that legally
-   restrict others from doing anything this licence permits.
+5. MEDICAL NOTICE
 
-
-DISCLAIMER
-----------
-
-THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.
-
-This work is for study and reference by qualified practitioners only. It is
-not a substitute for professional homoeopathic or medical judgment.
+Where the Work contains medical or health-related content, it is educational
+material only. It is not medical advice, not a diagnosis, and not a substitute
+for consultation with a qualified practitioner.
