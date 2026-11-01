@@ -527,9 +527,12 @@ tr.mustmiss td, tr.mustmiss th { opacity:.45; }
   border:1px solid var(--border-2); border-radius:9px; background:var(--surface); color:var(--text);
 }
 .patient-head {
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
   font-family:ui-monospace,monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
   color:var(--text-3); margin:18px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border);
 }
+.patient-head .visitcount { color:var(--text-3); letter-spacing:.06em; }
+.patient-head .btn { margin-left:auto; text-transform:none; letter-spacing:0; }
 .patient-head:first-child { margin-top:0; }
 .banner {
   display:flex; gap:12px; align-items:center; padding:12px 14px; margin-bottom:14px;
@@ -697,6 +700,10 @@ tr.mustmiss td, tr.mustmiss th { opacity:.45; }
       <div class="charttools" id="chart-tools2" hidden>
         <input type="search" id="chart-filter" placeholder="Filter remedies in the chart&hellip;" aria-label="Filter chart by remedy name">
         <label class="op-hint mustlbl"><input type="checkbox" id="must-only"> <span>only remedies covering every must rubric</span></label>
+        <select class="wsel" id="must-mode" aria-label="Must coverage rule" title="How strictly the must rubrics are applied">
+          <option value="every">must: every rubric</option>
+          <option value="chapter">must: one per chapter</option>
+        </select>
         <span class="op-hint">weights</span>
         <select class="wsel" id="w-g2" aria-label="Grade 2 points"><option value="1">G2 = 1</option><option value="2" selected>G2 = 2</option><option value="3">G2 = 3</option></select>
         <select class="wsel" id="w-g1" aria-label="Grade 1 points"><option value="1" selected>G1 = 1</option><option value="0">G1 = 0</option><option value="2">G1 = 2</option></select>
@@ -997,7 +1004,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   function renderChips() {
     var box = $("#chips");
     if (!selected.length) { box.innerHTML = ""; return; }
-    var h = '<span class="chip-count">' + selected.length + " " + esc(t("selected")) + "</span>";
+    var h = '<span class="chip-count">' + selected.length + " " + esc("selected") + "</span>";
     selected.forEach(function (i) {
       var chap = CHAPNAME[R.rubrics[i].c];
       var leaf = PATHS[i].split(" \u203A ").pop();
@@ -1005,7 +1012,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         '<button class="star" type="button" data-must="' + i + '" aria-pressed="' + (MUST[i] ? "true" : "false") + '" title="Mark as must-have">' + (MUST[i] ? "\u2605" : "\u2606") + "</button>" +
         '<button type="button" data-i="' + i + '" aria-label="Remove ' + esc(leaf) + '">\u2715</button></span>';
     });
-    h += '<button type="button" class="chip-clear" id="chip-clear">' + esc(t("Clear all")) + "</button>";
+    h += '<button type="button" class="chip-clear" id="chip-clear">' + esc("Clear all") + "</button>";
     box.innerHTML = h;
     $$("#chips button[data-i]").forEach(function (b) { b.addEventListener("click", function () { toggleSel(+b.dataset.i); }); });
     $$("#chips button[data-must]").forEach(function (b) { b.addEventListener("click", function () { toggleMust(+b.dataset.must); }); });
@@ -1025,7 +1032,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var tr = $("#tray"); if (!tr) return;
     if (!selected.length) { tr.classList.remove("on"); return; }
     tr.classList.add("on");
-    $("#tray-n").textContent = selected.length + " " + t("rubrics") + " \u00b7 " + t("selected");
+    $("#tray-n").textContent = selected.length + " " + "rubrics" + " \u00b7 " + "selected";
   }
 
   /* ---------- highlight ---------- */
@@ -1101,7 +1108,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     if (lastFuzzy.length) {
       var box = $("#res"), d = document.createElement("div");
       d.className = "result-meta";
-      d.innerHTML = "<span>" + esc(t("No exact match — showing results for")) + " <b>" + esc(lastFuzzy.join(" / ")) + "</b></span>";
+      d.innerHTML = "<span>" + esc("No exact match — showing results for") + " <b>" + esc(lastFuzzy.join(" / ")) + "</b></span>";
       box.insertBefore(d, box.firstChild);
     }
     $("#q-clear").hidden = !$("#q").value;
@@ -1114,15 +1121,15 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   function renderResults(res, terms, total) {
     var box = $("#res");
     if (!terms || !terms.length) {
-      box.innerHTML = emptyState(t("Search the repertory to begin") + '<br><span class="small">try <b>burning headache</b>, <b>thirst fever</b> or a remedy like <b>gels</b></span>');
+      box.innerHTML = emptyState("Search the repertory to begin" + '<br><span class="small">try <b>burning headache</b>, <b>thirst fever</b> or a remedy like <b>gels</b></span>');
       return;
     }
-    if (!res.length) { box.innerHTML = emptyState(t("No rubrics match") + ' &ldquo;' + esc(terms.join(" ")) + "&rdquo;"); return; }
+    if (!res.length) { box.innerHTML = emptyState("No rubrics match" + ' &ldquo;' + esc(terms.join(" ")) + "&rdquo;"); return; }
     var show = res.slice(0, MAX);
     var meta = total > show.length
-      ? "Top " + show.length + " of " + total.toLocaleString() + " \u2014 " + t("matching rubrics")
-      : show.length + " " + t("matching rubrics");
-    var h = '<div class="result-meta"><span>' + meta + '</span><span class="small">' + esc(t("Tap a rubric to add it")) + ' \u00b7 <kbd>\u2191</kbd><kbd>\u2193</kbd> \u00b7 <kbd>Enter</kbd></span></div><div class="rlist">';
+      ? "Top " + show.length + " of " + total.toLocaleString() + " \u2014 " + "matching rubrics"
+      : show.length + " " + "matching rubrics";
+    var h = '<div class="result-meta"><span>' + meta + '</span><span class="small">' + esc("Tap a rubric to add it") + ' \u00b7 <kbd>\u2191</kbd><kbd>\u2193</kbd> \u00b7 <kbd>Enter</kbd></span></div><div class="rlist">';
     show.forEach(function (i) {
       var rb = R.rubrics[i], sel = isSel(i);
       var leaf = PATHS[i].split(" \u203A ").pop();
@@ -1139,7 +1146,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
           (rb.n ? '<div class="note">' + esc(fixText(rb.n)) + "</div>" : "") +
           (noteFor(i) ? '<div class="note-badge">' + esc(noteFor(i)) + "</div>" : "") +
           '<div class="meta">' + rb.m.length + " remed" + (rb.m.length === 1 ? "y" : "ies") +
-            (SC && SC.diffs && SC.diffs[i] ? '<span class="rowdiff" title="' + esc(t("Differs from the source")) + '">\u26A0</span>' : "") + "</div>" +
+            (SC && SC.diffs && SC.diffs[i] ? '<span class="rowdiff" title="' + esc("Differs from the source") + '">\u26A0</span>' : "") + "</div>" +
         "</div>" +
         '<div class="rowacts">' +
           '<button class="ract" type="button" data-note="' + i + '" title="Add a note to this rubric" aria-label="Note">\u270E</button>' +
@@ -1175,12 +1182,20 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         if (!cur || cur < x[1]) row[ri] = x[1];
       });
     });
+    var mustChapters = [];
+    mustCols.forEach(function (ri) { var ch = R.rubrics[ri].c; if (mustChapters.indexOf(ch) === -1) mustChapters.push(ch); });
     var rows = [];
     for (var c in map) {
-      var marks = map[c], total = 0, count = 0, mustHit = 0;
+      var marks = map[c], total = 0, count = 0, mustHit = 0, chapHit = 0;
       for (var k in marks) { total += marks[k] === 2 ? W.g2 : W.g1; count++; }
       for (var mk = 0; mk < mustCols.length; mk++) if (marks[mustCols[mk]]) mustHit++;
-      rows.push({ cid: +c, marks: marks, total: total, count: count, mustHit: mustHit });
+      for (var mc = 0; mc < mustChapters.length; mc++) {
+        for (var m2 = 0; m2 < mustCols.length; m2++) {
+          if (R.rubrics[mustCols[m2]].c === mustChapters[mc] && marks[mustCols[m2]]) { chapHit++; break; }
+        }
+      }
+      rows.push({ cid: +c, marks: marks, total: total, count: count, mustHit: mustHit,
+                  chapHit: chapHit, mustChapters: mustChapters.length });
     }
     rows.sort(function (a, b) {
       if (sortMode === "total") return b.total - a.total || b.count - a.count || a.cid - b.cid;
@@ -1197,7 +1212,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var body = $("#chart-body");
     var tools2 = $("#chart-tools2");
     if (!selected.length) {
-      body.innerHTML = emptyState(esc(t("No rubrics selected yet.")) + '<br><span class="small">Search the <b>' + esc(t("Repertory")) + "</b> and tap rubrics to build the chart.</span>");
+      body.innerHTML = emptyState(esc("No rubrics selected yet.") + '<br><span class="small">Search the <b>' + esc("Repertory") + "</b> and tap rubrics to build the chart.</span>");
       $("#c-save").disabled = true;
       $("#chart-tools").hidden = true;
       if (tools2) tools2.hidden = true;
@@ -1211,20 +1226,24 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var mustCols = cd.cols.filter(function (ri) { return !!MUST[ri]; });
     var ftxt = ($("#chart-filter") && $("#chart-filter").value || "").toLowerCase().trim();
     var onlyMust = !!($("#must-only") && $("#must-only").checked);
+    var mustMode = ($("#must-mode") && $("#must-mode").value) || "every";
     var viewRows = cd.rows.filter(function (r) {
       if (ftxt && fixText(R.remedies[r.cid]).toLowerCase().indexOf(ftxt) === -1) return false;
-      if (onlyMust && mustCols.length && r.mustHit < mustCols.length) return false;
+      if (onlyMust && mustCols.length) {
+        if (mustMode === "chapter") { if (r.chapHit < r.mustChapters) return false; }
+        else if (r.mustHit < mustCols.length) return false;
+      }
       return true;
     });
     renderMustBar();
     var maxTotal = viewRows.length ? viewRows[0].total : 1;
-    var h = '<div class="chart-head"><div class="info"><b>' + viewRows.length.toLocaleString() + "</b> " + t("remedies across") + " <b>" +
+    var h = '<div class="chart-head"><div class="info"><b>' + viewRows.length.toLocaleString() + "</b> " + "remedies across" + " <b>" +
       cd.cols.length + "</b> rubric" + (cd.cols.length === 1 ? "" : "s") +
-      (mustCols.length ? " \u00b7 <b>" + mustCols.length + "</b> " + esc(t("Mark as must-have")) : "") + "</div>" +
+      (mustCols.length ? " \u00b7 <b>" + mustCols.length + "</b> " + esc("Mark as must-have") : "") + "</div>" +
       '<div class="btnrow"><select class="ctl" id="sortsel" aria-label="Sort chart">' +
-        '<option value="total"' + (sortMode === "total" ? " selected" : "") + "" + t("Sort: Total score") + "</option>" +
-        '<option value="count"' + (sortMode === "count" ? " selected" : "") + "" + t("Sort: Rubric count") + "</option>" +
-        '<option value="name"' + (sortMode === "name" ? " selected" : "") + "" + t("Sort: Remedy name") + "</option>" +
+        '<option value="total"' + (sortMode === "total" ? " selected" : "") + "" + "Sort: Total score" + "</option>" +
+        '<option value="count"' + (sortMode === "count" ? " selected" : "") + "" + "Sort: Rubric count" + "</option>" +
+        '<option value="name"' + (sortMode === "name" ? " selected" : "") + "" + "Sort: Remedy name" + "</option>" +
       "</select></div></div>";
 
     var top = viewRows.slice(0, 10);
@@ -1239,14 +1258,14 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     }
 
     var ROWCAP = 400, shown = viewRows.slice(0, ROWCAP);
-    h += '<div class="tblwrap"><table class="chart"><caption class="visually-hidden">' + esc(t("Repertorisation chart")) + '</caption><thead><tr><th class="remcol" scope="col">' + esc(t("Remedy")) + "</th>";
+    h += '<div class="tblwrap"><table class="chart"><caption class="visually-hidden">' + esc("Repertorisation chart") + '</caption><thead><tr><th class="remcol" scope="col">' + esc("Remedy") + "</th>";
     cd.cols.forEach(function (ri) {
       var leaf = PATHS[ri].split(" \u203A ").pop();
       h += '<th scope="col" title="' + esc(PATHS[ri]) + '"><span class="v">' + esc(leaf) + '</span><button type="button" class="x" data-i="' + ri + '" aria-label="Remove ' + esc(leaf) + '">\u2715 ' + (selected.indexOf(ri) + 1) + "</button></th>";
     });
-    h += '<th scope="col">' + esc(t("Tot")) + '</th><th scope="col">' + esc(t("Rub.")) + "</th></tr></thead><tbody>";
+    h += '<th scope="col">' + esc("Tot") + '</th><th scope="col">' + esc("Rub.") + "</th></tr></thead><tbody>";
     shown.forEach(function (r) {
-      h += '<tr' + (mustCols.length && r.mustHit < mustCols.length ? ' class="mustmiss"' : "") + '><th class="remcol" scope="row">' + esc(fixText(R.remedies[r.cid])) + "</th>";
+      h += '<tr' + (mustCols.length && ((mustMode === "chapter" && r.chapHit < r.mustChapters) || (mustMode !== "chapter" && r.mustHit < mustCols.length)) ? ' class="mustmiss"' : "") + '><th class="remcol" scope="row">' + esc(fixText(R.remedies[r.cid])) + "</th>";
       cd.cols.forEach(function (ri) {
         var g = r.marks[ri];
         h += '<td class="mark">' + (g === 2 ? '<span class="m2" aria-label="Grade 2">\u2588\u2588</span>' : g === 1 ? '<span class="m1" aria-label="Grade 1">\u25AC</span>' : '<span aria-hidden="true" class="muted">\u00B7</span>') + "</td>";
@@ -1285,7 +1304,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   $("#c-date").value = todayISO();
 
   function saveCase() {
-    if (!selected.length) { toast(t("Select at least one rubric first")); return; }
+    if (!selected.length) { toast("Select at least one rubric first"); return; }
     var c = {
       id: Date.now(), version: SCHEMA,
       name: $("#c-name").value.trim() || "Unnamed case",
@@ -1324,8 +1343,8 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     if (vaultRecord() && vaultLocked) {
       var bc0 = $("#badge-cases"); if (bc0) { bc0.textContent = ""; bc0.hidden = true; }
       box.innerHTML = '<div class="locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>' +
-        "<h3>" + esc(t("Cases are locked")) + "</h3><p class=\"muted small\">They are encrypted in this browser with your passphrase. Nothing is decrypted until you unlock.</p>" +
-        '<div class="btnrow" style="justify-content:center"><button class="btn primary" type="button" id="unlock-now">' + esc(t("Unlock")) + "</button></div></div>";
+        "<h3>" + esc("Cases are locked") + "</h3><p class=\"muted small\">They are encrypted in this browser with your passphrase. Nothing is decrypted until you unlock.</p>" +
+        '<div class="btnrow" style="justify-content:center"><button class="btn primary" type="button" id="unlock-now">' + esc("Unlock") + "</button></div></div>";
       var ub = $("#unlock-now"); if (ub) ub.addEventListener("click", unlockCases);
       renderBackupBanner();
       return;
@@ -1334,7 +1353,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var bc = $("#badge-cases"); if (bc) { bc.textContent = cs.length; bc.hidden = !cs.length; }
     renderBackupBanner();
     if (!cs.length) {
-      box.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><div>' + esc(t("No repertorisations saved yet.")) + '<br><span class="small">Build a chart, fill the case form and hit <b>Save</b>.</span></div></div>';
+      box.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><div>' + esc("No repertorisations saved yet.") + '<br><span class="small">Build a chart, fill the case form and hit <b>Save</b>.</span></div></div>';
       return;
     }
     var needle = ($("#case-search") && $("#case-search").value || "").toLowerCase().trim();
@@ -1355,23 +1374,38 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
       var patient = (c.name || "Unnamed case").trim();
       if (patient !== lastPatient) {
         lastPatient = patient;
-        h += '<div class="patient-head">' + esc(patient) + "</div>";
+        var visits = cs.filter(function (x) { return (x.name || "Unnamed case").trim() === patient; });
+        h += '<div class="patient-head"><span>' + esc(patient) + "</span>" +
+          '<span class="visitcount">' + visits.length + " visit" + (visits.length === 1 ? "" : "s") +
+          (visits.length > 1 ? " \u00b7 " + esc(visits[visits.length - 1].date || "") + " \u2192 " + esc(visits[0].date || "") : "") +
+          '</span><button class="btn ghost sm" type="button" data-newvisit="' + esc(patient) + '">New visit</button></div>';
       }
       h += '<div class="caseitem"><div class="head"><div class="who"><b>' + esc(c.name) + '</b><div class="d">' + esc(sub) + " \u2014 " + n + " rubric" + (n === 1 ? "" : "s") + '</div></div>' +
-        '<div class="ops"><button class="btn primary sm" type="button" data-load="' + idx + '">' + esc(t("Load")) + "</button>" +
-        '<button class="btn ghost sm" type="button" data-print="' + idx + '">' + esc(t("Print")) + "</button>" +
+        '<div class="ops"><button class="btn primary sm" type="button" data-load="' + idx + '">' + esc("Load") + "</button>" +
+        '<button class="btn ghost sm" type="button" data-print="' + idx + '">' + esc("Print") + "</button>" +
         '<button class="btn ghost sm" type="button" data-export="' + idx + '">JSON</button>' +
-        '<button class="btn danger sm" type="button" data-del="' + idx + '">' + esc(t("Delete")) + "</button></div></div>" +
+        '<button class="btn danger sm" type="button" data-del="' + idx + '">' + esc("Delete") + "</button></div></div>" +
         (top ? '<div class="line topline"><b>Top</b>' + esc(top) + "</div>" : "") +
         (notes ? '<div class="line"><b>Notes</b>' + esc(notes) + "</div>" : "") +
         (rx ? '<div class="line rxline"><b>Rx</b> ' + esc(rx) + "</div>" : "") +
         "</div>";
     });
     box.innerHTML = h;
+    box.querySelectorAll("[data-newvisit]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var who = b.dataset.newvisit;
+        $("#c-name").value = who;
+        $("#c-age").value = ""; $("#c-sex").value = ""; $("#c-notes").value = ""; $("#c-rx").value = "";
+        $("#c-date").value = todayISO();
+        switchTab("chart");
+        if ($("#c-notes")) $("#c-notes").focus();
+        toast("New visit for " + who + " \u2014 the earlier visit stays saved");
+      });
+    });
     box.querySelectorAll("[data-load]").forEach(function (b) { b.addEventListener("click", function () { var c = loadCases()[+b.dataset.load]; if (!c) return; if (selected.length && !confirm("Replace the current selection with the loaded case?")) return; loadCase(c); }); });
     box.querySelectorAll("[data-print]").forEach(function (b) { b.addEventListener("click", function () { var c = loadCases()[+b.dataset.print]; if (c) printSavedCase(c); }); });
     box.querySelectorAll("[data-export]").forEach(function (b) { b.addEventListener("click", function () { var c = loadCases()[+b.dataset.export]; if (c) downloadJSON(c, "case_" + (c.name || "unnamed").replace(/\W+/g, "_") + "_" + (c.date || todayISO()) + ".json"); }); });
-    box.querySelectorAll("[data-del]").forEach(function (b) { b.addEventListener("click", function () { var cs2 = loadCases(); var c = cs2[+b.dataset.del]; if (!c) return; if (!confirm('Delete case "' + c.name + '"?')) return; cs2.splice(+b.dataset.del, 1); storeCases(cs2); renderCases(); toast(t("Case deleted")); }); });
+    box.querySelectorAll("[data-del]").forEach(function (b) { b.addEventListener("click", function () { var cs2 = loadCases(); var c = cs2[+b.dataset.del]; if (!c) return; if (!confirm('Delete case "' + c.name + '"?')) return; cs2.splice(+b.dataset.del, 1); storeCases(cs2); renderCases(); toast("Case deleted"); }); });
   }
 
   /* ---------- printing (no pop-ups) ---------- */
@@ -1570,13 +1604,13 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
   function undo() {
     var s = UNDO.pop();
-    if (!s) { toast(t("Nothing to undo")); return; }
+    if (!s) { toast("Nothing to undo"); return; }
     selected = s.sel.filter(function (i) { return i >= 0 && i < N && SEL[i]; });
     MUST = Object.create(null); s.must.forEach(function (i) { MUST[i] = 1; });
     persistSel(); persistMust();
     renderChips(); updateBadges(); renderTray(); buildChart(); if (browseMode) refreshBrowseSelection();
     $("#c-save").disabled = !selected.length;
-    toast(t("Undone"));
+    toast("Undone");
   }
 
   /* ---------- A1/A2: query operators and typo tolerance ---------- */
@@ -1716,13 +1750,13 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
   function showSimilar(i) {
     var sims = similarTo(i);
-    var body = openOverlay(sheetHead(t("Similar rubrics")) + '<div class="sheet-body">' +
+    var body = openOverlay(sheetHead("Similar rubrics") + '<div class="sheet-body">' +
       '<p class="muted small" style="margin-top:0">Computed by comparing the words of the rubric name inside the same chapter \u2014 a heuristic, not a curated cross-reference. ' + esc(PATHS[i]) + "</p>" +
       (sims.length
         ? sims.map(function (s) {
             return '<div class="rrow' + (isSel(s.i) ? " sel" : "") + '" data-i="' + s.i + '" role="button" tabindex="0"><span class="chk" aria-hidden="true">' + (isSel(s.i) ? "\u2713" : "+") + '</span><div class="body"><div class="pth">' + esc(PATHS[s.i]) + '</div><div class="meta">' + Math.round(s.sim * 100) + "% overlap</div></div></div>";
           }).join("")
-        : '<p class="muted">' + esc(t("Nothing similar enough in this chapter.")) + "</p>") +
+        : '<p class="muted">' + esc("Nothing similar enough in this chapter.") + "</p>") +
       "</div>");
     wireSheetClose(body);
     $$("[data-i]", body).forEach(function (row) {
@@ -1778,8 +1812,8 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     box.dataset.filled = "1";
   }
   function renderBrowse() {
-    var h = '<div class="card tight"><div class="result-meta"><span>' + esc(t("Browse the repertory by chapter")) + "</span>" +
-      '<span class="small">' + esc(t("tap a chapter, then a rubric, to add it")) + '</span></div><div class="tree">';
+    var h = '<div class="card tight"><div class="result-meta"><span>' + esc("Browse the repertory by chapter") + "</span>" +
+      '<span class="small">' + esc("tap a chapter, then a rubric, to add it") + '</span></div><div class="tree">';
     R.chapters.forEach(function (c, ci) {
       h += '<div class="tnode" data-chap="' + ci + '"><button class="thead" type="button" aria-expanded="false">' +
         '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>' +
@@ -1814,8 +1848,8 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var ids = Object.keys(MUST).map(Number).filter(function (i) { return MUST[i] && isSel(i); });
     if (!ids.length) { bar.hidden = true; bar.innerHTML = ""; return; }
     bar.hidden = false;
-    bar.innerHTML = '<span><b>' + ids.length + "</b> " + esc(t("must-have rubric")) +
-      '</span><button class="act-btn" type="button" id="must-clear">' + esc(t("Clear must marks")) + "</button>";
+    bar.innerHTML = '<span><b>' + ids.length + "</b> " + esc("must-have rubric") +
+      '</span><button class="act-btn" type="button" id="must-clear">' + esc("Clear must marks") + "</button>";
     var mc = $("#must-clear");
     if (mc) mc.addEventListener("click", function () {
       pushUndo(); MUST = Object.create(null); persistMust(); renderChips(); renderMustBar(); buildChart();
@@ -1827,7 +1861,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   function renderSearches() {
     var sel = $("#saved-search"); if (!sel) return;
     var list = loadSearches();
-    sel.innerHTML = '<option value="">' + esc(t("Saved searches…")) + "</option>" +
+    sel.innerHTML = '<option value="">' + esc("Saved searches…") + "</option>" +
       list.map(function (s, i) { return '<option value="' + i + '">' + esc(s.name) + "</option>"; }).join("");
   }
   function saveSearch() {
@@ -1920,7 +1954,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
           vaultKey = key; vaultLocked = false; MEMCASES = Array.isArray(cs) ? cs : [];
           toast("Unlocked"); renderCases(); updateVaultState();
         })
-        .catch(function () { toast(t("Wrong passphrase")); });
+        .catch(function () { toast("Wrong passphrase"); });
     });
   }
   function removeLock(pass) {
@@ -1991,7 +2025,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
   function csvCell(v) { var s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
   function chartCSV() {
-    if (!selected.length) { toast(t("Nothing to export")); return; }
+    if (!selected.length) { toast("Nothing to export"); return; }
     var cd = chartData();
     var head = ["Remedy"].concat(cd.cols.map(function (ri) { return PATHS[ri]; })).concat(["Total", "Rubrics"]);
     var lines = [head.map(csvCell).join(",")];
@@ -2005,7 +2039,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
   function casesCSV() {
     var cs = loadCases();
-    if (!cs.length) { toast(t("Nothing to export")); return; }
+    if (!cs.length) { toast("Nothing to export"); return; }
     var head = ["Patient", "Date", "Age", "Sex", "Rubrics", "Top remedy", "Top score", "Prescription", "Notes"];
     var lines = [head.join(",")];
     cs.forEach(function (c) {
@@ -2017,7 +2051,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
 
   /* ---------- B4: one-page case sheet ---------- */
   function printCaseSheet() {
-    if (!selected.length) { toast(t("Nothing to print")); return; }
+    if (!selected.length) { toast("Nothing to print"); return; }
     var cd = chartData();
     var cols = cd.cols.map(function (ri) { return { short: PATHS[ri].split(" \u203A ").pop(), full: PATHS[ri] }; });
     var rows = cd.rows.slice(0, 60).map(function (r) {
@@ -2030,13 +2064,13 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
       "<div><b>Age / sex</b>" + esc([f.age, f.sex].filter(Boolean).join(" / ") || "\u2014") + "</div>" +
       "<div><b>Date</b>" + esc(f.date || todayISO()) + "</div>" +
       "<div><b>Rubrics</b>" + selected.length + "</div></div>";
-    if (f.notes) body += "<h2>" + esc(t("Case notes / symptoms")) + "</h2><p>" + esc(f.notes) + "</p>";
-    body += "<h2>" + esc(t("Repertorisation chart")) + "</h2>" + chartHTML(cols, rows);
-    body += '<h2>' + esc(t("Rubrics")) + '</h2><ol class="prub">';
+    if (f.notes) body += "<h2>" + esc("Case notes / symptoms") + "</h2><p>" + esc(f.notes) + "</p>";
+    body += "<h2>" + esc("Repertorisation chart") + "</h2>" + chartHTML(cols, rows);
+    body += '<h2>' + esc("Rubrics") + '</h2><ol class="prub">';
     cd.cols.forEach(function (ri) { body += "<li>" + esc(PATHS[ri]) + (MUST[ri] ? " <b>(must)</b>" : "") + "</li>"; });
     body += "</ol>";
-    if (f.rx) body += "<h2>" + esc(t("Prescription")) + "</h2><p>" + esc(f.rx) + "</p>";
-    printArea(f.name ? t("Case sheet") + " \u2014 " + f.name : t("Case sheet"), body);
+    if (f.rx) body += "<h2>" + esc("Prescription") + "</h2><p>" + esc(f.rx) + "</p>";
+    printArea(f.name ? "Case sheet" + " \u2014 " + f.name : "Case sheet", body);
   }
 
   /* ---------- C3: File System Access, with a download fallback ---------- */
@@ -2141,18 +2175,16 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         return '<button type="button" data-v="' + o[0] + '"' + (o[0] === cur ? ' class="on"' : "") + ">" + o[1] + "</button>";
       }).join("") + "</div>";
     }
-    var body = openOverlay(sheetHead(t("Settings")) + '<div class="sheet-body">' +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Language")) + '</div><div class="hint2">Interface only \u2014 the repertory text stays in English</div></div><div class="ctl2">' +
-        seg("lang", [["en", "English"], ["hi", "\u0939\u093f\u0928\u094d\u0926\u0940"], ["gu", "\u0a97\u0ac1\u0a9c\u0ab0\u0abe\u0aa4\u0ac0"]], LANG) + "</div></div>" +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Text size")) + '</div><div class="hint2">Applies to the whole app</div></div><div class="ctl2">' +
+    var body = openOverlay(sheetHead("Settings") + '<div class="sheet-body">' +
+      '<div class="setrow"><div><div class="lbl2">' + esc("Text size") + '</div><div class="hint2">Applies to the whole app</div></div><div class="ctl2">' +
         seg("fs", [["s", "S"], ["m", "M"], ["l", "L"]], fs) + "</div></div>" +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Theme")) + '</div><div class="hint2">Light is the base palette</div></div><div class="ctl2">' +
-        seg("theme", [["light", t("Light")], ["dark", t("Dark")], ["auto", t("Auto")], ["contrast", t("High contrast")]], mode) + "</div></div>" +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Grade weights")) + '</div><div class="hint2">Printed on the chart so it stays auditable</div></div><div class="ctl2">' +
+      '<div class="setrow"><div><div class="lbl2">' + esc("Theme") + '</div><div class="hint2">Light is the base palette</div></div><div class="ctl2">' +
+        seg("theme", [["light", "Light"], ["dark", "Dark"], ["auto", "Auto"], ["contrast", "High contrast"]], mode) + "</div></div>" +
+      '<div class="setrow"><div><div class="lbl2">' + esc("Grade weights") + '</div><div class="hint2">Printed on the chart so it stays auditable</div></div><div class="ctl2">' +
         '<select class="wsel" id="set-g2"><option value="1"' + (W.g2 === 1 ? " selected" : "") + '>G2 = 1</option><option value="2"' + (W.g2 === 2 ? " selected" : "") + '>G2 = 2</option><option value="3"' + (W.g2 === 3 ? " selected" : "") + ">G2 = 3</option></select>" +
         '<select class="wsel" id="set-g1"><option value="0"' + (W.g1 === 0 ? " selected" : "") + '>G1 = 0</option><option value="1"' + (W.g1 === 1 ? " selected" : "") + '>G1 = 1</option><option value="2"' + (W.g1 === 2 ? " selected" : "") + ">G1 = 2</option></select></div></div>" +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Command palette")) + '</div><div class="hint2">Ctrl or Cmd + K, anywhere</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-pal>Open</button></div></div>' +
-      '<div class="setrow"><div><div class="lbl2">' + esc(t("Undo")) + '</div><div class="hint2">Ctrl or Cmd + Z removes the last rubric change</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-undo>Undo</button></div></div>' +
+      '<div class="setrow"><div><div class="lbl2">' + esc("Command palette") + '</div><div class="hint2">Ctrl or Cmd + K, anywhere</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-pal>Open</button></div></div>' +
+      '<div class="setrow"><div><div class="lbl2">' + esc("Undo") + '</div><div class="hint2">Ctrl or Cmd + Z removes the last rubric change</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-undo>Undo</button></div></div>' +
       '<div class="stamp">' + esc(BUILD) + "</div>" +
       "</div>");
     wireSheetClose(body);
@@ -2163,7 +2195,6 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         b.classList.add("on");
         var v = b.dataset.v;
         if (segEl.dataset.seg === "fs") { LS.setItem(K_FONT, v); applyFont(); }
-        else if (segEl.dataset.seg === "lang") { closeOverlay(); setLang(v); }
         else { LS.setItem("br_theme", v); applyTheme(); }
       });
     });
@@ -2208,7 +2239,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
 
   /* ---------- build stamp + service worker ---------- */
-  var BUILD = "Boericke's Repertory \u00b7 v1.5.1 \u00b7 build 2026-11-01";
+  var BUILD = "Boericke's Repertory \u00b7 v1.6.0 \u00b7 build 2026-11-01";
   function renderStamp() {
     var el = $("#build-stamp"); if (el) el.textContent = BUILD + " \u00b7 single file \u00b7 no network";
     var sw = $("#sw-state");
@@ -2244,8 +2275,8 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   /* ---------- init for everything above ---------- */
   function initV2() {
     applyFont();
-    i18nApply();
     syncWeightSelects();
+    try { var mm = LS.getItem("br_must_mode"); if (mm && $("#must-mode")) $("#must-mode").value = mm; } catch (e) {}
     renderSearches();
     renderMustBar();
     renderAudit();
@@ -2300,6 +2331,11 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
       cf.addEventListener("input", function () { clearTimeout(cfT); cfT = setTimeout(buildChart, 120); });
     }
     if ($("#must-only")) $("#must-only").addEventListener("change", buildChart);
+    if ($("#must-mode")) $("#must-mode").addEventListener("change", function () {
+      try { LS.setItem("br_must_mode", this.value); } catch (e) {}
+      if ($("#must-only")) $("#must-only").checked = true;
+      buildChart();
+    });
     if ($("#w-g2")) $("#w-g2").addEventListener("change", function () { W.g2 = +this.value; persistWeights(); buildChart(); });
     if ($("#w-g1")) $("#w-g1").addEventListener("change", function () { W.g1 = +this.value; persistWeights(); buildChart(); });
     if ($("#c-csv")) $("#c-csv").addEventListener("click", chartCSV);
@@ -2348,303 +2384,8 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     wipe: function () { try { LS.removeItem(VKEY); LS.removeItem(CASES_KEY); LS.removeItem(K_MUST); LS.removeItem(K_NOTES); LS.removeItem(K_SEARCHES); LS.removeItem(K_DRAFT); LS.removeItem(K_EXPORTED); } catch (e) {} },
     cases: loadCases, setCase: function (cs) { storeCases(cs); },
     renderCases: renderCases, setTab: switchTab, refresh: function () { renderCases(); buildChart(); },
-    setLang: setLang, lang: function () { return LANG; }, cite: citeFor, showCite: openCite, srcIdentical: srcIdentical, srcDiff: srcDiff, showDiffs: showDiffs, undo: undo, version: BUILD
+    cite: citeFor, showCite: openCite, srcIdentical: srcIdentical, srcDiff: srcDiff, showDiffs: showDiffs, undo: undo, version: BUILD
   };
-
-
-  /* =========================================================================
-     v1.3 — the interface in English, Hindi and Gujarati.
-     The repertory text itself is Boericke's English and is never translated;
-     what changes is the chrome around it. Strings are keyed by their English
-     form, so a missing key falls back to English instead of to a blank.
-     ========================================================================= */
-  var LANG = "en";
-  try { var _lang = LS.getItem("br_lang"); if (_lang === "hi" || _lang === "gu") LANG = _lang; } catch (e) {}
-
-  var I18N = {
-    hi: {
-    "Repertory": "रेपरटरी",
-    "Repertorisation": "रेपरटराइजेशन",
-    "Cases": "केसेस",
-    "About": "के बारे में",
-    "Jump to": "जंप टू",
-    "Settings": "सेटिंग्स",
-    "Search symptoms, rubrics or remedies…": "लक्षण, रूब्रिक्स या उपचार खोजें...",
-    "All chapters": "सभी अध्याय",
-    "Saved searches…": "सहेजी गई खोजें...",
-    "Save search": "खोज सहेजें",
-    "Browse": "ब्राउज़",
-    "Operators:": "ऑपरेटर:",
-    "Search the repertory to begin": "शुरू करने के लिए रेपरटरी में खोजें",
-    "No rubrics match": "कोई रूब्रिक मेल नहीं खाता",
-    "No exact match — showing results for": "कोई सटीक मेल नहीं — के लिए परिणाम दिखा रहा है",
-    "Clear all": "सब साफ़ करें",
-    "Nothing to undo": "अनडू करने के लिए कुछ नहीं",
-    "Undone": "अनडू हो गया",
-    "Add a note to this rubric": "इस रूब्रिक में एक नोट जोड़ें",
-    "Find similar rubrics": "समान रूब्रिक्स खोजें",
-    "Mark as must-have": "ज़रूरी के रूप में मार्क करें",
-    "Show remedies": "उपचार दिखाएं",
-    "Repertorisation chart": "रेपरटराइजेशन चार्ट",
-    "Print": "प्रिंट",
-    "Clear selection": "सिलेक्शन साफ़ करें",
-    "Filter remedies in the chart…": "चार्ट में उपचार फ़िल्टर करें...",
-    "only remedies covering every must rubric": "केवल वे उपचार जो हर ज़रूरी लक्षण को कवर करते हैं",
-    "weights": "वज़न",
-    "remedies across": "उपचार",
-    "Sort: Total score": "सॉर्ट: कुल स्कोर",
-    "Sort: Rubric count": "सॉर्ट: लक्षण की गिनती",
-    "Sort: Remedy name": "सॉर्ट: उपचार का नाम",
-    "Remedy": "उपचार",
-    "Tot": "कुल",
-    "Rub.": "लक्षण",
-    "No rubrics selected yet.": "अभी तक कोई लक्षण नहीं चुना गया है।",
-    "Save this repertorisation": "इस रेपरटराइजेशन को सेव करें",
-    "Patient": "मरीज़",
-    "Age": "उम्र",
-    "Sex": "लिंग",
-    "Date": "तारीख",
-    "Case notes / symptoms": "केस नोट्स / लक्षण",
-    "Prescription": "पर्चे",
-    "Save repertorisation": "रेपरटराइजेशन सेव करें",
-    "Print case sheet": "केस शीट प्रिंट करें",
-    "Save to file…": "फ़ाइल में सेव करें…",
-    "Saved repertorisations": "सेव किए गए रेपरटराइजेशन",
-    "Import JSON": "JSON इम्पोर्ट करें",
-    "Export all": "सभी एक्सपोर्ट करें",
-    "Search cases by patient, notes or remedy…": "मरीज़, नोट्स या उपचार से केस खोजें…",
-    "Lock cases": "केस लॉक करें",
-    "Unlock": "अनलॉक करें",
-    "Remove lock": "लॉक हटाएँ",
-    "Export CSV": "CSV एक्सपोर्ट करें",
-    "No repertorisations saved yet.": "अभी तक कोई रेपरटराइज़ेशन सेव नहीं हुआ है।",
-    "Load": "लोड",
-    "Delete": "डिलीट",
-    "Cases are locked": "केस लॉक हैं",
-    "Passphrase": "पासफ़्रेज़",
-    "Cancel": "कैंसिल",
-    "Wrong passphrase": "गलत पासफ़्रेज़",
-    "Case deleted": "केस डिलीट हो गया",
-    "Select at least one rubric first": "पहले कम से कम एक रूब्रिक चुनें",
-    "Nothing to print": "प्रिंट करने के लिए कुछ नहीं है",
-    "Nothing to export": "एक्सपोर्ट करने के लिए कुछ नहीं है",
-    "Text size": "टेक्स्ट साइज़",
-    "Theme": "थीम",
-    "Language": "भाषा",
-    "Grade weights": "ग्रेड वेट्स",
-    "Command palette": "कमांड पैलेट",
-    "Undo": "अनडू",
-    "Light": "लाइट",
-    "Dark": "डार्क",
-    "Auto": "ऑटो",
-    "High contrast": "हाई कंट्रास्ट",
-    "Case sheet": "केस शीट",
-    "matching rubrics": "मैचिंग रूब्रिक्स",
-    "Tap a rubric to add it": "रूब्रिक जोड़ने के लिए उस पर टैप करें",
-    "View chart": "चार्ट देखें",
-    "Clear": "क्लियर",
-    "selected": "सिलेक्टेड",
-    "remedies": "रेमेडीज़",
-    "rubrics": "रूब्रिक्स",
-    "Browse the repertory by chapter": "चैप्टर के हिसाब से रेपरट्री ब्राउज़ करें",
-    "tap a chapter, then a rubric, to add it": "इसे जोड़ने के लिए पहले एक चैप्टर और फिर एक रूब्रिक पर टैप करें",
-    "Nothing similar enough in this chapter.": "इस चैप्टर में कुछ भी काफी हद तक मिलता-जुलता नहीं है।",
-    "Similar rubrics": "मिलते-जुलते रूब्रिक्स",
-    "Clear must marks": "क्लियर मस्ट मार्क्स",
-    "must-have rubric": "मस्ट-हैव रूब्रिक",
-    "Top": "टॉप",
-    "Notes": "नोट्स",
-    "Rx": "Rx",
-    "Cite": "साइट",
-    "Copy": "कॉपी",
-    "Copied": "कॉपी हो गया",
-    "How the repertory is arranged": "रेपर्टरी को कैसे व्यवस्थित किया गया है",
-    "Copy citation": "साइटेशन कॉपी करें",
-    "Source check": "सोर्स चेक",
-    "Matches the source": "सोर्स से मेल खाता है",
-    "Differs from the source": "सोर्स से अलग है",
-    "In the source only": "सिर्फ सोर्स में",
-    "In this app only": "सिर्फ इस ऐप में",
-    "Show all differences": "सभी अंतर दिखाएं",
-    "Grade differs": "ग्रेड अलग है"
-    },
-    gu: {
-    "Repertory": "રેપર્ટરી",
-    "Repertorisation": "રેપર્ટરાઇઝેશન",
-    "Cases": "કેસ",
-    "About": "વિશે",
-    "Jump to": "જાઓ",
-    "Settings": "સેટિંગ્સ",
-    "Search symptoms, rubrics or remedies…": "લક્ષણો, રૂબ્રિક્સ અથવા ઉપાયો શોધો...",
-    "All chapters": "બધા પ્રકરણો",
-    "Saved searches…": "સેવ કરેલી શોધો...",
-    "Save search": "શોધ સેવ કરો",
-    "Browse": "બ્રાઉઝ",
-    "Operators:": "ઓપરેટર્સ:",
-    "Search the repertory to begin": "શરૂ કરવા માટે રેપર્ટરીમાં શોધો",
-    "No rubrics match": "કોઈ રૂબ્રિક્સ મેચ થતા નથી",
-    "No exact match — showing results for": "કોઈ ચોક્કસ મેચ નથી — માટે પરિણામો બતાવી રહ્યા છીએ",
-    "Clear all": "બધું સાફ કરો",
-    "Nothing to undo": "અનડૂ કરવા માટે કંઈ નથી",
-    "Undone": "અનડૂ થઈ ગયું",
-    "Add a note to this rubric": "આ રૂબ્રિકમાં નોંધ ઉમેરો",
-    "Find similar rubrics": "સમાન રૂબ્રિક્સ શોધો",
-    "Mark as must-have": "મસ્ટ-હેવ તરીકે માર્ક કરો",
-    "Show remedies": "ઉપાયો બતાવો",
-    "Repertorisation chart": "રેપર્ટરાઇઝેશન ચાર્ટ",
-    "Print": "પ્રિન્ટ",
-    "Clear selection": "પસંદગી સાફ કરો",
-    "Filter remedies in the chart…": "ચાર્ટમાં ઉપાયો ફિલ્ટર કરો...",
-    "only remedies covering every must rubric": "ફક્ત ઉપાયો જે દરેક મસ્ટ રુબ્રિકને આવરી લે છે",
-    "weights": "વજન",
-    "remedies across": "ઉપાયો",
-    "Sort: Total score": "Sort: કુલ સ્કોર",
-    "Sort: Rubric count": "Sort: રુબ્રિક કાઉન્ટ",
-    "Sort: Remedy name": "Sort: ઉપાયનું નામ",
-    "Remedy": "ઉપાય",
-    "Tot": "કુલ",
-    "Rub.": "રુબ.",
-    "No rubrics selected yet.": "અત્યાર સુધી કોઈ રુબ્રિક પસંદ કર્યા નથી.",
-    "Save this repertorisation": "આ રેપર્ટરાઇઝેશન સેવ કરો",
-    "Patient": "દર્દી",
-    "Age": "ઉંમર",
-    "Sex": "લિંગ",
-    "Date": "તારીખ",
-    "Case notes / symptoms": "કેસ નોંધો / લક્ષણો",
-    "Prescription": "પ્રિસ્ક્રિપ્શન",
-    "Save repertorisation": "રેપર્ટરાઇઝેશન સેવ કરો",
-    "Print case sheet": "કેસ શીટ પ્રિન્ટ કરો",
-    "Save to file…": "ફાઇલમાં સેવ કરો…",
-    "Saved repertorisations": "સેવ કરેલા રેપર્ટરાઇઝેશન",
-    "Import JSON": "JSON ઇમ્પોર્ટ કરો",
-    "Export all": "બધા એક્સપોર્ટ કરો",
-    "Search cases by patient, notes or remedy…": "દર્દી, નોંધો અથવા ઉપાય દ્વારા કેસ શોધો…",
-    "Lock cases": "કેસ લોક કરો",
-    "Unlock": "અનલૉક કરો",
-    "Remove lock": "લોક દૂર કરો",
-    "Export CSV": "CSV એક્સપોર્ટ કરો",
-    "No repertorisations saved yet.": "હજુ સુધી કોઈ રિપોર્ટરાઇઝેશન સેવ થયા નથી.",
-    "Load": "લોડ",
-    "Delete": "ડિલીટ",
-    "Cases are locked": "કેસ લૉક છે",
-    "Passphrase": "પાસફ્રેઝ",
-    "Cancel": "રદ કરો",
-    "Wrong passphrase": "ખોટો પાસફ્રેઝ",
-    "Case deleted": "કેસ ડિલીટ થઈ ગયો",
-    "Select at least one rubric first": "પહેલા ઓછામાં ઓછો એક રૂબ્રિક પસંદ કરો",
-    "Nothing to print": "પ્રિન્ટ કરવા માટે કંઈ નથી",
-    "Nothing to export": "એક્સપોર્ટ કરવા માટે કંઈ નથી",
-    "Text size": "ટેક્સ્ટ સાઇઝ",
-    "Theme": "થીમ",
-    "Language": "ભાષા",
-    "Grade weights": "ગ્રેડ વેઇટ્સ",
-    "Command palette": "કમાન્ડ પેલેટ",
-    "Undo": "અનડૂ",
-    "Light": "લાઇટ",
-    "Dark": "ડાર્ક",
-    "Auto": "ઓટો",
-    "High contrast": "હાઇ કોન્ટ્રાસ્ટ",
-    "Case sheet": "કેસ શીટ",
-    "matching rubrics": "મેળ ખાતા રૂબ્રિક્સ",
-    "Tap a rubric to add it": "ઉમેરવા માટે રૂબ્રિક પર ટેપ કરો",
-    "View chart": "ચાર્ટ જુઓ",
-    "Clear": "ક્લિયર",
-    "selected": "પસંદ કરેલ",
-    "remedies": "ઉપાયો",
-    "rubrics": "રૂબ્રિક્સ",
-    "Browse the repertory by chapter": "પ્રકરણ મુજબ રિપર્ટરીમાં બ્રાઉઝ કરો",
-    "tap a chapter, then a rubric, to add it": "ઉમેરવા માટે પ્રકરણ પર ટેપ કરો, પછી રૂબ્રિક પર",
-    "Nothing similar enough in this chapter.": "આ પ્રકરણમાં પૂરતું મળતું કંઈ નથી.",
-    "Similar rubrics": "સમાન રૂબ્રિક્સ",
-    "Clear must marks": "ક્લિયર મસ્ટ માર્ક્સ",
-    "must-have rubric": "મસ્ટ-હેવ રૂબ્રિક",
-    "Top": "ટોપ",
-    "Notes": "નોંધો",
-    "Rx": "Rx",
-    "Cite": "સાઇટેશન",
-    "Copy": "કૉપિ કરો",
-    "Copied": "કૉપિ થઈ ગઈ",
-    "How the repertory is arranged": "રિપર્ટરી કેવી રીતે ગોઠવવામાં આવે છે",
-    "Copy citation": "સાઇટેશનની નકલ કરો",
-    "Source check": "સોર્સ ચેક",
-    "Matches the source": "સોર્સ સાથે મેચ થાય છે",
-    "Differs from the source": "સોર્સથી અલગ છે",
-    "In the source only": "ફક્ત સોર્સમાં",
-    "In this app only": "ફક્ત આ એપમાં",
-    "Show all differences": "બધા તફાવતો બતાવો",
-    "Grade differs": "ગ્રેડ અલગ છે"
-    }
-  };
-
-  function t(s) {
-    var d = I18N[LANG];
-    return (d && d[s]) || s;
-  }
-
-  /* Static chrome is translated by walking text nodes and the three attributes
-     that carry words. The dynamic containers are skipped: their content is built
-     by the render functions, which call t() themselves. */
-  var I18N_SKIP = "#res, #chart-body, #caselist, #modal-body, #overlay-body, #print-area, #toast, script, style, noscript";
-  var I18N_DONE = [];
-
-  function i18nRestore() {
-    I18N_DONE.forEach(function (r) { r.el[r.attr === null ? "nodeValue" : "setAttribute"]; });
-    I18N_DONE.forEach(function (r) {
-      if (r.attr === null) r.el.nodeValue = r.en;
-      else r.el.setAttribute(r.attr, r.en);
-    });
-    I18N_DONE = [];
-  }
-
-  function i18nApply() {
-    document.documentElement.setAttribute("lang", LANG === "en" ? "en" : LANG);
-    if (LANG === "en") return;
-    var d = I18N[LANG];
-    if (!d) return;
-
-    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (n) {
-        if (!n.nodeValue || !n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        var el = n.parentNode;
-        if (!el || !el.closest || el.closest(I18N_SKIP)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-    var nodes = [], n;
-    while ((n = walker.nextNode())) nodes.push(n);
-    nodes.forEach(function (node) {
-      var raw = node.nodeValue, key = raw.trim();
-      if (!d[key]) return;
-      var lead = raw.match(/^\s*/)[0], trail = raw.match(/\s*$/)[0];
-      I18N_DONE.push({ el: node, attr: null, en: raw });
-      node.nodeValue = lead + d[key] + trail;
-    });
-
-    $$("[placeholder],[aria-label],[title]").forEach(function (el) {
-      if (el.closest && el.closest(I18N_SKIP)) return;
-      ["placeholder", "aria-label", "title"].forEach(function (a) {
-        var v = el.getAttribute(a);
-        if (v && d[v.trim()]) {
-          I18N_DONE.push({ el: el, attr: a, en: v });
-          el.setAttribute(a, d[v.trim()]);
-        }
-      });
-    });
-  }
-
-  function setLang(code) {
-    LANG = code === "hi" || code === "gu" ? code : "en";
-    try { LS.setItem("br_lang", LANG); } catch (e) {}
-    if ($("#overlay").classList.contains("on")) closeOverlay();
-    i18nRestore();
-    i18nApply();
-    renderChips(); renderMustBar(); buildChart(); renderCases(); renderSearches();
-    if (!browseMode) doSearch();
-    renderStamp(); updateVaultState(); renderBackupBanner();
-    var b = $("#c-lock");
-    if (b) b.textContent = t(vaultRecord() ? (vaultLocked ? "Unlock" : "Remove lock") : "Lock cases");
-    toast(LANG === "en" ? "Language: English" : LANG === "hi" ? "भाषा: हिन्दी" : "ભાષા: ગુજરાતી");
-  }
 
 
   /* ---------- D2: provenance ----------
@@ -2675,16 +2416,16 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
 
   function openCite(i) {
     var txt = citeFor(i);
-    var body = openOverlay(sheetHead(t("Cite")) + '<div class="sheet-body">' +
+    var body = openOverlay(sheetHead("Cite") + '<div class="sheet-body">' +
       '<pre class="citebox" id="cite-text">' + esc(txt) + "</pre>" +
       sourceBlock(i) +
       '<div class="btnrow" style="margin-top:12px">' +
-        '<button class="btn primary" type="button" id="cite-copy">' + esc(t("Copy citation")) + "</button>" +
-        '<button class="btn ghost" type="button" data-x>' + esc(t("Cancel")) + "</button>" +
+        '<button class="btn primary" type="button" id="cite-copy">' + esc("Copy citation") + "</button>" +
+        '<button class="btn ghost" type="button" data-x>' + esc("Cancel") + "</button>" +
       "</div></div>");
     wireSheetClose(body);
     body.querySelector("#cite-copy").addEventListener("click", function () {
-      var done = function () { toast(t("Copied")); };
+      var done = function () { toast("Copied"); };
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt, done); });
       } else fallbackCopy(txt, done);
@@ -2722,18 +2463,18 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     if (!SC) return "";
     var d = srcDiff(i);
     if (srcIdentical(i)) {
-      return '<div class="srcok"><b>' + esc(t("Matches the source")) + "</b> \u2014 " +
+      return '<div class="srcok"><b>' + esc("Matches the source") + "</b> \u2014 " +
         "the remedies and their grades are identical to the digitised 1927 text.</div>";
     }
     if (!d) {
       return '<div class="srcnone">Not aligned to the source transcription \u2014 ' +
         "the rubric text differs too far to match automatically.</div>";
     }
-    var h = '<div class="srcdiffbox"><b>' + esc(t("Differs from the source")) + "</b>" +
+    var h = '<div class="srcdiffbox"><b>' + esc("Differs from the source") + "</b>" +
       '<p class="srcline">' + esc(d.line) + "</p>";
-    if (d.onlySrc && d.onlySrc.length) h += '<p class="srcline"><i>' + esc(t("In the source only")) + ":</i> " + esc(d.onlySrc.join(", ")) + "</p>";
-    if (d.onlyApp && d.onlyApp.length) h += '<p class="srcline"><i>' + esc(t("In this app only")) + ":</i> " + esc(d.onlyApp.join(", ")) + "</p>";
-    if (d.grade && d.grade.length) h += '<p class="srcline"><i>' + esc(t("Grade differs")) + ":</i> " + esc(d.grade.join(", ")) + "</p>";
+    if (d.onlySrc && d.onlySrc.length) h += '<p class="srcline"><i>' + esc("In the source only") + ":</i> " + esc(d.onlySrc.join(", ")) + "</p>";
+    if (d.onlyApp && d.onlyApp.length) h += '<p class="srcline"><i>' + esc("In this app only") + ":</i> " + esc(d.onlyApp.join(", ")) + "</p>";
+    if (d.grade && d.grade.length) h += '<p class="srcline"><i>' + esc("Grade differs") + ":</i> " + esc(d.grade.join(", ")) + "</p>";
     return h + "</div>";
   }
 
@@ -2742,7 +2483,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
     var ids = Object.keys(SC.diffs || {}).map(Number)
       .filter(function (i) { return (R.rubrics[i].m || []).length; })
       .sort(function (a, b) { return a - b; });
-    var body = openOverlay(sheetHead(t("Show all differences")) + '<div class="sheet-body">' +
+    var body = openOverlay(sheetHead("Show all differences") + '<div class="sheet-body">' +
       '<p class="muted small" style="margin-top:0">' +
       ids.length + " of " + SC.withRem.toLocaleString() + " rubrics that carry remedies differ from the source transcription. " +
       "Everything else is identical, remedy for remedy and grade for grade.</p>" +
@@ -2750,9 +2491,9 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         var d = SC.diffs[i];
         return '<div class="diffrow"><div class="pth">' + esc(PATHS[i]) + "</div>" +
           '<div class="srcline">' + esc(d.line) + "</div>" +
-          (d.onlySrc.length ? '<div class="srcline"><i>' + esc(t("In the source only")) + ":</i> " + esc(d.onlySrc.join(", ")) + "</div>" : "") +
-          (d.onlyApp.length ? '<div class="srcline"><i>' + esc(t("In this app only")) + ":</i> " + esc(d.onlyApp.join(", ")) + "</div>" : "") +
-          (d.grade.length ? '<div class="srcline"><i>' + esc(t("Grade differs")) + ":</i> " + esc(d.grade.join(", ")) + "</div>" : "") +
+          (d.onlySrc.length ? '<div class="srcline"><i>' + esc("In the source only") + ":</i> " + esc(d.onlySrc.join(", ")) + "</div>" : "") +
+          (d.onlyApp.length ? '<div class="srcline"><i>' + esc("In this app only") + ":</i> " + esc(d.onlyApp.join(", ")) + "</div>" : "") +
+          (d.grade.length ? '<div class="srcline"><i>' + esc("Grade differs") + ":</i> " + esc(d.grade.join(", ")) + "</div>" : "") +
           "</div>";
       }).join("") + "</div>");
     wireSheetClose(body);
@@ -2766,7 +2507,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
       "</b> rubrics that carry remedies match the source transcription exactly \u2014 same remedies, same grades. " +
       "<b>" + (SC.withRem - SC.identicalRem) + "</b> differ, and every one of them is listed, with the source's own line." +
       "</div>" +
-      '<button class="btn ghost sm" type="button" id="show-diffs">' + esc(t("Show all differences")) + "</button>";
+      '<button class="btn ghost sm" type="button" id="show-diffs">' + esc("Show all differences") + "</button>";
     var b = $("#show-diffs"); if (b) b.addEventListener("click", showDiffs);
   }
 
@@ -2816,7 +2557,6 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
         if (idx >= 0) openRemedy(idx);
       }
       if (tab) switchTab(tab);
-      if (p.get("lang")) setLang(p.get("lang"));
       if (p.get("palette") != null) openPalette();
       if (p.get("browse") != null) toggleBrowse(true);
       if (p.get("settings") != null) openSettings();
