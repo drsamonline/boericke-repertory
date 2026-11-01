@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#f6f6f4">
 <meta name="description" content="Boericke's Repertory — an offline, single-file clinical repertory and repertorisation app. Content by Oscar E. Boericke, M.D.; design &amp; application by Dr. Sohil Momin.">
 <meta name="color-scheme" content="light dark">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="../assets/icon-180.png">
 <script>
 (function(){try{
   var t=localStorage.getItem('br_theme')||'auto';
@@ -393,6 +395,191 @@ html[data-theme="dark"] .pill{color:var(--text)}
   @page{margin:14mm}
 }
 
+
+/* =========================================================================
+   v1.2 additions — search operators, browse tree, must/optional rubrics,
+   chart filter, case search, vault, settings, command palette, print sheet.
+   All of it is inline CSS: still one file, still no network.
+   ========================================================================= */
+
+/* text size — three steps, remembered */
+html[data-fs="s"] body { zoom: .93; }
+html[data-fs="l"] body { zoom: 1.09; }
+
+/* high-contrast theme, alongside light / dark / auto */
+html[data-theme="contrast"] {
+  --bg:#ffffff; --surface:#ffffff; --surface-2:#ffffff; --surface-3:#f2f2f2;
+  --border:#000000; --border-2:#000000; --text:#000000; --text-2:#000000; --text-3:#333333;
+  --accent:#7a0b26; --accent-2:#5a0016; --accent-fg:#ffffff; --accent-soft:#ffe6ec; --accent-soft-2:#ffd0da;
+}
+html[data-theme="contrast"] .card, html[data-theme="contrast"] .rrow { border-color:#000 !important; }
+html[data-theme="contrast"] .rrow.sel { outline: 2px solid #000; }
+
+/* appbar extras */
+.appbar-actions { display:flex; gap:6px; align-items:center; }
+.act-btn {
+  display:inline-flex; align-items:center; gap:7px; height:34px; padding:0 11px;
+  border-radius:9px; border:1px solid var(--border-2); background:var(--surface);
+  color:var(--text-2); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer;
+}
+.act-btn:hover { color:var(--text); border-color:var(--text-3); }
+.act-btn svg { width:15px; height:15px; }
+.act-btn .kbd { font-family:ui-monospace,monospace; font-size:10px; color:var(--text-3); border:1px solid var(--border-2); border-radius:4px; padding:1px 4px; }
+@media (max-width:620px) { .act-btn .lbl, .act-btn .kbd { display:none; } .act-btn { padding:0 9px; } }
+
+/* searchbar extras */
+.filters { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.op-hint { font-size:11.5px; color:var(--text-3); }
+.op-hint code { font-family:ui-monospace,monospace; font-size:11px; background:var(--surface-3); padding:1px 5px; border-radius:4px; }
+.search-err { font-size:12px; color:var(--danger); }
+
+/* browse tree */
+.tree { display:flex; flex-direction:column; gap:2px; }
+.tnode { border-bottom:1px solid var(--border); }
+.tnode:last-child { border-bottom:0; }
+.thead {
+  display:flex; align-items:center; gap:10px; width:100%; padding:11px 12px;
+  background:none; border:0; font:inherit; text-align:left; cursor:pointer; color:var(--text);
+  border-radius:8px;
+}
+.thead:hover { background:var(--surface-3); }
+.thead .chev { width:14px; height:14px; flex:none; color:var(--text-3); transition:transform .15s; }
+.tnode.open > .thead .chev { transform:rotate(90deg); }
+.thead .tn { font-weight:600; font-size:14.5px; }
+.thead .tc { margin-left:auto; font-family:ui-monospace,monospace; font-size:11px; color:var(--text-3); }
+.tkids { display:none; padding-left:14px; border-left:1px solid var(--border); margin-left:18px; }
+.tnode.open > .tkids { display:block; }
+.tleaf {
+  display:flex; align-items:center; gap:9px; width:100%; padding:8px 10px;
+  background:none; border:0; font:inherit; font-size:13.5px; text-align:left; cursor:pointer;
+  color:var(--text-2); border-radius:7px;
+}
+.tleaf:hover { background:var(--surface-3); color:var(--text); }
+.tleaf.sel { color:var(--accent); font-weight:600; }
+.tleaf .cnt { margin-left:auto; font-family:ui-monospace,monospace; font-size:10.5px; color:var(--text-3); }
+
+/* row action buttons (note / similar) */
+.rowacts { display:flex; gap:4px; margin-left:8px; opacity:0; transition:opacity .12s; }
+.rrow:hover .rowacts, .rrow:focus-within .rowacts { opacity:1; }
+.ract {
+  width:24px; height:24px; border-radius:6px; border:1px solid var(--border-2);
+  background:var(--surface); color:var(--text-3); font-size:11px; cursor:pointer; line-height:1;
+}
+.ract:hover { color:var(--accent); border-color:var(--accent); }
+.note-badge { font-size:11px; color:var(--accent); margin-top:4px; }
+.note-badge::before { content:"\270E  "; }
+
+/* must / optional rubrics */
+.chip .star {
+  border:0; background:none; cursor:pointer; font-size:12px; line-height:1;
+  color:var(--text-3); padding:0 2px;
+}
+.chip.must { border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); }
+.chip.must .star { color:var(--accent); }
+.mustbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; font-size:12.5px; color:var(--text-2); margin:10px 0 0; }
+.mustbar label { display:inline-flex; gap:6px; align-items:center; }
+
+/* chart tools */
+.charttools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
+.charttools input[type="search"] {
+  flex:1 1 180px; min-width:140px; padding:8px 11px; font:inherit; font-size:13px;
+  border:1px solid var(--border-2); border-radius:8px; background:var(--surface); color:var(--text);
+}
+.wsel { font:inherit; font-size:12.5px; padding:6px 8px; border-radius:8px; border:1px solid var(--border-2); background:var(--surface); color:var(--text); }
+tr.mustmiss td, tr.mustmiss th { opacity:.45; }
+
+/* case list */
+.casetools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:14px; }
+.casetools input[type="search"] {
+  flex:1 1 200px; padding:9px 12px; font:inherit; font-size:13.5px;
+  border:1px solid var(--border-2); border-radius:9px; background:var(--surface); color:var(--text);
+}
+.patient-head {
+  font-family:ui-monospace,monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--text-3); margin:18px 0 8px; padding-bottom:6px; border-bottom:1px solid var(--border);
+}
+.patient-head:first-child { margin-top:0; }
+.banner {
+  display:flex; gap:12px; align-items:center; padding:12px 14px; margin-bottom:14px;
+  border:1px solid var(--accent); background:var(--accent-soft); color:var(--text);
+  border-radius:10px; font-size:13px;
+}
+.banner b { font-weight:650; }
+.banner .btn { margin-left:auto; }
+.vaultbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+.locked { text-align:center; padding:38px 16px; }
+.locked svg { width:34px; height:34px; color:var(--text-3); margin-bottom:12px; }
+.locked h3 { margin:0 0 6px; font-size:1.05rem; }
+
+/* generic second overlay (settings, palette, notes) */
+.overlay {
+  position:fixed; inset:0; z-index:80; display:none; align-items:flex-start; justify-content:center;
+  background:rgba(10,10,14,.42); padding:8vh 16px 16px; overflow:auto;
+}
+.overlay.on { display:flex; }
+.sheet2 {
+  width:min(560px,100%); background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; box-shadow:0 24px 60px -24px rgba(0,0,0,.5); overflow:hidden;
+}
+.sheet2 .sheet-head { position:sticky; top:0; background:var(--surface); z-index:1; }
+.sheet2 .sheet-body { padding:16px 18px 20px; }
+.setrow { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--border); }
+.setrow:last-child { border-bottom:0; }
+.setrow .lbl2 { font-size:13.5px; font-weight:600; }
+.setrow .hint2 { font-size:11.5px; color:var(--text-3); }
+.setrow .ctl2 { margin-left:auto; display:flex; gap:6px; align-items:center; }
+.seg { display:inline-flex; border:1px solid var(--border-2); border-radius:8px; overflow:hidden; }
+.seg button { border:0; background:var(--surface); color:var(--text-2); font:inherit; font-size:12px; padding:6px 10px; cursor:pointer; }
+.seg button.on { background:var(--accent); color:var(--accent-fg); }
+
+/* command palette */
+.pal-input {
+  width:100%; padding:15px 18px; font:inherit; font-size:16px; border:0;
+  border-bottom:1px solid var(--border); background:var(--surface); color:var(--text);
+}
+.pal-list { max-height:52vh; overflow:auto; }
+.pal-item {
+  display:flex; gap:10px; align-items:baseline; width:100%; padding:10px 18px;
+  background:none; border:0; font:inherit; text-align:left; cursor:pointer; color:var(--text);
+  border-bottom:1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.pal-item.on, .pal-item:hover { background:var(--surface-3); }
+.pal-item .k2 { font-family:ui-monospace,monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-3); flex:none; width:56px; }
+.pal-item .t2 { font-size:13.5px; }
+.pal-item .t2 small { display:block; color:var(--text-3); font-size:11px; }
+
+/* notes editor */
+.notes-editor { width:100%; min-height:110px; padding:11px 12px; font:inherit; font-size:14px;
+  border:1px solid var(--border-2); border-radius:9px; background:var(--surface-2); color:var(--text); resize:vertical; }
+
+/* data audit */
+.audit { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-top:12px; }
+.audit div { border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
+.audit div { background:var(--surface); padding:12px 14px; }
+.audit b { display:block; font-family:ui-monospace,monospace; font-size:1.05rem; }
+.audit span { font-size:11px; color:var(--text-3); letter-spacing:.06em; text-transform:uppercase; }
+.stamp { font-family:ui-monospace,monospace; font-size:11px; color:var(--text-3); margin-top:14px; }
+
+/* one-page A4 case sheet */
+@media print {
+  @page { size: A4; margin: 12mm 12mm 14mm; }
+  body { background:#fff !important; }
+  #print-area { display:block !important; }
+  #print-area h1 { font-size:16pt; margin:0 0 2mm; }
+  #print-area h2 { font-size:11pt; margin:5mm 0 2mm; border-bottom:.4pt solid #999; padding-bottom:1mm; }
+  #print-area .psub { font-size:8pt; color:#444; margin:0 0 4mm; }
+  #print-area table.chart { width:100%; border-collapse:collapse; font-size:7.6pt; }
+  #print-area table.chart th, #print-area table.chart td { border:.4pt solid #bbb; padding:1.1mm 1.4mm; }
+  #print-area table.chart thead th { background:#f0f0f0; }
+  #print-area table.chart tr { page-break-inside:avoid; }
+  #print-area ol.prub { font-size:8pt; margin:0; padding-left:5mm; }
+  #print-area ol.prub li { page-break-inside:avoid; margin-bottom:.8mm; }
+  #print-area .pfoot { position:fixed; bottom:0; left:0; right:0; font-size:6.6pt; color:#666; border-top:.4pt solid #ccc; padding-top:1mm; }
+  .psheet { display:grid; grid-template-columns:repeat(4,1fr); gap:2mm; font-size:8pt; margin-bottom:3mm; }
+  .psheet div { border:.4pt solid #ddd; padding:1.4mm; }
+  .psheet b { display:block; font-size:6.6pt; text-transform:uppercase; color:#666; }
+}
+
 </style>
 </head>
 <body>
@@ -409,7 +596,15 @@ html[data-theme="dark"] .pill{color:var(--text)}
       </div>
     </div>
     <div class="appbar-actions">
-      <button id="btn-theme" class="icon-btn" type="button" title="Theme: light / dark / auto" aria-label="Toggle colour theme">
+      <button id="btn-pal" class="act-btn" type="button" title="Command palette (Ctrl or Cmd + K)" aria-label="Open command palette">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        <span class="lbl">Jump to</span><span class="kbd">&#8984;K</span>
+      </button>
+      <button id="btn-settings" class="act-btn" type="button" title="Settings" aria-label="Settings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.9 1.2v.2a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-2.9-1.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3.3 15a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.7 8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9.6a1.7 1.7 0 0 0 1-1.6V3.8a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9v.1a1.7 1.7 0 0 0 1.6 1h.2a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.6 1z"/></svg>
+        <span class="lbl">Settings</span>
+      </button>
+      <button id="btn-theme" class="icon-btn" type="button" title="Theme: light / dark / auto / contrast" aria-label="Toggle colour theme">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18a9 9 0 0 0 0-18z" fill="currentColor" stroke="none"/></svg>
       </button>
       <button id="btn-palette" class="icon-btn" type="button" title="Accent colour" aria-label="Change accent colour">
@@ -441,10 +636,17 @@ html[data-theme="dark"] .pill{color:var(--text)}
           </div>
           <div class="filters">
             <select id="chapter-filter" class="ctl" aria-label="Filter by chapter"></select>
+            <select id="saved-search" class="ctl" aria-label="Saved searches">
+              <option value="">Saved searches&hellip;</option>
+            </select>
+            <button id="save-search" class="act-btn" type="button" title="Save this search">Save search</button>
+            <button id="btn-browse" class="act-btn" type="button" aria-pressed="false" title="Browse the chapters">Browse</button>
             <span class="kbdhint">Press <kbd>/</kbd> to search</span>
           </div>
         </div>
+        <div class="op-hint">Operators: <code>"exact phrase"</code> &middot; <code>-exclude</code> &middot; <code>a or b</code></div>
         <div class="chips" id="chips"></div>
+        <div class="mustbar" id="mustbar" hidden></div>
       </div>
     </div>
     <div class="result-meta" id="stat-line"></div>
@@ -461,6 +663,14 @@ html[data-theme="dark"] .pill{color:var(--text)}
           <button class="btn ghost sm" id="c-clear-chart" type="button">Clear selection</button>
         </div>
       </div>
+      <div class="charttools" id="chart-tools2" hidden>
+        <input type="search" id="chart-filter" placeholder="Filter remedies in the chart&hellip;" aria-label="Filter chart by remedy name">
+        <label class="op-hint"><input type="checkbox" id="must-only"> only remedies covering every <b>must</b> rubric</label>
+        <span class="op-hint">weights</span>
+        <select class="wsel" id="w-g2" aria-label="Grade 2 points"><option value="1">G2 = 1</option><option value="2" selected>G2 = 2</option><option value="3">G2 = 3</option></select>
+        <select class="wsel" id="w-g1" aria-label="Grade 1 points"><option value="1" selected>G1 = 1</option><option value="0">G1 = 0</option><option value="2">G1 = 2</option></select>
+        <button class="btn ghost sm" id="c-csv" type="button">CSV</button>
+      </div>
       <div id="chart-body"></div>
     </div>
     <div class="card" id="case-save-card">
@@ -476,6 +686,8 @@ html[data-theme="dark"] .pill{color:var(--text)}
       <div class="field"><label for="c-rx">Prescription</label><textarea id="c-rx" rows="2" placeholder="e.g. Nux vomica 30C &mdash; one dose at bedtime; Sac lac for 7 days."></textarea></div>
       <div class="btnrow">
         <button class="btn primary" id="c-save" type="button" disabled>Save repertorisation</button>
+        <button class="btn ghost" id="c-sheet" type="button">Print case sheet</button>
+        <button class="btn ghost" id="c-save-file" type="button" title="Save to a file you choose">Save to file&hellip;</button>
       </div>
     </div>
   </section>
@@ -489,6 +701,12 @@ html[data-theme="dark"] .pill{color:var(--text)}
           <button class="btn ghost sm" id="c-import" type="button">Import JSON</button>
           <button class="btn ghost sm" id="c-export-all" type="button">Export all</button>
         </div>
+      </div>
+      <div id="backup-banner"></div>
+      <div class="casetools">
+        <input type="search" id="case-search" placeholder="Search cases by patient, notes or remedy&hellip;" aria-label="Search cases">
+        <button class="btn ghost sm" id="c-lock" type="button">Lock cases</button>
+        <button class="btn ghost sm" id="c-csv-all" type="button">Export CSV</button>
       </div>
       <div id="caselist"></div>
     </div>
@@ -518,6 +736,18 @@ html[data-theme="dark"] .pill{color:var(--text)}
       <h3 class="sec">Disclaimer</h3>
       <p>Provided &ldquo;as is&rdquo;, for study and reference by qualified practitioners. Not a substitute for professional homoeopathic or medical judgment.</p>
 
+      <h3 class="sec">Data audit</h3>
+      <p class="muted small" style="margin-top:-4px">Computed from the embedded dataset at load time, so the cleaning can be checked rather than trusted.</p>
+      <div class="audit" id="audit"></div>
+
+      <h3 class="sec">Privacy</h3>
+      <p id="vault-state" class="muted small">Cases are stored in this browser only. Use <b>Lock cases</b> in the Cases panel to encrypt them with a passphrase (AES-256-GCM, key derived with PBKDF2 in this browser).</p>
+
+      <h3 class="sec">Offline</h3>
+      <p class="muted small" id="sw-state">Served from this file. No request leaves the page after it loads.</p>
+
+      <div class="stamp" id="build-stamp"></div>
+
       <div class="tagrow">
         <span class="tag">Offline</span><span class="tag">Single file</span><span class="tag">6,110 rubrics</span><span class="tag">1,461 remedies</span><span class="tag">25 chapters</span>
       </div>
@@ -533,6 +763,9 @@ html[data-theme="dark"] .pill{color:var(--text)}
 
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-label="Remedy detail">
   <div class="sheet" id="modal-body"></div>
+</div>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="Panel">
+  <div class="sheet2" id="overlay-body"></div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="file-input" accept="application/json,.json" class="visually-hidden">
@@ -575,7 +808,8 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   function fixText(s) { return String(s).replace(/[\u0080-\u009F]/g, function (c) { return CP[c] || c; }).replace(/[\u00AD\u200B\uFEFF]/g, "").replace(/\u00A0/g, " "); }
   function SEARCHKEY(s) {
     return fixText(s).toLowerCase().replace(/\u00E6/g, "ae").replace(/\u0153/g, "oe")
-      .replace(/[._\u00B7\u2010-\u2015-]+/g, " ").replace(/\s+/g, " ").trim();
+      .replace(/[._\u00B7\u2010-\u2015-]+/g, " ")
+      .replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ").trim();
   }
 
   var N = R.rubrics.length;
@@ -588,6 +822,54 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     return ch.reverse().join(" \u203A ");
   }
 
+  var ALIAS_RAW = {
+    "acon":"aconitum napellus","agar":"agaricus muscarius","alum":"alumina","ambr":"ammonium bromatum",
+    "am c":"ammonium carbonicum","am m":"ammonium muriaticum","anac":"anacardium orientale",
+    "ant c":"antimonium crudum","ant t":"antimonium tartaricum","arg n":"argentum nitricum",
+    "arn":"arnica montana","ars":"arsenicum album","asaf":"asa foetida","aur":"aurum metallicum",
+    "bar c":"baryta carbonica","bell":"belladonna","bism":"bismuthum","bor":"borax veneta","bov":"bovista",
+    "brom":"bromium","bry":"bryonia alba","cact":"cactus grandiflorus","calc":"calcarea carbonica",
+    "calc c":"calcarea carbonica","calc p":"calcarea phosphorica","calc s":"calcarea sulphurica",
+    "camph":"camphora","cann i":"cannabis indica","canth":"cantharis","caps":"capsicum annuum",
+    "carb an":"carbo animalis","carb v":"carbo vegetabilis","caust":"causticum","cham":"chamomilla",
+    "chel":"chelidonium majus","chin":"china officinalis","chin s":"chininum sulphuricum",
+    "cic":"cicuta virosa","cina":"cina maritima","cocc":"cocculus indicus","coff":"coffea cruda",
+    "colch":"colchicum autumnale","coloc":"colocynthis","con":"conium maculatum","croc":"crocus sativus",
+    "cupr":"cuprum metallicum","cycl":"cyclamen europaeum","dig":"digitalis purpurea",
+    "dios":"dioscorea villosa","dros":"drosera rotundifolia","dulc":"dulcamara",
+    "euph":"euphrasia officinalis","ferr":"ferrum metallicum","ferr p":"ferrum phosphoricum",
+    "fl ac":"fluoricum acidum","gels":"gelsemium sempervirens","glon":"glonoinum","graph":"graphites",
+    "guai":"guaiacum","ham":"hamamelis virginiana","hell":"helleborus niger",
+    "hep":"hepar sulphuris calcareum","hyos":"hyoscyamus niger","hyper":"hypericum perforatum",
+    "ign":"ignatia amara","iod":"iodium","ip":"ipecacuanha","kali br":"kali bromatum",
+    "kali c":"kali carbonicum","kali m":"kali muriaticum","kali n":"kali nitricum",
+    "kali p":"kali phosphoricum","kali s":"kali sulphuricum","kreos":"kreosotum","lach":"lachesis muta",
+    "led":"ledum palustre","lil t":"lilium tigrinum","lyc":"lycopodium clavatum",
+    "mag c":"magnesia carbonica","mag m":"magnesia muriatica","mag p":"magnesia phosphorica",
+    "mangan":"manganum aceticum","med":"medorrhinum","merc":"mercurius solubilis",
+    "merc c":"mercurius corrosivus","mez":"mezereum","mosch":"moschus","mur ac":"muriaticum acidum",
+    "nat c":"natrum carbonicum","nat m":"natrum muriaticum","nat p":"natrum phosphoricum",
+    "nat s":"natrum sulphuricum","nit ac":"nitricum acidum","nux m":"nux moschata","nux v":"nux vomica",
+    "op":"opium","petr":"petroleum","ph ac":"phosphoricum acidum","phos":"phosphorus",
+    "plat":"platinum metallicum","plb":"plumbum metallicum","pod":"podophyllum peltatum","psor":"psorinum",
+    "puls":"pulsatilla pratensis","ran b":"ranunculus bulbosus","ran s":"ranunculus sceleratus",
+    "rheum":"rheum palmatum","rhod":"rhododendron chrysanthum","rhus t":"rhus toxicodendron",
+    "ruta":"ruta graveolens","sabad":"sabadilla","sabin":"sabina","samb":"sambucus nigra",
+    "sang":"sanguinaria canadensis","sars":"sarsaparilla","sec":"secale cornutum","sel":"selenium",
+    "seneg":"senega officinalis","sep":"sepia officinalis","sil":"silicea terra","spig":"spigelia anthelmia",
+    "spong":"spongia tosta","squil":"squilla maritima","stann":"stannum metallicum","staph":"staphisagria",
+    "stram":"stramonium","sul ac":"sulphuricum acidum","sulph":"sulphur","symph":"symphytum officinale",
+    "tab":"tabacum","tarax":"taraxacum","tarent":"tarentula hispanica","tell":"tellurium",
+    "teucr":"teucrium marum","thuj":"thuja occidentalis","verat":"veratrum album","verb":"verbascum thapsus",
+    "zinc":"zincum metallicum","aeth":"aethusa cynapium","apis":"apis mellifica","ail":"ailanthus glandulosa",
+    "alfal":"medicago sativa","gelatin":"gelatinum"
+  };
+  /* Abbreviation -> full name, so "Gelsemium" finds the source's "Gels".
+     A convenience alias list, deliberately partial: it only ever widens a
+     search, it never rewrites the text you see. */
+  var ALIAS = Object.create(null);
+  (function () { for (var k in ALIAS_RAW) ALIAS[SEARCHKEY(k)] = SEARCHKEY(ALIAS_RAW[k]); })();
+
   var CHAPNAME = R.chapters.map(function (c) { return c.t; });
   for (var i = 0; i < N; i++) {
     PATHS[i] = buildPath(i);
@@ -595,7 +877,10 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     SEL[i] = m.length ? 1 : 0;
     LEAFS[i] = PATHS[i].split(" \u203A ").pop().toLowerCase().replace(/\./g, "");
     var names = new Array(m.length);
-    for (var j = 0; j < m.length; j++) names[j] = SEARCHKEY(R.remedies[m[j][0]]);
+    for (var j = 0; j < m.length; j++) {
+      var nk = SEARCHKEY(R.remedies[m[j][0]]);
+      names[j] = ALIAS[nk] ? nk + " " + ALIAS[nk] : nk;
+    }
     SEARCH[i] = SEARCHKEY(PATHS[i]) + " " + names.join(" ");
   }
 
@@ -645,6 +930,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
 
   function toggleSel(i) {
     if (!SEL[i]) { toast("Category heading \u2014 no remedies to score"); return; }
+    if (typeof pushUndo === "function") pushUndo();
     var k = selected.indexOf(i);
     if (k >= 0) selected.splice(k, 1); else selected.push(i);
     var row = document.querySelector('.rrow[data-i="' + i + '"]');
@@ -655,6 +941,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
       var chk = row.querySelector(".chk"); if (chk) chk.textContent = nowSel ? "\u2713" : "+";
     }
     persistSel(); renderChips(); updateBadges(); renderTray();
+    if (typeof renderMustBar === "function") renderMustBar();
     $("#c-save").disabled = !selected.length;
     scheduleChart();
   }
@@ -666,12 +953,14 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     selected.forEach(function (i) {
       var chap = CHAPNAME[R.rubrics[i].c];
       var leaf = PATHS[i].split(" \u203A ").pop();
-      h += '<span class="chip" title="' + esc(PATHS[i]) + '"><span class="cp">' + esc(chap) + "</span><b>" + esc(leaf) + '</b>' +
+      h += '<span class="chip' + (MUST[i] ? " must" : "") + '" title="' + esc(PATHS[i]) + '"><span class="cp">' + esc(chap) + "</span><b>" + esc(leaf) + "</b>" +
+        '<button class="star" type="button" data-must="' + i + '" aria-pressed="' + (MUST[i] ? "true" : "false") + '" title="Mark as must-have">' + (MUST[i] ? "\u2605" : "\u2606") + "</button>" +
         '<button type="button" data-i="' + i + '" aria-label="Remove ' + esc(leaf) + '">\u2715</button></span>';
     });
     h += '<button type="button" class="chip-clear" id="chip-clear">Clear all</button>';
     box.innerHTML = h;
     $$("#chips button[data-i]").forEach(function (b) { b.addEventListener("click", function () { toggleSel(+b.dataset.i); }); });
+    $$("#chips button[data-must]").forEach(function (b) { b.addEventListener("click", function () { toggleMust(+b.dataset.must); }); });
     var cc = $("#chip-clear"); if (cc) cc.addEventListener("click", clearAll);
   }
   function clearAll() {
@@ -710,28 +999,63 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   var MAX = 200, lastRes = [], lastTerms = [], kbdIdx = -1;
   var chapterFilter = "";
 
+  var lastFuzzy = [];
   function doSearch() {
-    var q = SEARCHKEY($("#q").value);
-    var terms = q ? q.split(/\s+/) : [];
-    lastTerms = terms;
-    var scored = [];
-    if (terms.length) {
-      var cf = chapterFilter === "" ? -1 : +chapterFilter;
-      for (var i = 0; i < N; i++) {
+    if (browseMode) { $("#q-clear").hidden = !$("#q").value; return; }
+    var branches = parseQuery($("#q").value);
+    var cf = chapterFilter === "" ? -1 : +chapterFilter;
+    var scored = [], i, b, t2, p2;
+    lastFuzzy = [];
+    if (branches.length) {
+      for (i = 0; i < N; i++) {
         if (!SEL[i]) continue;                 // hide remedy-less headings
         if (cf >= 0 && R.rubrics[i].c !== cf) continue;
-        var s = SEARCH[i], ok = true;
-        for (var t = 0; t < terms.length; t++) { if (s.indexOf(terms[t]) === -1) { ok = false; break; } }
-        if (!ok) continue;
+        var hit = false;
+        for (b = 0; b < branches.length; b++) if (branchMatches(branches[b], SEARCH[i])) { hit = true; break; }
+        if (!hit) continue;
         var leafHits = 0;
-        for (var t2 = 0; t2 < terms.length; t2++) { if (LEAFS[i].indexOf(terms[t2]) !== -1) leafHits++; }
+        for (b = 0; b < branches.length; b++) {
+          for (t2 = 0; t2 < branches[b].terms.length; t2++) if (LEAFS[i].indexOf(branches[b].terms[t2]) !== -1) leafHits++;
+          for (p2 = 0; p2 < branches[b].phrases.length; p2++) if (LEAFS[i].indexOf(branches[b].phrases[p2]) !== -1) leafHits += 2;
+        }
         scored.push({ i: i, sc: leafHits * 1000 + Math.min(R.rubrics[i].m.length, 40) });
       }
-      scored.sort(function (a, b) { return b.sc - a.sc || a.i - b.i; });
+
+      /* typo tolerance: only when nothing at all matched */
+      if (!scored.length) {
+        var alt = [], used = false;
+        branches.forEach(function (br) {
+          var nb = { phrases: br.phrases.slice(), terms: [], exclude: br.exclude.slice() };
+          br.terms.forEach(function (t) {
+            var n = nearTerm(t);
+            if (n && n !== t) { nb.terms.push(n); used = true; } else nb.terms.push(t);
+          });
+          alt.push(nb);
+        });
+        if (used) {
+          for (i = 0; i < N; i++) {
+            if (!SEL[i]) continue;
+            if (cf >= 0 && R.rubrics[i].c !== cf) continue;
+            for (b = 0; b < alt.length; b++) {
+              if (branchMatches(alt[b], SEARCH[i])) { scored.push({ i: i, sc: Math.min(R.rubrics[i].m.length, 40) }); break; }
+            }
+          }
+          if (scored.length) lastFuzzy = alt.map(function (x) { return x.terms.join(" "); });
+        }
+      }
+      scored.sort(function (a, b2) { return b2.sc - a.sc || a.i - b2.i; });
     }
     lastRes = scored.map(function (x) { return x.i; });
+    lastTerms = [];
+    branches.forEach(function (br) { lastTerms = lastTerms.concat(br.phrases, br.terms); });
     kbdIdx = -1;
-    renderResults(lastRes, terms, scored.length);
+    renderResults(lastRes, lastTerms, scored.length);
+    if (lastFuzzy.length) {
+      var box = $("#res"), d = document.createElement("div");
+      d.className = "result-meta";
+      d.innerHTML = '<span>No exact match \u2014 showing results for <b>' + esc(lastFuzzy.join(" / ")) + "</b></span>";
+      box.insertBefore(d, box.firstChild);
+    }
     $("#q-clear").hidden = !$("#q").value;
   }
 
@@ -765,7 +1089,13 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
           '<div class="pth">' + hl(PATHS[i], terms) + "</div>" +
           '<div class="nm">' + nm + "</div>" +
           (rb.n ? '<div class="note">' + esc(fixText(rb.n)) + "</div>" : "") +
+          (noteFor(i) ? '<div class="note-badge">' + esc(noteFor(i)) + "</div>" : "") +
           '<div class="meta">' + rb.m.length + " remed" + (rb.m.length === 1 ? "y" : "ies") + "</div>" +
+        "</div>" +
+        '<div class="rowacts">' +
+          '<button class="ract" type="button" data-note="' + i + '" title="Add a note to this rubric" aria-label="Note">\u270E</button>' +
+          '<button class="ract" type="button" data-sim="' + i + '" title="Find similar rubrics" aria-label="Similar">\u2248</button>' +
+          '<button class="ract" type="button" data-must="' + i + '" title="Mark as must-have" aria-pressed="' + (MUST[i] ? "true" : "false") + '" aria-label="Must-have">' + (MUST[i] ? "\u2605" : "\u2606") + '</button>' +
         "</div>" +
         '<button class="expand" type="button" tabindex="-1" aria-label="Show remedies"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>' +
         '<div class="remedies">' + remediesHtml + "</div>" +
@@ -788,6 +1118,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   var sortMode = "total";
   function chartData() {
     var cols = selected.slice(), map = Object.create(null);
+    var mustCols = cols.filter(function (ri) { return !!MUST[ri]; });
     cols.forEach(function (ri) {
       (R.rubrics[ri].m || []).forEach(function (x) {
         var c = x[0], row = map[c] || (map[c] = {}), cur = row[ri];
@@ -796,9 +1127,10 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     });
     var rows = [];
     for (var c in map) {
-      var marks = map[c], total = 0, count = 0;
-      for (var k in marks) { total += marks[k]; count++; }
-      rows.push({ cid: +c, marks: marks, total: total, count: count });
+      var marks = map[c], total = 0, count = 0, mustHit = 0;
+      for (var k in marks) { total += marks[k] === 2 ? W.g2 : W.g1; count++; }
+      for (var mk = 0; mk < mustCols.length; mk++) if (marks[mustCols[mk]]) mustHit++;
+      rows.push({ cid: +c, marks: marks, total: total, count: count, mustHit: mustHit });
     }
     rows.sort(function (a, b) {
       if (sortMode === "total") return b.total - a.total || b.count - a.count || a.cid - b.cid;
@@ -813,24 +1145,39 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
 
   function buildChart() {
     var body = $("#chart-body");
+    var tools2 = $("#chart-tools2");
     if (!selected.length) {
       body.innerHTML = emptyState('No rubrics selected yet.<br><span class="small">Search the <b>Repertory</b> and tap rubrics to build the chart.</span>');
       $("#c-save").disabled = true;
       $("#chart-tools").hidden = true;
+      if (tools2) tools2.hidden = true;
+      renderMustBar();
       return;
     }
     $("#chart-tools").hidden = false;
+    if (tools2) tools2.hidden = false;
+    syncWeightSelects();
     var cd = chartData();
-    var maxTotal = cd.rows.length ? cd.rows[0].total : 1;
-    var h = '<div class="chart-head"><div class="info"><b>' + cd.rows.length.toLocaleString() + "</b> remedies across <b>" +
-      cd.cols.length + "</b> rubric" + (cd.cols.length === 1 ? "" : "s") + "</div>" +
+    var mustCols = cd.cols.filter(function (ri) { return !!MUST[ri]; });
+    var ftxt = ($("#chart-filter") && $("#chart-filter").value || "").toLowerCase().trim();
+    var onlyMust = !!($("#must-only") && $("#must-only").checked);
+    var viewRows = cd.rows.filter(function (r) {
+      if (ftxt && fixText(R.remedies[r.cid]).toLowerCase().indexOf(ftxt) === -1) return false;
+      if (onlyMust && mustCols.length && r.mustHit < mustCols.length) return false;
+      return true;
+    });
+    renderMustBar();
+    var maxTotal = viewRows.length ? viewRows[0].total : 1;
+    var h = '<div class="chart-head"><div class="info"><b>' + viewRows.length.toLocaleString() + "</b> remedies across <b>" +
+      cd.cols.length + "</b> rubric" + (cd.cols.length === 1 ? "" : "s") +
+      (mustCols.length ? " \u00b7 <b>" + mustCols.length + "</b> must" : "") + "</div>" +
       '<div class="btnrow"><select class="ctl" id="sortsel" aria-label="Sort chart">' +
         '<option value="total"' + (sortMode === "total" ? " selected" : "") + ">Sort: Total score</option>" +
         '<option value="count"' + (sortMode === "count" ? " selected" : "") + ">Sort: Rubric count</option>" +
         '<option value="name"' + (sortMode === "name" ? " selected" : "") + ">Sort: Remedy name</option>" +
       "</select></div></div>";
 
-    var top = cd.rows.slice(0, 10);
+    var top = viewRows.slice(0, 10);
     if (top.length) {
       h += '<div class="top-remedies" aria-label="Top remedies">';
       top.forEach(function (r) {
@@ -841,7 +1188,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
       h += "</div>";
     }
 
-    var ROWCAP = 400, shown = cd.rows.slice(0, ROWCAP);
+    var ROWCAP = 400, shown = viewRows.slice(0, ROWCAP);
     h += '<div class="tblwrap"><table class="chart"><caption class="visually-hidden">Repertorisation chart</caption><thead><tr><th class="remcol" scope="col">Remedy</th>';
     cd.cols.forEach(function (ri) {
       var leaf = PATHS[ri].split(" \u203A ").pop();
@@ -849,7 +1196,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     });
     h += '<th scope="col">Tot</th><th scope="col">Rub.</th></tr></thead><tbody>';
     shown.forEach(function (r) {
-      h += '<tr><th class="remcol" scope="row">' + esc(R.remedies[r.cid]) + "</th>";
+      h += '<tr' + (mustCols.length && r.mustHit < mustCols.length ? ' class="mustmiss"' : "") + '><th class="remcol" scope="row">' + esc(fixText(R.remedies[r.cid])) + "</th>";
       cd.cols.forEach(function (ri) {
         var g = r.marks[ri];
         h += '<td class="mark">' + (g === 2 ? '<span class="m2" aria-label="Grade 2">\u2588\u2588</span>' : g === 1 ? '<span class="m1" aria-label="Grade 1">\u25AC</span>' : '<span aria-hidden="true" class="muted">\u00B7</span>') + "</td>";
@@ -857,8 +1204,9 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
       h += '<td class="tot">' + r.total + '</td><td class="rub">' + r.count + "</td></tr>";
     });
     h += "</tbody></table></div>";
-    if (cd.rows.length > ROWCAP) h += '<div class="result-meta"><span>Showing top ' + ROWCAP + " of " + cd.rows.length.toLocaleString() + " remedies \u2014 narrow the selection to see the rest.</span></div>";
-    h += '<div class="legend"><span class="m2">\u2588\u2588</span> grade 2 \u2014 the more frequently verified clinical remedy (2 pts) \u00b7 <span class="m1">\u25AC</span> grade 1 \u2014 listed remedy (1 pt) \u00b7 <b>Tot</b> = total score \u00b7 <b>Rub.</b> = rubrics covered.</div>';
+    if (viewRows.length > ROWCAP) h += '<div class="result-meta"><span>Showing top ' + ROWCAP + " of " + viewRows.length.toLocaleString() + " remedies \u2014 narrow the selection to see the rest.</span></div>";
+    h += '<div class="legend"><span class="m2">\u2588\u2588</span> grade 2 \u2014 the more frequently verified clinical remedy (' + W.g2 + ' pts) \u00b7 <span class="m1">\u25AC</span> grade 1 \u2014 listed remedy (' + W.g1 + ' pt' + (W.g1 === 1 ? "" : "s") + ') \u00b7 <b>Tot</b> = total score \u00b7 <b>Rub.</b> = rubrics covered' +
+      (mustCols.length ? ' \u00b7 faded rows miss at least one <b>must</b> rubric' : "") + ".</div>";
 
     body.innerHTML = h;
     var ss = $("#sortsel"); if (ss) ss.addEventListener("change", function () { sortMode = this.value; buildChart(); });
@@ -895,6 +1243,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
       date: $("#c-date").value || todayISO(),
       notes: $("#c-notes").value.trim(), prescription: $("#c-rx").value.trim(),
       rubricCount: selected.length, savedAt: new Date().toISOString(),
+      must: Object.keys(MUST).map(Number).filter(function (i) { return MUST[i] && isSel(i); }).map(function (i) { return PATHS[i]; }),
       app: "Boericke's Repertory \u2014 Dr. Sohil Momin",
       chart: snapshotChart(), selection: snapshotSelection()
     };
@@ -910,7 +1259,10 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
       if (Number.isInteger(idx) && idx >= 0 && idx < N && PATHS[idx] === s.path) restored.push(idx);
       else { var k = PATHS.indexOf(s.path); if (k >= 0) restored.push(k); else skipped++; }
     });
-    selected = restored; persistSel(); renderChips(); updateBadges(); renderTray();
+    selected = restored;
+    MUST = Object.create(null);
+    (c.must || []).forEach(function (p) { var k = PATHS.indexOf(p); if (k >= 0) MUST[k] = 1; });
+    persistSel(); persistMust(); renderChips(); updateBadges(); renderTray(); renderMustBar();
     $("#q").value = ""; $("#res").innerHTML = emptyState('Search the repertory to begin');
     buildChart(); $("#c-save").disabled = !selected.length;
     switchTab("chart");
@@ -918,19 +1270,43 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   }
 
   function renderCases() {
-    var cs = loadCases(), box = $("#caselist");
+    var box = $("#caselist");
+    if (vaultRecord() && vaultLocked) {
+      var bc0 = $("#badge-cases"); if (bc0) { bc0.textContent = ""; bc0.hidden = true; }
+      box.innerHTML = '<div class="locked"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>' +
+        "<h3>Cases are locked</h3><p class=\"muted small\">They are encrypted in this browser with your passphrase. Nothing is decrypted until you unlock.</p>" +
+        '<div class="btnrow" style="justify-content:center"><button class="btn primary" type="button" id="unlock-now">Unlock</button></div></div>';
+      var ub = $("#unlock-now"); if (ub) ub.addEventListener("click", unlockCases);
+      renderBackupBanner();
+      return;
+    }
+    var cs = loadCases();
     var bc = $("#badge-cases"); if (bc) { bc.textContent = cs.length; bc.hidden = !cs.length; }
+    renderBackupBanner();
     if (!cs.length) {
       box.innerHTML = '<div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg><div>No repertorisations saved yet.<br><span class="small">Build a chart, fill the case form and hit <b>Save</b>.</span></div></div>';
       return;
     }
-    var h = "";
+    var needle = ($("#case-search") && $("#case-search").value || "").toLowerCase().trim();
+    if (needle) {
+      cs = cs.filter(function (c) {
+        var hay = [c.name, c.notes, c.prescription, c.date, (c.chart || []).map(function (r) { return r.name; }).join(" ")].join(" ").toLowerCase();
+        return hay.indexOf(needle) !== -1;
+      });
+      if (!cs.length) { box.innerHTML = '<div class="empty"><div>No case matches that search.</div></div>'; return; }
+    }
+    var h = "", lastPatient = null;
     cs.forEach(function (c, idx) {
       var sub = [c.date, c.sex, c.age ? "Age " + c.age : ""].filter(Boolean).join(" \u00b7 ");
       var top = (c.chart || []).slice(0, 3).map(function (r) { return r.name + " (" + r.total + ")"; }).join(" \u00b7 ");
       var notes = c.notes || ""; if (notes.length > 150) notes = notes.slice(0, 150) + "\u2026";
       var rx = c.prescription || ""; if (rx.length > 150) rx = rx.slice(0, 150) + "\u2026";
       var n = c.rubricCount || (c.selection || []).length;
+      var patient = (c.name || "Unnamed case").trim();
+      if (patient !== lastPatient) {
+        lastPatient = patient;
+        h += '<div class="patient-head">' + esc(patient) + "</div>";
+      }
       h += '<div class="caseitem"><div class="head"><div class="who"><b>' + esc(c.name) + '</b><div class="d">' + esc(sub) + " \u2014 " + n + " rubric" + (n === 1 ? "" : "s") + '</div></div>' +
         '<div class="ops"><button class="btn primary sm" type="button" data-load="' + idx + '">Load</button>' +
         '<button class="btn ghost sm" type="button" data-print="' + idx + '">Print</button>' +
@@ -1106,6 +1482,820 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   }
   window.addEventListener("resize", syncTabTop);
 
+
+  /* =========================================================================
+     v1.2 — enhancements. Every one of them runs inside this file: no worker
+     script fetched, no library, no endpoint. Crypto is WebCrypto, files are
+     Blob + File System Access, search is the index already in memory.
+     ========================================================================= */
+
+  /* ---------- storage keys for the new state ---------- */
+  var K_MUST = "br_must_v1", K_WEIGHTS = "br_weights_v1", K_NOTES = "br_notes_v1",
+      K_SEARCHES = "br_saved_searches_v1", K_DRAFT = "br_draft_v1",
+      K_FONT = "br_font_v1", K_EXPORTED = "br_exported_v1";
+
+  var MUST = Object.create(null);
+  var W = { g2: 2, g1: 1 };
+  var NOTES = Object.create(null);
+  var UNDO = [], UNDOMAX = 30;
+
+  function jread(key, fallback) {
+    try { var v = JSON.parse(LS.getItem(key) || "null"); return v == null ? fallback : v; } catch (e) { return fallback; }
+  }
+  function jwrite(key, val) { try { LS.setItem(key, JSON.stringify(val)); } catch (e) {} }
+
+  (function loadState() {
+    var m = jread(K_MUST, []); if (Array.isArray(m)) m.forEach(function (i) { if (Number.isInteger(i) && i >= 0 && i < N) MUST[i] = 1; });
+    var w = jread(K_WEIGHTS, null); if (w && typeof w === "object") { W.g2 = +w.g2 === 0 || +w.g2 ? +w.g2 : 2; W.g1 = +w.g1 === 0 || +w.g1 ? +w.g1 : 1; }
+    var nt = jread(K_NOTES, null); if (nt && typeof nt === "object") NOTES = nt;
+  })();
+  function persistMust() { jwrite(K_MUST, Object.keys(MUST).map(Number).filter(function (i) { return MUST[i]; })); }
+  function persistWeights() { jwrite(K_WEIGHTS, W); }
+  function persistNotes() { jwrite(K_NOTES, NOTES); }
+
+  /* ---------- undo (B3) ---------- */
+  function pushUndo() {
+    UNDO.push({ sel: selected.slice(), must: Object.keys(MUST).map(Number).filter(function (i) { return MUST[i]; }) });
+    if (UNDO.length > UNDOMAX) UNDO.shift();
+  }
+  function undo() {
+    var s = UNDO.pop();
+    if (!s) { toast("Nothing to undo"); return; }
+    selected = s.sel.filter(function (i) { return i >= 0 && i < N && SEL[i]; });
+    MUST = Object.create(null); s.must.forEach(function (i) { MUST[i] = 1; });
+    persistSel(); persistMust();
+    renderChips(); updateBadges(); renderTray(); buildChart(); if (browseMode) refreshBrowseSelection();
+    $("#c-save").disabled = !selected.length;
+    toast("Undone");
+  }
+
+  /* ---------- A1/A2: query operators and typo tolerance ---------- */
+  function parseQuery(raw) {
+    var s = fixText(String(raw == null ? "" : raw)).trim();
+    if (!s) return [];
+    var parts = s.split(/\s+(?:or|\|)\s+/i);
+    if (parts.length === 1 && s.indexOf("|") !== -1) parts = s.split("|");
+    var out = [];
+    parts.forEach(function (part) {
+      var b = { phrases: [], terms: [], exclude: [] }, m;
+      var re = /"([^"]*)"|(-?)([^\s"]+)/g;
+      while ((m = re.exec(part))) {
+        if (m[1] != null) { var ph = SEARCHKEY(m[1]); if (ph) b.phrases.push(ph); continue; }
+        var neg = m[2] === "-", t = SEARCHKEY(m[3]);
+        if (!t) continue;
+        if (neg) b.exclude.push(t); else b.terms.push(t);
+      }
+      if (b.phrases.length || b.terms.length) out.push(b);
+    });
+    return out;
+  }
+  function branchMatches(b, s) {
+    var k;
+    for (k = 0; k < b.phrases.length; k++) if (s.indexOf(b.phrases[k]) === -1) return false;
+    for (k = 0; k < b.terms.length; k++) if (s.indexOf(b.terms[k]) === -1) return false;
+    for (k = 0; k < b.exclude.length; k++) if (s.indexOf(b.exclude[k]) !== -1) return false;
+    return true;
+  }
+  var VOCAB = null;
+  function buildVocab() {
+    if (VOCAB) return VOCAB;
+    var set = Object.create(null), i, w, t;
+    for (i = 0; i < N; i++) {
+      w = LEAFS[i].split(/[^a-z0-9]+/);
+      for (t = 0; t < w.length; t++) if (w[t].length > 3) set[w[t]] = 1;
+    }
+    VOCAB = Object.keys(set);
+    return VOCAB;
+  }
+  function ed1(a, b) {
+    if (a === b) return true;
+    var la = a.length, lb = b.length, i, j;
+    if (Math.abs(la - lb) > 1) return false;
+    if (la === lb) {
+      var bad = [];
+      for (i = 0; i < la; i++) if (a.charAt(i) !== b.charAt(i)) bad.push(i);
+      if (bad.length === 1) return true;                       /* one substitution */
+      if (bad.length === 2 && bad[1] === bad[0] + 1) {         /* one transposition */
+        return a.charAt(bad[0]) === b.charAt(bad[1]) && a.charAt(bad[1]) === b.charAt(bad[0]);
+      }
+      return false;
+    }
+    var short = la < lb ? a : b, long = la < lb ? b : a, diff = 0;
+    i = 0; j = 0;
+    while (i < short.length && j < long.length) {
+      if (short.charAt(i) === long.charAt(j)) { i++; j++; continue; }
+      if (++diff > 1) return false;
+      j++;
+    }
+    return true;                                                /* one insertion or deletion */
+  }
+  function nearTerm(t) {
+    if (t.length < 4) return null;
+    var v = buildVocab(), i, c = t.charAt(0);
+    for (i = 0; i < v.length; i++) if (v[i].charAt(0) === c && ed1(t, v[i])) return v[i];
+    return null;
+  }
+
+  /* ---------- A7: per-rubric notes ---------- */
+  function noteFor(i) { return NOTES[PATHS[i]] || ""; }
+
+  /* ---------- A8: similar rubrics, computed not curated ---------- */
+  var LEAFTOK = null;
+  function leafTokens(i) {
+    if (!LEAFTOK) LEAFTOK = new Array(N);
+    if (!LEAFTOK[i]) LEAFTOK[i] = LEAFS[i].split(/[^a-z0-9]+/).filter(function (w) { return w.length > 2; });
+    return LEAFTOK[i];
+  }
+  function similarTo(i) {
+    var mine = leafTokens(i), chap = R.rubrics[i].c, out = [], k, a, b, shared, sim;
+    for (k = 0; k < N; k++) {
+      if (k === i || R.rubrics[k].c !== chap || !SEL[k]) continue;
+      var t2 = leafTokens(k);
+      if (!t2.length) continue;
+      shared = 0;
+      for (a = 0; a < mine.length; a++) if (t2.indexOf(mine[a]) !== -1) shared++;
+      if (!shared) continue;
+      sim = shared / Math.max(mine.length, t2.length);
+      if (sim >= 0.6) out.push({ i: k, sim: sim });
+    }
+    out.sort(function (x, y) { return y.sim - x.sim; });
+    return out.slice(0, 25);
+  }
+
+  /* ---------- overlay: settings, palette, notes, vault ---------- */
+  var OVLAST = null;
+  function openOverlay(html) {
+    var ov = $("#overlay"), body = $("#overlay-body");
+    body.innerHTML = html;
+    ov.classList.add("on");
+    OVLAST = document.activeElement;
+    var first = body.querySelector("input, textarea, button");
+    if (first) try { first.focus(); } catch (e) {}
+    return body;
+  }
+  function closeOverlay() {
+    $("#overlay").classList.remove("on");
+    if (OVLAST && OVLAST.focus) try { OVLAST.focus(); } catch (e) {}
+  }
+  function sheetHead(title) {
+    return '<div class="sheet-head"><h3>' + esc(title) + '</h3><button class="x" type="button" data-x aria-label="Close">\u2715</button></div>';
+  }
+  function wireSheetClose(body) {
+    $$("[data-x]", body).forEach(function (b) { b.addEventListener("click", closeOverlay); });
+  }
+  function askText(title, value, onSave, multiline) {
+    var body = openOverlay(sheetHead(title) + '<div class="sheet-body">' +
+      (multiline
+        ? '<textarea class="notes-editor" id="ask-in">' + esc(value || "") + "</textarea>"
+        : '<input class="notes-editor" style="min-height:0" id="ask-in" value="' + esc(value || "") + '">') +
+      '<div class="btnrow" style="margin-top:12px"><button class="btn primary" type="button" data-ok>Save</button>' +
+      '<button class="btn ghost" type="button" data-x>Cancel</button></div></div>');
+    var input = body.querySelector("#ask-in");
+    try { input.focus(); input.select(); } catch (e) {}
+    function commit() { onSave(input.value.trim()); closeOverlay(); }
+    body.querySelector("[data-ok]").addEventListener("click", commit);
+    wireSheetClose(body);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !multiline) { e.preventDefault(); commit(); } });
+  }
+  function editNote(i) {
+    var leaf = PATHS[i].split(" \u203A ").pop();
+    askText("Note \u2014 " + leaf, noteFor(i), function (v) {
+      if (v) NOTES[PATHS[i]] = v; else delete NOTES[PATHS[i]];
+      persistNotes(); doSearch(); toast(v ? "Note saved" : "Note removed");
+    }, true);
+  }
+  function showSimilar(i) {
+    var sims = similarTo(i);
+    var body = openOverlay(sheetHead("Similar rubrics") + '<div class="sheet-body">' +
+      '<p class="muted small" style="margin-top:0">Computed by comparing the words of the rubric name inside the same chapter \u2014 a heuristic, not a curated cross-reference. ' + esc(PATHS[i]) + "</p>" +
+      (sims.length
+        ? sims.map(function (s) {
+            return '<div class="rrow' + (isSel(s.i) ? " sel" : "") + '" data-i="' + s.i + '" role="button" tabindex="0"><span class="chk" aria-hidden="true">' + (isSel(s.i) ? "\u2713" : "+") + '</span><div class="body"><div class="pth">' + esc(PATHS[s.i]) + '</div><div class="meta">' + Math.round(s.sim * 100) + "% overlap</div></div></div>";
+          }).join("")
+        : '<p class="muted">Nothing similar enough in this chapter.</p>') +
+      "</div>");
+    wireSheetClose(body);
+    $$("[data-i]", body).forEach(function (row) {
+      row.addEventListener("click", function () {
+        toggleSel(+row.dataset.i);
+        row.classList.toggle("sel", isSel(+row.dataset.i));
+        var c = row.querySelector(".chk"); if (c) c.textContent = isSel(+row.dataset.i) ? "\u2713" : "+";
+      });
+    });
+  }
+
+  /* ---------- A3: browse the tree ---------- */
+  var browseMode = false, KIDS = null;
+  function buildKids() {
+    if (KIDS) return KIDS;
+    KIDS = new Array(N);
+    for (var i = 0; i < N; i++) KIDS[i] = [];
+    for (var k = 0; k < N; k++) {
+      var p = R.rubrics[k].p;
+      if (p != null && p !== k && p >= 0 && p < N) KIDS[p].push(k);
+    }
+    return KIDS;
+  }
+  function nodeHTML(i) {
+    var kids = buildKids(), rb = R.rubrics[i], h = "";
+    if (kids[i].length) {
+      h += '<div class="tnode" data-node="' + i + '"><button class="thead" type="button" aria-expanded="false">' +
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>' +
+        '<span class="tn">' + esc(fixText(rb.r)) + '</span><span class="tc">' + kids[i].length + "</span></button>" +
+        '<div class="tkids"></div></div>';
+    } else if (SEL[i]) {
+      h += '<button class="tleaf' + (isSel(i) ? " sel" : "") + '" type="button" data-leaf="' + i + '"><span>' +
+        esc(fixText(rb.r)) + '</span><span class="cnt">' + rb.m.length + "</span></button>";
+    }
+    return h;
+  }
+  function fillNode(node) {
+    var box = node.querySelector(".tkids");
+    if (!box || box.dataset.filled) return;
+    var ids = [], i, rb;
+    if (node.dataset.chap != null) {
+      var ci = +node.dataset.chap;
+      for (i = 0; i < N; i++) {
+        rb = R.rubrics[i];
+        if (rb.c !== ci) continue;
+        var p = rb.p;
+        if (p == null || p === i || p < 0 || p >= N || R.rubrics[p].c !== ci) ids.push(i);
+      }
+    } else if (node.dataset.node != null) {
+      ids = buildKids()[+node.dataset.node];
+    }
+    box.innerHTML = ids.length ? ids.map(nodeHTML).join("") : '<div class="tleaf" style="opacity:.55">no sub-rubrics</div>';
+    box.dataset.filled = "1";
+  }
+  function renderBrowse() {
+    var h = '<div class="card tight"><div class="result-meta"><span>Browse the repertory by chapter</span>' +
+      '<span class="small">tap a chapter, then a rubric, to add it</span></div><div class="tree">';
+    R.chapters.forEach(function (c, ci) {
+      h += '<div class="tnode" data-chap="' + ci + '"><button class="thead" type="button" aria-expanded="false">' +
+        '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg>' +
+        '<span class="tn">' + esc(c.t) + '</span><span class="tc">' + R.rubrics.filter(function (r) { return r.c === ci; }).length + "</span></button>" +
+        '<div class="tkids"></div></div>';
+    });
+    h += "</div></div>";
+    $("#res").innerHTML = h;
+    $("#stat-line").textContent = "25 chapters \u00b7 " + N.toLocaleString() + " rubrics";
+  }
+  function refreshBrowseSelection() {
+    $$("#res .tleaf[data-leaf]").forEach(function (el) {
+      var i = +el.dataset.leaf;
+      el.classList.toggle("sel", isSel(i));
+    });
+  }
+  function toggleBrowse(on) {
+    browseMode = on;
+    var b = $("#btn-browse");
+    if (b) { b.setAttribute("aria-pressed", on ? "true" : "false"); b.style.borderColor = on ? "var(--accent)" : ""; b.style.color = on ? "var(--accent)" : ""; }
+    if (on) { renderBrowse(); } else { doSearch(); }
+  }
+
+  /* ---------- A4/A5: must rubrics and grade weights ---------- */
+  function toggleMust(i) {
+    pushUndo();
+    if (MUST[i]) delete MUST[i]; else MUST[i] = 1;
+    persistMust(); renderChips(); renderMustBar(); buildChart();
+  }
+  function renderMustBar() {
+    var bar = $("#mustbar"); if (!bar) return;
+    var ids = Object.keys(MUST).map(Number).filter(function (i) { return MUST[i] && isSel(i); });
+    if (!ids.length) { bar.hidden = true; bar.innerHTML = ""; return; }
+    bar.hidden = false;
+    bar.innerHTML = '<span><b>' + ids.length + "</b> must-have rubric" + (ids.length === 1 ? "" : "s") +
+      ' \u2014 remedies that miss one can be filtered out in the chart.</span>' +
+      '<button class="act-btn" type="button" id="must-clear">Clear must marks</button>';
+    var mc = $("#must-clear");
+    if (mc) mc.addEventListener("click", function () {
+      pushUndo(); MUST = Object.create(null); persistMust(); renderChips(); renderMustBar(); buildChart();
+    });
+  }
+
+  /* ---------- A6: saved searches ---------- */
+  function loadSearches() { var d = jread(K_SEARCHES, []); return Array.isArray(d) ? d : []; }
+  function renderSearches() {
+    var sel = $("#saved-search"); if (!sel) return;
+    var list = loadSearches();
+    sel.innerHTML = '<option value="">Saved searches\u2026</option>' +
+      list.map(function (s, i) { return '<option value="' + i + '">' + esc(s.name) + "</option>"; }).join("");
+  }
+  function saveSearch() {
+    var q = $("#q").value.trim();
+    if (!q) { toast("Type a search first"); return; }
+    askText("Name this search", q, function (name) {
+      if (!name) return;
+      var list = loadSearches();
+      list.unshift({ name: name, q: q, cf: chapterFilter, at: new Date().toISOString() });
+      jwrite(K_SEARCHES, list.slice(0, 40));
+      renderSearches(); toast("Search saved");
+    });
+  }
+
+  /* ---------- B1: encrypted vault ---------- */
+  var VKEY = "br_vault_v1", vaultKey = null, vaultLocked = false, MEMCASES = null;
+  function vaultRecord() { return jread(VKEY, null); }
+  function vaultSupported() { return !!(window.crypto && window.crypto.subtle && window.crypto.subtle.deriveKey && window.TextEncoder); }
+  function b64(buf) { var b = new Uint8Array(buf), s = "", i; for (i = 0; i < b.length; i++) s += String.fromCharCode(b[i]); return btoa(s); }
+  function unb64(str) { var s = atob(str), a = new Uint8Array(s.length), i; for (i = 0; i < s.length; i++) a[i] = s.charCodeAt(i); return a; }
+  function deriveKey(pass, salt) {
+    var enc = new TextEncoder();
+    return crypto.subtle.importKey("raw", enc.encode(pass), { name: "PBKDF2" }, false, ["deriveKey"]).then(function (base) {
+      return crypto.subtle.deriveKey({ name: "PBKDF2", salt: salt, iterations: 200000, hash: "SHA-256" }, base,
+        { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+    });
+  }
+  function sealCases(cs, key, salt) {
+    var enc = new TextEncoder(), iv = crypto.getRandomValues(new Uint8Array(12));
+    return crypto.subtle.encrypt({ name: "AES-GCM", iv: iv }, key, enc.encode(JSON.stringify(cs)))
+      .then(function (ct) { return { v: 1, salt: b64(salt), iv: b64(iv), ct: b64(ct), kdf: "PBKDF2-SHA256-200000" }; });
+  }
+  function openCases(rec, key) {
+    var dec = new TextDecoder();
+    return crypto.subtle.decrypt({ name: "AES-GCM", iv: unb64(rec.iv) }, key, unb64(rec.ct))
+      .then(function (pt) { return JSON.parse(dec.decode(pt)); });
+  }
+  function askPass(title, hint, onPass) {
+    var body = openOverlay(sheetHead(title) + '<div class="sheet-body">' +
+      '<p class="muted small" style="margin-top:0">' + hint + "</p>" +
+      '<div class="field"><label for="ask-pass">Passphrase</label><input id="ask-pass" type="password" autocomplete="current-password"></div>' +
+      '<div class="btnrow" style="margin-top:12px"><button class="btn primary" type="button" data-ok>Continue</button>' +
+      '<button class="btn ghost" type="button" data-x>Cancel</button></div></div>');
+    wireSheetClose(body);
+    var input = body.querySelector("#ask-pass");
+    try { input.focus(); } catch (e) {}
+    function go() { var v = input.value; if (v.length < 6) { toast("Use at least 6 characters"); return; } closeOverlay(); onPass(v); }
+    body.querySelector("[data-ok]").addEventListener("click", go);
+    input.addEventListener("keydown", function (e) { if (e.key === "Enter") { e.preventDefault(); go(); } });
+  }
+  function lockCases(pass) {
+    if (!vaultSupported()) { toast("This browser has no WebCrypto \u2014 cannot encrypt"); return; }
+    var cs = loadCases();
+    if (!cs.length) { toast("No cases to lock"); return; }
+    if (pass) return lockWith(pass, cs);
+    askPass("Lock cases", "Your cases are encrypted in this browser with AES-256-GCM. The key is derived from this passphrase and is never stored \u2014 if you lose it, the cases cannot be recovered. Export a backup first.", function (pass) {
+      var salt = crypto.getRandomValues(new Uint8Array(16));
+      deriveKey(pass, salt).then(function (key) {
+        return sealCases(cs, key, salt).then(function (rec) {
+          LS.setItem(VKEY, JSON.stringify(rec));
+          LS.removeItem(CASES_KEY);
+          vaultKey = key; vaultLocked = false; MEMCASES = cs;
+          toast("Cases encrypted"); renderCases(); updateVaultState();
+        });
+      }).catch(function () { toast("Could not encrypt \u2014 nothing changed"); });
+    });
+  }
+  function lockWith(pass, cs) {
+    var salt = crypto.getRandomValues(new Uint8Array(16));
+    return deriveKey(pass, salt).then(function (key) {
+      return sealCases(cs, key, salt).then(function (rec) {
+        LS.setItem(VKEY, JSON.stringify(rec));
+        LS.removeItem(CASES_KEY);
+        vaultKey = key; vaultLocked = false; MEMCASES = cs;
+        toast("Cases encrypted"); renderCases(); updateVaultState();
+        return true;
+      });
+    });
+  }
+  function unlockCases(pass) {
+    var rec = vaultRecord();
+    if (!rec) return;
+    if (pass) {
+      return deriveKey(pass, unb64(rec.salt)).then(function (key) { return openCases(rec, key); })
+        .then(function (cs) { vaultKey = key; vaultLocked = false; MEMCASES = Array.isArray(cs) ? cs : []; renderCases(); updateVaultState(); return true; });
+    }
+    askPass("Unlock cases", "Enter the passphrase you set when you locked these cases.", function (pass) {
+      deriveKey(pass, unb64(rec.salt)).then(function (key) { return openCases(rec, key); })
+        .then(function (cs) {
+          vaultKey = key; vaultLocked = false; MEMCASES = Array.isArray(cs) ? cs : [];
+          toast("Unlocked"); renderCases(); updateVaultState();
+        })
+        .catch(function () { toast("Wrong passphrase"); });
+    });
+  }
+  function removeLock(pass) {
+    var rec = vaultRecord();
+    if (!rec) return;
+    if (pass) {
+      return deriveKey(pass, unb64(rec.salt)).then(function (key) { return openCases(rec, key); })
+        .then(function (cs) {
+          LS.setItem(CASES_KEY, JSON.stringify(Array.isArray(cs) ? cs : []));
+          LS.removeItem(VKEY); vaultKey = null; vaultLocked = false; MEMCASES = null;
+          renderCases(); updateVaultState(); return true;
+        });
+    }
+    askPass("Remove the lock", "The cases will be written back as plain JSON in this browser. Only do this on a device you control.", function (pass) {
+      deriveKey(pass, unb64(rec.salt)).then(function (key) { return openCases(rec, key); })
+        .then(function (cs) {
+          LS.setItem(CASES_KEY, JSON.stringify(Array.isArray(cs) ? cs : []));
+          LS.removeItem(VKEY);
+          vaultKey = null; vaultLocked = false; MEMCASES = null;
+          toast("Lock removed"); renderCases(); updateVaultState();
+        })
+        .catch(function () { toast("Wrong passphrase"); });
+    });
+  }
+  function updateVaultState() {
+    var el = $("#vault-state"); if (!el) return;
+    var rec = vaultRecord();
+    el.innerHTML = rec
+      ? "Cases are <b>encrypted in this browser</b> (AES-256-GCM, PBKDF2-SHA256 200,000 rounds). " + (vaultLocked ? "They are locked \u2014 unlock them in the Cases panel." : "Unlocked for this session only.")
+      : "Cases are stored in this browser only. Use <b>Lock cases</b> in the Cases panel to encrypt them with a passphrase (AES-256-GCM, key derived with PBKDF2 in this browser).";
+    var btn = $("#c-lock");
+    if (btn) btn.textContent = rec ? (vaultLocked ? "Unlock" : "Remove lock") : "Lock cases";
+  }
+
+  /* ---------- B3: draft ---------- */
+  var draftTimer;
+  function saveDraft() {
+    clearTimeout(draftTimer);
+    draftTimer = setTimeout(function () {
+      jwrite(K_DRAFT, {
+        name: $("#c-name") ? $("#c-name").value : "",
+        age: $("#c-age") ? $("#c-age").value : "",
+        sex: $("#c-sex") ? $("#c-sex").value : "",
+        notes: $("#c-notes") ? $("#c-notes").value : "",
+        rx: $("#c-rx") ? $("#c-rx").value : "",
+        date: $("#c-date") ? $("#c-date").value : "",
+        at: new Date().toISOString()
+      });
+    }, 350);
+  }
+  function restoreDraft() {
+    var d = jread(K_DRAFT, null);
+    if (!d) return;
+    if ($("#c-name") && d.name) $("#c-name").value = d.name;
+    if ($("#c-age") && d.age) $("#c-age").value = d.age;
+    if ($("#c-sex") && d.sex) $("#c-sex").value = d.sex;
+    if ($("#c-notes") && d.notes) $("#c-notes").value = d.notes;
+    if ($("#c-rx") && d.rx) $("#c-rx").value = d.rx;
+    if ($("#c-date") && d.date) $("#c-date").value = d.date;
+  }
+
+  /* ---------- B5: CSV ---------- */
+  function downloadText(text, fname, mime) {
+    var blob = new Blob([text], { type: mime || "text/plain;charset=utf-8" });
+    var a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = fname;
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 400);
+  }
+  function csvCell(v) { var s = String(v == null ? "" : v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  function chartCSV() {
+    if (!selected.length) { toast("Nothing to export"); return; }
+    var cd = chartData();
+    var head = ["Remedy"].concat(cd.cols.map(function (ri) { return PATHS[ri]; })).concat(["Total", "Rubrics"]);
+    var lines = [head.map(csvCell).join(",")];
+    cd.rows.forEach(function (r) {
+      var row = [fixText(R.remedies[r.cid])];
+      cd.cols.forEach(function (ri) { row.push(r.marks[ri] || 0); });
+      row.push(r.total, r.count);
+      lines.push(row.map(csvCell).join(","));
+    });
+    downloadText(lines.join("\n"), "boericke_chart_" + todayISO() + ".csv", "text/csv;charset=utf-8");
+  }
+  function casesCSV() {
+    var cs = loadCases();
+    if (!cs.length) { toast("No cases to export"); return; }
+    var head = ["Patient", "Date", "Age", "Sex", "Rubrics", "Top remedy", "Top score", "Prescription", "Notes"];
+    var lines = [head.join(",")];
+    cs.forEach(function (c) {
+      var top = (c.chart || [])[0] || {};
+      lines.push([c.name, c.date, c.age, c.sex, c.rubricCount || (c.selection || []).length, top.name || "", top.total || "", c.prescription || "", c.notes || ""].map(csvCell).join(","));
+    });
+    downloadText(lines.join("\n"), "boericke_cases_" + todayISO() + ".csv", "text/csv;charset=utf-8");
+  }
+
+  /* ---------- B4: one-page case sheet ---------- */
+  function printCaseSheet() {
+    if (!selected.length) { toast("Nothing to print"); return; }
+    var cd = chartData();
+    var cols = cd.cols.map(function (ri) { return { short: PATHS[ri].split(" \u203A ").pop(), full: PATHS[ri] }; });
+    var rows = cd.rows.slice(0, 60).map(function (r) {
+      var mk = {}; cd.cols.forEach(function (ri, ci) { if (r.marks[ri]) mk[ci] = r.marks[ri]; });
+      return { name: fixText(R.remedies[r.cid]), marks: mk, total: r.total, count: r.count };
+    });
+    var f = { name: $("#c-name").value, age: $("#c-age").value, sex: $("#c-sex").value, date: $("#c-date").value, notes: $("#c-notes").value, rx: $("#c-rx").value };
+    var body = '<div class="psheet">' +
+      "<div><b>Patient</b>" + esc(f.name || "\u2014") + "</div>" +
+      "<div><b>Age / sex</b>" + esc([f.age, f.sex].filter(Boolean).join(" / ") || "\u2014") + "</div>" +
+      "<div><b>Date</b>" + esc(f.date || todayISO()) + "</div>" +
+      "<div><b>Rubrics</b>" + selected.length + "</div></div>";
+    if (f.notes) body += "<h2>Case notes</h2><p>" + esc(f.notes) + "</p>";
+    body += "<h2>Repertorisation chart</h2>" + chartHTML(cols, rows);
+    body += '<h2>Rubrics</h2><ol class="prub">';
+    cd.cols.forEach(function (ri) { body += "<li>" + esc(PATHS[ri]) + (MUST[ri] ? " <b>(must)</b>" : "") + "</li>"; });
+    body += "</ol>";
+    if (f.rx) body += "<h2>Prescription</h2><p>" + esc(f.rx) + "</p>";
+    printArea(f.name ? "Case sheet \u2014 " + f.name : "Case sheet", body);
+  }
+
+  /* ---------- C3: File System Access, with a download fallback ---------- */
+  function saveToFile() {
+    var payload = { app: R.meta.title, exportedAt: new Date().toISOString(), schemaVersion: SCHEMA, cases: loadCases() };
+    var json = JSON.stringify(payload, null, 2);
+    var name = "boericke_cases_" + todayISO() + ".json";
+    if (window.showSaveFilePicker) {
+      window.showSaveFilePicker({
+        suggestedName: name,
+        types: [{ description: "JSON", accept: { "application/json": [".json"] } }]
+      }).then(function (h) { return h.createWritable(); })
+        .then(function (w) { return w.write(json).then(function () { return w.close(); }); })
+        .then(function () { LS.setItem(K_EXPORTED, "1"); renderBackupBanner(); toast("Saved to file"); })
+        .catch(function () {});
+    } else {
+      downloadJSON(payload, name);
+      LS.setItem(K_EXPORTED, "1"); renderBackupBanner();
+    }
+  }
+
+  /* ---------- B6: backup reminder ---------- */
+  function renderBackupBanner() {
+    var box = $("#backup-banner"); if (!box) return;
+    var n = loadCases().length;
+    if (!n || LS.getItem(K_EXPORTED)) { box.innerHTML = ""; return; }
+    box.innerHTML = '<div class="banner"><div><b>' + n + " case" + (n === 1 ? "" : "s") +
+      " stored only in this browser.</b> Clearing browser data deletes them.</div>" +
+      '<button class="btn ghost sm" type="button" id="banner-export">Export a backup</button></div>';
+    var b = $("#banner-export");
+    if (b) b.addEventListener("click", function () {
+      downloadJSON({ app: R.meta.title, exportedAt: new Date().toISOString(), schemaVersion: SCHEMA, cases: loadCases() }, "boericke_cases_" + todayISO() + ".json");
+      LS.setItem(K_EXPORTED, "1"); renderBackupBanner(); toast("Backup exported");
+    });
+  }
+
+  /* ---------- C5: command palette ---------- */
+  var palItems = [], palIdx = 0;
+  function openPalette() {
+    var body = openOverlay(
+      '<input class="pal-input" id="pal-q" type="search" placeholder="Jump to a rubric, a remedy or a case\u2026" autocomplete="off">' +
+      '<div class="pal-list" id="pal-list"></div>');
+    var input = body.querySelector("#pal-q"), list = body.querySelector("#pal-list");
+    try { input.focus(); } catch (e) {}
+    function render(q) {
+      palItems = []; palIdx = 0;
+      var key = SEARCHKEY(q), i, seen = Object.create(null);
+      if (!key) {
+        list.innerHTML = '<div class="pal-item"><span class="k2">tip</span><span class="t2">Type a symptom, a rubric or a remedy. <small>Enter adds the first result.</small></span></div>';
+        return;
+      }
+      /* remedies first: they are the shortest, most precise targets */
+      for (i = 0; i < R.remedies.length && palItems.length < 6; i++) {
+        var nm = SEARCHKEY(fixText(R.remedies[i]));
+        if (nm.indexOf(key) === 0) { palItems.push({ kind: "remedy", label: fixText(R.remedies[i]), sub: (REM_RUBRICS[i] || []).length + " rubrics", ridx: i }); }
+      }
+      for (i = 0; i < N && palItems.length < 14; i++) {
+        if (!SEL[i]) continue;
+        if (LEAFS[i].indexOf(key) === -1 && SEARCH[i].indexOf(key) === -1) continue;
+        if (seen[i]) continue; seen[i] = 1;
+        palItems.push({ kind: "rubric", label: PATHS[i].split(" \u203A ").pop(), sub: PATHS[i], idx: i });
+      }
+      var cases = loadCases();
+      for (i = 0; i < cases.length && palItems.length < 18; i++) {
+        if (SEARCHKEY(cases[i].name || "").indexOf(key) === -1) continue;
+        palItems.push({ kind: "case", label: cases[i].name, sub: cases[i].date + " \u00b7 " + (cases[i].rubricCount || 0) + " rubrics", cidx: i });
+      }
+      list.innerHTML = palItems.length ? palItems.map(function (p, n) {
+        return '<button class="pal-item' + (n === 0 ? " on" : "") + '" type="button" data-n="' + n + '"><span class="k2">' + p.kind +
+          '</span><span class="t2">' + esc(p.label) + "<small>" + esc(p.sub) + "</small></span></button>";
+      }).join("") : '<div class="pal-item"><span class="k2">none</span><span class="t2">Nothing matches.</span></div>';
+      $$("[data-n]", list).forEach(function (b) { b.addEventListener("click", function () { choose(+b.dataset.n); }); });
+    }
+    function choose(n) {
+      var p = palItems[n]; if (!p) return;
+      closeOverlay();
+      if (p.kind === "remedy") { switchTab("rep"); openRemedy(p.ridx); }
+      else if (p.kind === "rubric") { switchTab("rep"); toggleSel(p.idx); toast("Added to the chart"); }
+      else if (p.kind === "case") { var c = loadCases()[p.cidx]; if (c) loadCase(c); }
+    }
+    function move(d) {
+      if (!palItems.length) return;
+      palIdx = Math.max(0, Math.min(palItems.length - 1, palIdx + d));
+      $$(".pal-item", list).forEach(function (el, n) { el.classList.toggle("on", n === palIdx); });
+      var on = list.querySelector(".pal-item.on"); if (on) on.scrollIntoView({ block: "nearest" });
+    }
+    input.addEventListener("input", function () { render(input.value); });
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
+      else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
+      else if (e.key === "Enter") { e.preventDefault(); choose(palIdx); }
+    });
+    render("");
+  }
+
+  /* ---------- settings sheet ---------- */
+  function openSettings() {
+    var fs = LS.getItem(K_FONT) || "m";
+    var mode = LS.getItem("br_theme") || "auto";
+    function seg(id, opts, cur) {
+      return '<div class="seg" data-seg="' + id + '">' + opts.map(function (o) {
+        return '<button type="button" data-v="' + o[0] + '"' + (o[0] === cur ? ' class="on"' : "") + ">" + o[1] + "</button>";
+      }).join("") + "</div>";
+    }
+    var body = openOverlay(sheetHead("Settings") + '<div class="sheet-body">' +
+      '<div class="setrow"><div><div class="lbl2">Text size</div><div class="hint2">Applies to the whole app</div></div><div class="ctl2">' +
+        seg("fs", [["s", "S"], ["m", "M"], ["l", "L"]], fs) + "</div></div>" +
+      '<div class="setrow"><div><div class="lbl2">Theme</div><div class="hint2">Light is the base palette</div></div><div class="ctl2">' +
+        seg("theme", [["light", "Light"], ["dark", "Dark"], ["auto", "Auto"], ["contrast", "High contrast"]], mode) + "</div></div>" +
+      '<div class="setrow"><div><div class="lbl2">Grade weights</div><div class="hint2">Printed on the chart so it stays auditable</div></div><div class="ctl2">' +
+        '<select class="wsel" id="set-g2"><option value="1"' + (W.g2 === 1 ? " selected" : "") + '>G2 = 1</option><option value="2"' + (W.g2 === 2 ? " selected" : "") + '>G2 = 2</option><option value="3"' + (W.g2 === 3 ? " selected" : "") + ">G2 = 3</option></select>" +
+        '<select class="wsel" id="set-g1"><option value="0"' + (W.g1 === 0 ? " selected" : "") + '>G1 = 0</option><option value="1"' + (W.g1 === 1 ? " selected" : "") + '>G1 = 1</option><option value="2"' + (W.g1 === 2 ? " selected" : "") + ">G1 = 2</option></select></div></div>" +
+      '<div class="setrow"><div><div class="lbl2">Command palette</div><div class="hint2">Ctrl or Cmd + K, anywhere</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-pal>Open</button></div></div>' +
+      '<div class="setrow"><div><div class="lbl2">Undo</div><div class="hint2">Ctrl or Cmd + Z removes the last rubric change</div></div><div class="ctl2"><button class="btn ghost sm" type="button" data-undo>Undo</button></div></div>' +
+      '<div class="stamp">' + esc(BUILD) + "</div>" +
+      "</div>");
+    wireSheetClose(body);
+    $$("[data-seg]", body).forEach(function (segEl) {
+      segEl.addEventListener("click", function (ev) {
+        var b = ev.target.closest("button"); if (!b) return;
+        $$("button", segEl).forEach(function (x) { x.classList.remove("on"); });
+        b.classList.add("on");
+        var v = b.dataset.v;
+        if (segEl.dataset.seg === "fs") { LS.setItem(K_FONT, v); applyFont(); }
+        else { LS.setItem("br_theme", v); applyTheme(); }
+      });
+    });
+    body.querySelector("#set-g2").addEventListener("change", function () { W.g2 = +this.value; persistWeights(); syncWeightSelects(); buildChart(); });
+    body.querySelector("#set-g1").addEventListener("change", function () { W.g1 = +this.value; persistWeights(); syncWeightSelects(); buildChart(); });
+    body.querySelector("[data-pal]").addEventListener("click", function () { closeOverlay(); openPalette(); });
+    body.querySelector("[data-undo]").addEventListener("click", undo);
+  }
+  function applyFont() {
+    var fs = LS.getItem(K_FONT) || "m";
+    if (fs === "m") document.documentElement.removeAttribute("data-fs");
+    else document.documentElement.setAttribute("data-fs", fs);
+  }
+  function syncWeightSelects() {
+    var a = $("#w-g2"), b = $("#w-g1");
+    if (a) a.value = String(W.g2);
+    if (b) b.value = String(W.g1);
+  }
+
+  /* ---------- D4: data audit ---------- */
+  function renderAudit() {
+    var box = $("#audit"); if (!box) return;
+    var g2 = 0, g1 = 0, orphans = 0, i, j, m;
+    for (i = 0; i < N; i++) {
+      m = R.rubrics[i].m || [];
+      for (j = 0; j < m.length; j++) { if (m[j][1] === 2) g2++; else g1++; }
+    }
+    for (i = 0; i < R.remedies.length; i++) if (!REM_RUBRICS[i] || !REM_RUBRICS[i].length) orphans++;
+    var seen = Object.create(null), dupes = 0;
+    for (i = 0; i < N; i++) {
+      if (!SEL[i]) continue;
+      var k = R.rubrics[i].c + "|" + LEAFS[i];
+      if (seen[k]) dupes++; else seen[k] = 1;
+    }
+    var cells = [
+      [N.toLocaleString(), "rubrics"], [R.remedies.length.toLocaleString(), "remedies"],
+      [R.chapters.length, "chapters"], [(g1 + g2).toLocaleString(), "graded entries"],
+      [g2.toLocaleString(), "grade 2"], [orphans.toLocaleString(), "remedies without a rubric"],
+      [dupes.toLocaleString(), "same-name rubrics"]
+    ];
+    box.innerHTML = cells.map(function (c) { return "<div><b>" + c[0] + "</b><span>" + c[1] + "</span></div>"; }).join("");
+  }
+
+  /* ---------- build stamp + service worker ---------- */
+  var BUILD = "Boericke's Repertory \u00b7 v1.2.0 \u00b7 build 2026-11-01";
+  function renderStamp() {
+    var el = $("#build-stamp"); if (el) el.textContent = BUILD + " \u00b7 single file \u00b7 no network";
+    var sw = $("#sw-state");
+    if (!sw) return;
+    if (!("serviceWorker" in navigator) || location.protocol.indexOf("http") !== 0) {
+      sw.textContent = "Opened from a file \u2014 nothing to cache, nothing to fetch. The app is the file.";
+      return;
+    }
+    sw.textContent = "Served from the network once, then from the cache. The page itself is network-first, so a new release is picked up on the next load; the build stamp above tells you which one you are on.";
+  }
+  function registerSW() {
+    if (!("serviceWorker" in navigator) || location.protocol.indexOf("http") !== 0) return;
+    navigator.serviceWorker.register("sw.js").then(function (reg) {
+      reg.update();
+      reg.addEventListener("updatefound", function () { toast("A new version is downloading \u2014 reload to use it"); });
+    }).catch(function () {});
+  }
+
+  /* ---------- focus trap (E1) ---------- */
+  function trapFocus(container) {
+    container.addEventListener("keydown", function (ev) {
+      if (ev.key !== "Tab") return;
+      var f = $$("button, input, textarea, select, a[href]", container).filter(function (el) {
+        return !el.disabled && el.offsetParent !== null;
+      });
+      if (!f.length) return;
+      var i = f.indexOf(document.activeElement);
+      if (ev.shiftKey && i <= 0) { ev.preventDefault(); f[f.length - 1].focus(); }
+      else if (!ev.shiftKey && i === f.length - 1) { ev.preventDefault(); f[0].focus(); }
+    });
+  }
+
+  /* ---------- init for everything above ---------- */
+  function initV2() {
+    applyFont();
+    syncWeightSelects();
+    renderSearches();
+    renderMustBar();
+    renderAudit();
+    renderStamp();
+    updateVaultState();
+    registerSW();
+    restoreDraft();
+    trapFocus($("#overlay"));
+    trapFocus($("#modal"));
+    if (vaultRecord()) { vaultLocked = true; }
+
+    /* browse */
+    $("#btn-browse").addEventListener("click", function () { toggleBrowse(!browseMode); });
+    $("#res").addEventListener("click", function (ev) {
+      var head = ev.target.closest(".thead");
+      if (head) {
+        var node = head.parentNode;
+        fillNode(node);
+        node.classList.toggle("open");
+        head.setAttribute("aria-expanded", node.classList.contains("open") ? "true" : "false");
+        return;
+      }
+      var leaf = ev.target.closest(".tleaf[data-leaf]");
+      if (leaf) { toggleSel(+leaf.dataset.leaf); refreshBrowseSelection(); return; }
+      var ract = ev.target.closest(".ract");
+      if (ract) {
+        if (ract.dataset.note != null) { editNote(+ract.dataset.note); return; }
+        if (ract.dataset.sim != null) { showSimilar(+ract.dataset.sim); return; }
+        if (ract.dataset.must != null) { toggleMust(+ract.dataset.must); return; }
+      }
+    }, true);
+
+    /* saved searches */
+    $("#save-search").addEventListener("click", saveSearch);
+    $("#saved-search").addEventListener("change", function () {
+      var list = loadSearches(), s = list[+this.value];
+      if (!s) return;
+      $("#q").value = s.q;
+      chapterFilter = s.cf || "";
+      $("#chapter-filter").value = chapterFilter;
+      if (browseMode) toggleBrowse(false);
+      doSearch();
+      this.value = "";
+    });
+
+    /* chart tools */
+    var cf = $("#chart-filter");
+    if (cf) {
+      var cfT;
+      cf.addEventListener("input", function () { clearTimeout(cfT); cfT = setTimeout(buildChart, 120); });
+    }
+    if ($("#must-only")) $("#must-only").addEventListener("change", buildChart);
+    if ($("#w-g2")) $("#w-g2").addEventListener("change", function () { W.g2 = +this.value; persistWeights(); buildChart(); });
+    if ($("#w-g1")) $("#w-g1").addEventListener("change", function () { W.g1 = +this.value; persistWeights(); buildChart(); });
+    if ($("#c-csv")) $("#c-csv").addEventListener("click", chartCSV);
+    if ($("#c-csv-all")) $("#c-csv-all").addEventListener("click", casesCSV);
+    if ($("#c-sheet")) $("#c-sheet").addEventListener("click", printCaseSheet);
+    if ($("#c-save-file")) $("#c-save-file").addEventListener("click", saveToFile);
+
+    /* cases */
+    if ($("#case-search")) $("#case-search").addEventListener("input", renderCases);
+    if ($("#c-lock")) $("#c-lock").addEventListener("click", function () {
+      var rec = vaultRecord();
+      if (!rec) lockCases(); else if (vaultLocked) unlockCases(); else removeLock();
+    });
+
+    /* settings + palette */
+    $("#btn-settings").addEventListener("click", openSettings);
+    $("#btn-pal").addEventListener("click", openPalette);
+    $("#overlay").addEventListener("click", function (ev) { if (ev.target === $("#overlay")) closeOverlay(); });
+
+    /* draft on form edits */
+    ["#c-name", "#c-age", "#c-sex", "#c-notes", "#c-rx", "#c-date"].forEach(function (sel) {
+      var el = $(sel); if (el) el.addEventListener("input", saveDraft);
+    });
+
+    /* global keys */
+    document.addEventListener("keydown", function (ev) {
+      var mod = ev.ctrlKey || ev.metaKey;
+      if (mod && (ev.key === "k" || ev.key === "K")) { ev.preventDefault(); openPalette(); return; }
+      if (mod && (ev.key === "z" || ev.key === "Z") && !/^(INPUT|TEXTAREA)$/.test((document.activeElement || {}).tagName || "")) { ev.preventDefault(); undo(); return; }
+      if (ev.key === "Escape" && $("#overlay").classList.contains("on")) { closeOverlay(); }
+    });
+
+    /* mark the export flag whenever the existing export buttons are used */
+    var ea = $("#c-export-all");
+    if (ea) ea.addEventListener("click", function () { LS.setItem(K_EXPORTED, "1"); renderBackupBanner(); });
+  }
+
+  /* test hook — used by scripts/selftest.html, harmless in production */
+  window.__br = {
+    search: function (q) { $("#q").value = q; doSearch(); return lastRes.length; },
+    parse: parseQuery, near: nearTerm, select: toggleSel, must: toggleMust,
+    chart: function () { return chartData(); }, weights: function () { return W; },
+    audit: renderAudit, similar: similarTo, browse: function () { toggleBrowse(true); return $("#res").querySelectorAll(".tnode").length; },
+    lock: lockCases, unlocked: function () { return !vaultLocked; }, hasVault: function () { return !!vaultRecord(); },
+    lockWith: lockWith, unlockWith: unlockCases, removeWith: removeLock,
+    wipe: function () { try { LS.removeItem(VKEY); LS.removeItem(CASES_KEY); LS.removeItem(K_MUST); LS.removeItem(K_NOTES); LS.removeItem(K_SEARCHES); LS.removeItem(K_DRAFT); LS.removeItem(K_EXPORTED); } catch (e) {} },
+    cases: loadCases, setCase: function (cs) { storeCases(cs); },
+    renderCases: renderCases, setTab: switchTab, refresh: function () { renderCases(); buildChart(); },
+    undo: undo, version: BUILD
+  };
+
   /* ---------- init ---------- */
   try {
     var cf = $("#chapter-filter");
@@ -1152,8 +2342,12 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
         if (idx >= 0) openRemedy(idx);
       }
       if (tab) switchTab(tab);
+      if (p.get("palette") != null) openPalette();
+      if (p.get("browse") != null) toggleBrowse(true);
+      if (p.get("settings") != null) openSettings();
     }
     try { deepLink(); } catch (e) { if (window.console && console.error) console.error("[Boericke] deep link:", e); }
+    try { initV2(); } catch (e) { if (window.console && console.error) console.error("[Boericke] v1.2 init:", e); }
   } catch (e) { if (window.console && console.error) console.error("[Boericke] init error:", e); }
 })();
 
