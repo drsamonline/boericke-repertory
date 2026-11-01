@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.4.0 — 2026-11-01
+
+**A citation for any rubric.** Press the new `❝` button on a result row and the app produces a
+citable reference: the full path, the chapter, the edition, and the remedies split into grade 2
+and grade 1, ready to copy into a case note. It is generated from the same data the chart uses, so
+it cannot drift from it. Copy works offline (Clipboard API with a `execCommand` fallback).
+
+**The author's own prefatory note, quoted in full.** About now carries Oscar Boericke's 1927
+prefatory note — the five rules that explain why a rubric path looks the way it does (Hahnemannian
+section order, alphabetical within a section, the Cause / Type / Location / Character /
+Concomitants / Modalities captions, bracketed disease names, and what the italics mean). Quoted,
+not paraphrased, and attributed.
+
+**`SOURCES.md`** records what is in the app, where it came from, and — with the evidence — what
+could not be obtained. The line-level source quotation in the roadmap is not shipped, and the
+reason is written down rather than left as a silent gap: every chapter page of the digitisation
+returns truncated at a fixed response budget, and a quotation attached to some rubrics but not
+others would read as though the source were silent where it is not.
+
+**Also** — three new assertions (27 browser assertions now), the data-audit grid no longer leaves
+an empty bordered cell on a short last row, and the five new interface strings are translated into
+Hindi and Gujarati.
+
+
 ## 1.3.0 — 2026-11-01
 
 **The interface in Hindi and Gujarati.** The chrome — tabs, buttons, labels, placeholders, empty

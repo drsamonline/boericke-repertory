@@ -107,6 +107,12 @@ function run() {
     var backTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
     ok("E3 switching back restores English", backTab === enTab, backTab);
 
+    /* D2 — provenance: a citation exists for any rubric, and it names the source */
+    var cite = br.cite(idx[0]);
+    ok("D2 citation names the edition", /Boericke's Repertory, Oscar E\. Boericke, M\.D\. \(1927\)/.test(cite), cite.split("\n")[0]);
+    ok("D2 citation carries the path and grades", cite.indexOf("Chapter:") !== -1 && /Grade [12]/.test(cite));
+    ok("D2 prefatory note is in the app", /How the repertory is arranged/.test(w.document.body.textContent));
+
   /* The vault's crypto round-trip is tested in scripts/vault_test.mjs: WebCrypto
      promises do not settle under Chromium's virtual clock, so a browser harness
      would report a false failure. The browser checks what it can: no vault by
