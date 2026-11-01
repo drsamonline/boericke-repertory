@@ -2,130 +2,139 @@
 
 # Boericke's Repertory
 
+<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 821 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
+
+### A classic clinical repertory, made searchable — one HTML file, offline, no account, no server
+
+**Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
+
+[**Landing page**](https://drsamonline.github.io/boericke-repertory/) &nbsp;·&nbsp;
+[**Live app**](https://drsamonline.github.io/boericke-repertory/play/) &nbsp;·&nbsp;
+[**Releases**](https://github.com/drsamonline/boericke-repertory/releases/latest) &nbsp;·&nbsp;
+[**Licence**](LICENSE)
+
+[Windows `.exe`](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe) &nbsp;·&nbsp;
+[Android `.apk`](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk) &nbsp;·&nbsp;
+[`index.html`](https://github.com/drsamonline/boericke-repertory/raw/main/index.html)
+
+</div>
+
 <!-- shot:start -->
 
 ![Screenshot](docs/shot.png)
 
 <!-- shot:end -->
 
-### A classic repertory, made searchable — a free, offline clinical repertory &amp; repertorisation tool in one HTML file
-
-**Compiled and designed by Dr. Sohil Momin** · after *Oscar E. Boericke, M.D. (1927)*
-
-[![Landing page](https://img.shields.io/badge/%F0%9F%93%96%20landing%20page-drsamonline.github.io-7f1d1d)](https://drsamonline.github.io/boericke-repertory/)
-[![All projects](https://img.shields.io/badge/All%20projects-drsamonline.github.io-7f1d1d)](https://drsamonline.github.io/)
-[![Live app](https://img.shields.io/badge/%E2%96%B6%20open%20the%20live%20app-%2Fplay%2F-9f1239)](https://drsamonline.github.io/boericke-repertory/play/)
-
-[![Rubrics](https://img.shields.io/badge/rubrics-6%2C110-334155)](#)
-[![Remedies](https://img.shields.io/badge/remedies-1%2C461-334155)](#)
-[![Chapters](https://img.shields.io/badge/chapters-25-334155)](#)
-[![Offline](https://img.shields.io/badge/offline-single%20file-334155)](#)
-[![Dependencies](https://img.shields.io/badge/dependencies-none-334155)](#)
-[![License](https://img.shields.io/badge/license-free%20use%20%C2%B7%20attribution%20required-0f766e)](LICENSE)
-
-**Landing page:** <https://drsamonline.github.io/boericke-repertory/>
-&nbsp;·&nbsp;
-**Live demo:** <https://drsamonline.github.io/boericke-repertory/play/>
-
-**Download:** [Windows (.exe)](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe) &nbsp;·&nbsp; [Android (.apk)](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk)
-
-</div>
-
----
-
-## ▶️ Live app
-
-**<https://drsamonline.github.io/boericke-repertory/play/>** — open in any browser, nothing to install.
-Works offline once loaded, and on phone, tablet or desktop.
-
 <div align="center">
 
 | Search | Repertorisation |
 | :---: | :---: |
-| [![Search](screenshots/search.png)](screenshots/search.png) | [![Repertorisation chart](screenshots/chart.png)](screenshots/chart.png) |
+| [![Search](docs/assets/app-desktop.png)](docs/assets/app-desktop.png) | [![Repertorisation chart](docs/assets/app-chart-desktop.png)](docs/assets/app-chart-desktop.png) |
 
 </div>
 
 ---
 
-## ✨ Features
+## What it is
 
-**🔎 Search** — instant results across 6,110 rubrics by symptom, path or remedy name, with
-matched terms highlighted and a chapter filter. Full keyboard control: `/` to focus,
-`↑` `↓` to move, `Enter` to add.
+Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and
+the remedies that belong to it, graded. This is that book as **one 821 kB HTML file** — the
+stylesheet, the script and the whole dataset inline. Open it in a browser and it runs; there is
+no install, no build step, no server and no account.
 
-**🧮 Repertorise** — tap rubrics to build a chart that scores every remedy across them
-(italic *grade 2* = 2 points, plain *grade 1* = 1 point) and ranks by total. Sort by
-total, rubric count or remedy name, with top-10 remedy bars.
+It is built for the consulting room, which is why it is offline-first rather than
+offline-tolerant: once the page has loaded it never opens a socket. No CDN, no web font, no
+analytics, no telemetry, no badge service — **including on the landing page that advertises it.**
 
-**🧪 Remedy browser** — tap any remedy inside a rubric to see **every rubric that lists it**,
-with its grade — a fast way to check a remedy's full clinical picture.
+## What it does
 
-**🗂️ Cases** — save patient details, notes and prescription alongside the rubric selection
-and chart; reload, print, export or import as JSON.
+**Search** — instant results across 6,110 rubrics by symptom, by path or by remedy name, with
+matched terms highlighted and a chapter filter. `/` focuses the box, `↑` `↓` move, `Enter` adds
+to the chart.
 
-**📄 Print & export** — print the chart straight from the app (no pop-ups).
+**Repertorise** — tap rubrics to build a chart that scores every remedy across them (grade 2
+counts two points, grade 1 counts one) and ranks by total, rubric count or name, with bars for
+the top ten. Tap any remedy to see **every rubric that lists it**, with its grade.
 
-**🎨 Looks** — modern responsive UI, light / dark / auto themes, five accent colours.
+**Cases** — patient details, notes and prescription sit alongside the selection and the chart.
+Save, reload, print, or export and import the whole case as JSON. It stays on your device.
 
-**🔒 Private & offline** — one self-contained HTML file. No server, no build step, no
-internet needed after loading, no tracking, no dependencies.
+**Deep links** — the app reads a few query parameters, so a specific view can be linked or
+bookmarked: `play/?q=burning+headache`, `?q=thirst+fever&pick=4&tab=chart`,
+`?remedy=Gelsemium`, `?tab=cases`. This is what the landing page's guided demo drives.
 
----
+## What it refuses to do
 
-## 🚀 Use it
+No account · no server · no network after load · no external assets · no telemetry ·
+no silent updates. A clinical tool that needs a connection is a clinical tool that stops
+working when you need it.
 
-**Online:** open the [live app](https://drsamonline.github.io/boericke-repertory/play/).
+## Use it
 
-**Offline:** download [`index.html`](index.html) and open it in any modern browser —
-that's the whole installation.
+| | |
+| :-- | :-- |
+| **Online** | [drsamonline.github.io/boericke-repertory/play/](https://drsamonline.github.io/boericke-repertory/play/) |
+| **Offline** | download [`index.html`](index.html) and open it — that is the whole installation |
+| **Windows / Android** | the portable `.exe` and the signed `.apk` on [Releases](https://github.com/drsamonline/boericke-repertory/releases/latest) |
+| **Self-host** | fork the repo, enable GitHub Pages, deploy from the default branch |
 
-**Self-host:** fork this repo and enable GitHub Pages
-(*Settings → Pages → deploy from the default branch*).
-
----
-
-## 📊 Data
+## The data
 
 | | |
 | :-- | --: |
 | Rubrics | **6,110** |
 | Unique remedies | **1,461** |
 | Chapters | **25** |
+| Runtime dependencies | **0** |
 
-The dataset has been cleaned: remedies are de-duplicated (OCR variants merged into one
-canonical name), duplicate rubrics are merged, and remedy-less category headings are kept
-for structure but never appear in search results — so every rubric shown carries at least
-one remedy.
+The dataset is cleaned, not copied: OCR variants of a remedy name are merged into one canonical
+name, duplicate rubrics are merged, and remedy-less category headings are kept for structure but
+never appear in search results — so every rubric shown carries at least one remedy.
 
----
+## The repository
 
-## 🙏 Credits
+```
+index.html                 the app, standalone — this is the download
+docs/index.html            the landing page (its own design, not the app's)
+docs/play/index.html       the app as deployed
+docs/assets/               screenshots, local SVG badges, generated icons
+docs/ROADMAP.md            the offline-only enhancement list
+scripts/badges.py          draws docs/assets/badge-*.svg — no image service
+scripts/icons.py           rasterises docs/icon.svg into the PNG sizes
+scripts/shot.sh            headless-Chromium screenshots of both surfaces
+```
 
-- **Content** — *Repertory* by **Oscar E. Boericke, M.D.** (1927), companion to the
-  *Pocket Manual of Homoeopathic Materia Medica*, 9th ed., by **William Boericke, M.D.**
-  Text digitised from the public-domain edition at homeoint.org (presented by Médi-T).
+```bash
+python3 scripts/badges.py     # regenerate the badges
+python3 scripts/icons.py      # regenerate the icon PNGs
+bash scripts/shot.sh landing  # screenshot the landing page
+bash scripts/shot.sh app app '?q=burning%20headache'
+```
+
+The build pipeline (`.github/workflows/build-apps.yml`) builds the `.exe` and the `.apk` from
+`docs/play`, publishes the rolling release and deploys `docs/` to Pages — all from one commit, so
+the live demo and the released build can never disagree.
+
+## Credits
+
+- **Content** — *Repertory* by **Oscar E. Boericke, M.D.** (1927), companion to the *Pocket
+  Manual of Homoeopathic Materia Medica*, 9th ed., by **William Boericke, M.D.** Text digitised
+  from the public-domain edition at homeoint.org (presented by Médi-T).
 - **Design & application** — © 2026 **Dr. Sohil Momin**.
 
----
+## Licence
 
-## 📜 Licence
-
-**Free to use** — copy, modify and distribute, **provided that attribution is given**:
+**Free to use, with attribution.** Copy, modify and distribute, provided that attribution is
+given in both the documentation and the user interface:
 
 > Content: *Repertory by Oscar E. Boericke, M.D. (1927)*
 > Design & application: *Dr. Sohil Momin*
 
-Attribution is **compulsory in all copies and derivative works**, in both the
-documentation and the user interface. See [LICENSE](LICENSE) for the full terms.
-
----
+See [LICENSE](LICENSE) for the full terms.
 
 <div align="center">
 
-**⚠️ Disclaimer** — Provided *as is*, for study and reference by qualified practitioners.
+**Disclaimer** — provided *as is*, for study and reference by qualified practitioners.
 Not a substitute for professional homoeopathic or medical judgment.
-
-<sub>Boericke's Repertory · Digital Edition · compiled by Dr. Sohil Momin</sub>
 
 </div>

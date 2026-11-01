@@ -3,722 +3,695 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Boericke's Repertory — A Classic Repertory, Made Searchable</title>
-<meta name="description" content="Boericke's Repertory — a free, offline single-file clinical repertory and repertorisation tool. 6,110 rubrics, 1,461 remedies, 25 chapters. Compiled and designed by Dr. Sohil Momin, after Oscar E. Boericke, M.D. (1927).">
-<meta name="keywords" content="Boericke's Repertory, repertory, repertorisation, homoeopathy, homeopathy, materia medica, clinical repertory, offline app, Oscar Boericke, Dr. Sohil Momin, rubrics, remedies">
+<title>Boericke's Repertory — the 1927 repertory, indexed and searchable</title>
+<meta name="description" content="Boericke's clinical repertory (1927) as one HTML file — 6,110 rubrics, 1,461 remedies, instant search and a repertorisation chart. Offline, no server, no account, no dependencies. Compiled and designed by Dr. Sohil Momin.">
 <meta name="author" content="Dr. Sohil Momin">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://drsamonline.github.io/boericke-repertory/">
+<meta name="theme-color" content="#eef1ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#080e0d" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
 
-<meta name="theme-color" content="#f6f1e4">
-<meta name="color-scheme" content="light">
-
-<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Boericke's Repertory">
-<meta property="og:title" content="Boericke's Repertory — A Classic Repertory, Made Searchable">
-<meta property="og:description" content="A free, offline single-file clinical repertory and repertorisation tool. 6,110 rubrics, 1,461 remedies, 25 chapters. Compiled by Dr. Sohil Momin, after Oscar E. Boericke, M.D. (1927).">
+<meta property="og:title" content="Boericke's Repertory — the 1927 repertory, indexed">
+<meta property="og:description" content="6,110 rubrics, 1,461 remedies, 25 chapters, one HTML file. Search a symptom, grade the remedies, build a chart — offline.">
 <meta property="og:url" content="https://drsamonline.github.io/boericke-repertory/">
-<meta property="og:image" content="https://socialify.git.ci/drsamonline/boericke-repertory/image?name=1&amp;owner=1&amp;description=1&amp;language=1&amp;theme=Light&amp;font=Inter">
-<meta property="og:image:alt" content="Boericke's Repertory repository card">
-
-<!-- Twitter -->
+<meta property="og:image" content="https://drsamonline.github.io/boericke-repertory/assets/social.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Boericke's Repertory — the repertory, indexed">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Boericke's Repertory — A Classic Repertory, Made Searchable">
-<meta name="twitter:description" content="A free, offline single-file clinical repertory and repertorisation tool. 6,110 rubrics, 1,461 remedies, 25 chapters.">
-<meta name="twitter:image" content="https://socialify.git.ci/drsamonline/boericke-repertory/image?name=1&amp;owner=1&amp;description=1&amp;language=1&amp;theme=Light&amp;font=Inter">
+<meta name="twitter:title" content="Boericke's Repertory — the 1927 repertory, indexed">
+<meta name="twitter:description" content="6,110 rubrics, 1,461 remedies, 25 chapters, one HTML file. Offline, no server, no account.">
+<meta name="twitter:image" content="https://drsamonline.github.io/boericke-repertory/assets/social.png">
 
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f6f1e4'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='20' text-anchor='middle' fill='%237f1d1d'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Boericke's Repertory — Digital Edition",
-  "alternateName": "boericke-repertory",
   "applicationCategory": "MedicalApplication",
-  "applicationSubCategory": "Clinical repertory and repertorisation",
-  "operatingSystem": "Any modern browser (Windows, macOS, Linux, Android, iOS)",
+  "operatingSystem": "Any modern browser",
   "url": "https://drsamonline.github.io/boericke-repertory/",
-  "downloadUrl": "https://drsamonline.github.io/boericke-repertory/play/",
-  "description": "A free, offline single-file clinical repertory and repertorisation tool. 6,110 rubrics, 1,461 remedies and 25 chapters, searchable in the browser with no server, no build step and no tracking.",
+  "downloadUrl": "https://github.com/drsamonline/boericke-repertory/releases/latest",
   "isAccessibleForFree": true,
-  "license": "https://github.com/drsamonline/boericke-repertory/blob/main/LICENSE",
-  "codeRepository": "https://github.com/drsamonline/boericke-repertory",
-  "author": {
-    "@type": "Person",
-    "name": "Dr. Sohil Momin"
-  },
-  "creator": {
-    "@type": "Person",
-    "name": "Dr. Sohil Momin"
-  },
-  "citation": "Repertory by Oscar E. Boericke, M.D. (1927)",
-  "featureList": [
-    "Instant search across 6,110 rubrics",
-    "Repertorisation chart scoring every remedy",
-    "Remedy browser",
-    "Case records with print and JSON export",
-    "Fully offline single HTML file"
-  ],
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "INR"
-  }
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+  "author": { "@type": "Person", "name": "Dr. Sohil Momin" },
+  "citation": "Repertory by Oscar E. Boericke, M.D. (1927)"
 }
+</script>
+
+<script>
+/* Light is the base palette; the system preference decides the first paint.
+   The header toggle overrides it and is remembered under its OWN key, so
+   setting the landing page's theme never silently changes the app's. */
+(function () {
+  try {
+    var saved = localStorage.getItem('brl_theme');
+    var sys = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', saved === 'dark' || saved === 'light' ? saved : sys);
+  } catch (e) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  }
+})();
 </script>
 
 <style>
 /* ==========================================================================
-   Boericke's Repertory — landing page
-   Theme: "Vintage print / reference". Aged paper, ink-black serif headings,
-   hairline ruled margins, drop caps, muted oxblood accent.
-   Self-contained: inline CSS/JS, no external libraries, no build step.
+   Boericke's Repertory — landing page.
+   Deliberately NOT the app's design: the app is warm paper, serif and
+   oxblood; this page is cool ink, a grotesque display face and verdigris.
+   System fonts only — the page makes no network request at all.
    ========================================================================== */
 
-:root{
-  --paper:#f6f1e4;
-  --paper-2:#f1ead9;
-  --paper-3:#ece3cd;
-  --ink:#1a1613;
-  --ink-2:#3b332a;
-  --ink-3:#6b6152;
-  --rule:#cdbfa3;
-  --rule-soft:#ded2b9;
-  --oxblood:#7f1d1d;
-  --oxblood-2:#5f1414;
-  --oxblood-soft:#f0e2dc;
-  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",ui-serif,serif;
-  --smallcaps:"Iowan Old Style",Georgia,serif;
-  --maxw:1080px;
+:root {
+  --page: #eef1ee;
+  --page-2: #e7ebe8;
+  --card: #f9fbf9;
+  --line: #cfd8d2;
+  --line-2: #b6c2bb;
+  --text: #0b1512;
+  --text-2: #41544d;
+  --text-3: #6d7f78;
+  --acc: #0f6a51;
+  --acc-2: #0b5340;
+  --acc-fg: #ffffff;
+  --acc-soft: #d8ece2;
+  --band-bg: #0b1412;
+  --band-card: #111d1a;
+  --band-line: #24352f;
+  --band-text: #e9f1ed;
+  --band-text-2: #9db0a9;
+  --band-acc: #7fd9b4;
+  --shadow: 0 1px 2px rgba(11, 21, 18, .06), 0 12px 32px -18px rgba(11, 21, 18, .35);
+  --r: 14px;
+  --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 }
 
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:var(--serif);
-  font-size:18px;
-  line-height:1.72;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
-  background-image:
-    radial-gradient(1200px 600px at 12% -8%, rgba(127,29,29,.045), transparent 60%),
-    radial-gradient(900px 500px at 100% 0%, rgba(107,97,82,.06), transparent 55%),
-    repeating-linear-gradient(0deg, rgba(0,0,0,.012) 0 1px, transparent 1px 3px);
+html[data-theme="dark"] {
+  --page: #080e0d;
+  --page-2: #0b1311;
+  --card: #0e1715;
+  --line: #1e2c28;
+  --line-2: #2b3d37;
+  --text: #e8efec;
+  --text-2: #a3b6af;
+  --text-3: #74877f;
+  --acc: #5ec8a0;
+  --acc-2: #8ee0c0;
+  --acc-fg: #052019;
+  --acc-soft: #122a23;
+  --band-bg: #060b0a;
+  --band-card: #0c1513;
+  --band-line: #1c2a26;
+  --band-text: #e8efec;
+  --band-text-2: #8ea49c;
+  --band-acc: #5ec8a0;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 18px 40px -22px rgba(0, 0, 0, .8);
 }
 
-/* --- layout shell with hairline ruled margins --------------------------- */
-.wrap{
-  max-width:var(--maxw);
-  margin:0 auto;
-  padding:0 clamp(18px,5vw,44px);
-  position:relative;
-}
-.wrap::before,.wrap::after{
-  content:"";
-  position:absolute; top:0; bottom:0; width:1px;
-  background:var(--rule-soft);
-  pointer-events:none;
-}
-.wrap::before{left:clamp(6px,2.4vw,22px)}
-.wrap::after{right:clamp(6px,2.4vw,22px)}
-@media (max-width:640px){ .wrap::before,.wrap::after{display:none} }
+* { box-sizing: border-box; }
 
-a{color:var(--oxblood); text-underline-offset:3px; text-decoration-thickness:1px}
+html { scroll-behavior: smooth; }
 
-/* --- typography --------------------------------------------------------- */
-h1,h2,h3,h4{font-family:var(--serif); color:var(--ink); font-weight:600; line-height:1.14; margin:0 0 .5em}
-h1{font-size:clamp(2.5rem,6.2vw,4.15rem); letter-spacing:-.012em; font-weight:500}
-h2{font-size:clamp(1.65rem,3.6vw,2.5rem); letter-spacing:-.008em}
-h3{font-size:1.24rem}
-p{margin:0 0 1.05em}
-.eyebrow{
-  font-family:var(--smallcaps);
-  font-size:.74rem; letter-spacing:.34em; text-transform:uppercase;
-  color:var(--ink-3); margin:0 0 1rem; font-weight:600;
-}
-.lede{font-size:clamp(1.06rem,2.1vw,1.3rem); color:var(--ink-2); max-width:62ch}
-.small{font-size:.9rem; color:var(--ink-3)}
-
-/* drop cap */
-.dropcap::first-letter{
-  font-family:var(--serif);
-  float:left;
-  font-size:4.15rem;
-  line-height:.82;
-  padding:.12em .12em 0 0;
-  margin:.04em .12em 0 0;
-  color:var(--oxblood);
-  font-weight:600;
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ornament / rules */
-.rule{
-  border:0; height:0;
-  border-top:1px solid var(--rule);
-  margin:2.4rem 0;
-  position:relative;
-}
-.ornament{
-  text-align:center; color:var(--oxblood); letter-spacing:.7em;
-  font-size:.9rem; margin:2.2rem 0; user-select:none;
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
 }
 
-/* --- sticky nav --------------------------------------------------------- */
-.nav{
-  position:sticky; top:0; z-index:50;
-  background:rgba(246,241,228,.93);
-  backdrop-filter:saturate(150%) blur(7px);
-  border-bottom:1px solid var(--rule);
-}
-.nav-in{
-  max-width:var(--maxw); margin:0 auto;
-  padding:.62rem clamp(18px,5vw,44px);
-  display:flex; align-items:center; gap:1.2rem;
-}
-.brand{
-  font-family:var(--serif); font-weight:600; font-size:1.02rem;
-  color:var(--ink); text-decoration:none; letter-spacing:.01em;
-  display:flex; align-items:center; gap:.6rem; white-space:nowrap;
-}
-.brand .mark{
-  width:26px;height:26px;flex:0 0 26px;border:1px solid var(--oxblood);
-  display:grid;place-items:center;color:var(--oxblood);font-size:.92rem;
-  background:var(--oxblood-soft);
-}
-.nav-links{display:flex; gap:1.15rem; margin-left:auto; align-items:center}
-.nav-links a{
-  color:var(--ink-2); text-decoration:none; font-size:.84rem;
-  letter-spacing:.12em; text-transform:uppercase; font-family:var(--smallcaps);
-  padding:.25rem 0; border-bottom:1px solid transparent; white-space:nowrap;
-}
-.nav-links a:hover{color:var(--oxblood); border-bottom-color:var(--oxblood)}
-.nav .btn-nav{margin-left:.4rem}
-@media (max-width:900px){ .nav-links a:not(.btn-nav){display:none} }
+a { color: var(--acc); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+a:hover { color: var(--acc-2); }
 
-/* --- buttons ------------------------------------------------------------ */
-.btn{
-  display:inline-flex; align-items:center; gap:.55rem;
-  font-family:var(--smallcaps); font-size:.9rem; letter-spacing:.06em;
-  padding:.72rem 1.35rem; text-decoration:none; border:1px solid var(--ink);
-  background:var(--ink); color:var(--paper); cursor:pointer;
-  transition:transform .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
-}
-.btn:hover{transform:translateY(-2px); box-shadow:0 8px 20px -12px rgba(26,22,19,.6)}
-.btn.ghost{background:transparent; color:var(--ink); border-color:var(--rule)}
-.btn.ghost:hover{background:var(--paper-2); border-color:var(--ink)}
-.btn.ox{background:var(--oxblood); border-color:var(--oxblood); color:#fdf8f0}
-.btn.ox:hover{background:var(--oxblood-2); border-color:var(--oxblood-2)}
-.btn.sm{padding:.5rem .95rem; font-size:.82rem}
-.btn-nav{padding:.5rem 1rem !important; font-size:.8rem !important}
+h1, h2, h3 { margin: 0; font-weight: 800; letter-spacing: -.03em; line-height: 1.02; }
+p { margin: 0; }
 
-/* --- hero --------------------------------------------------------------- */
-header.hero{padding:clamp(3rem,8vw,5.6rem) 0 2.6rem}
-.hero-grid{display:grid; grid-template-columns:1.35fr .85fr; gap:clamp(1.6rem,4vw,3.4rem); align-items:center}
-@media (max-width:860px){ .hero-grid{grid-template-columns:1fr} }
-.hero h1{margin-bottom:.35em}
-.hero h1 .ox{color:var(--oxblood); font-style:italic}
-.hero .pitch{font-size:clamp(1.05rem,2vw,1.26rem); color:var(--ink-2); max-width:56ch}
-.cta-row{display:flex; flex-wrap:wrap; gap:.8rem; margin-top:1.6rem; align-items:center}
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.eyebrow {
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--text-3); margin: 0 0 18px;
+}
+.skip {
+  position: absolute; left: -9999px; top: 0; background: var(--acc); color: var(--acc-fg);
+  padding: 12px 18px; z-index: 100; border-radius: 0 0 10px 0; font-weight: 700;
+}
+.skip:focus { left: 0; }
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 3px; }
 
-/* book plate */
-.plate{
-  border:1px solid var(--rule); background:
-    linear-gradient(180deg, rgba(255,255,255,.5), rgba(0,0,0,.015)),
-    var(--paper-2);
-  padding:1.6rem 1.5rem 1.4rem; position:relative;
-  box-shadow:0 18px 40px -30px rgba(26,22,19,.55);
+/* ---------- top bar ---------- */
+.bar {
+  position: sticky; top: 0; z-index: 40;
+  background: color-mix(in srgb, var(--page) 86%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--line);
 }
-.plate::after{
-  content:""; position:absolute; inset:6px; border:1px solid var(--rule-soft); pointer-events:none;
+.bar-in {
+  display: flex; align-items: center; gap: 18px;
+  height: 62px;
 }
-.plate .plate-label{
-  font-family:var(--smallcaps); font-size:.68rem; letter-spacing:.3em;
-  text-transform:uppercase; color:var(--ink-3); text-align:center; margin-bottom:.9rem;
+.mark {
+  display: flex; align-items: center; gap: 11px;
+  font-family: var(--mono); font-size: 12px; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--text); text-decoration: none; font-weight: 600;
 }
-.plate .title{text-align:center; font-size:1.5rem; font-weight:600; margin:0 0 .2rem}
-.plate .sub{text-align:center; font-size:.86rem; color:var(--ink-3); margin:0 0 1.1rem}
-.figures{display:grid; grid-template-columns:repeat(3,1fr); text-align:center; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); margin:0 0 1rem}
-.figures div{padding:.85rem .3rem; border-right:1px solid var(--rule-soft)}
-.figures div:last-child{border-right:0}
-.figures .n{display:block; font-size:1.5rem; font-weight:600; color:var(--oxblood); line-height:1.1}
-.figures .k{display:block; font-size:.68rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-3); font-family:var(--smallcaps)}
-.plate .foot{text-align:center; font-size:.78rem; color:var(--ink-3); font-style:italic; margin:0}
+.mark svg { width: 26px; height: 26px; flex: none; }
+.mark b { font-weight: 700; }
+.mark span { color: var(--text-3); font-weight: 500; }
+.nav { margin-left: auto; display: flex; align-items: center; gap: 26px; }
+.nav a {
+  font-size: 13.5px; color: var(--text-2); text-decoration: none; font-weight: 500;
+}
+.nav a:hover { color: var(--text); }
+@media (max-width: 780px) { .nav a:not(.toggle) { display: none; } }
 
-/* --- badges ------------------------------------------------------------- */
-.badges{display:flex; flex-wrap:wrap; gap:.45rem; margin-top:1.4rem}
-.badges img{height:20px; display:block}
-.chips{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.3rem}
-.chip{
-  display:inline-flex; align-items:center; gap:.42rem;
-  border:1px solid var(--rule); background:var(--paper-2); color:var(--ink-2);
-  font-family:var(--smallcaps); font-size:.76rem; letter-spacing:.05em;
-  padding:.32rem .68rem; white-space:nowrap;
+.toggle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 9px; cursor: pointer;
+  border: 1px solid var(--line-2); background: transparent; color: var(--text-2);
 }
-.chip b{color:var(--oxblood); font-weight:600}
-.chip svg{width:13px;height:13px;stroke:var(--oxblood);fill:none;stroke-width:1.6}
+.toggle:hover { color: var(--text); border-color: var(--text-3); }
+.toggle svg { width: 17px; height: 17px; }
+html[data-theme="light"] .toggle .moon { display: none; }
+html[data-theme="dark"] .toggle .sun { display: none; }
 
-/* --- sections ----------------------------------------------------------- */
-section{padding:clamp(2.6rem,6vw,4.4rem) 0; border-top:1px solid var(--rule-soft)}
-section:first-of-type{border-top:0}
-.sec-head{max-width:64ch; margin-bottom:2.2rem}
-.sec-head h2{margin-bottom:.35em}
+/* ---------- hero ---------- */
+.hero { padding: 84px 0 78px; }
+.hero-grid { display: grid; grid-template-columns: 1.16fr .84fr; gap: 44px; align-items: start; }
+@media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; gap: 44px; } .hero { padding-top: 52px; } }
 
-/* --- feature cards ------------------------------------------------------ */
-.cards{display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem}
-@media (max-width:900px){ .cards{grid-template-columns:repeat(2,1fr)} }
-@media (max-width:620px){ .cards{grid-template-columns:1fr} }
-.card{
-  border:1px solid var(--rule); background:
-    linear-gradient(180deg, rgba(255,255,255,.55), rgba(0,0,0,.012));
-  padding:1.35rem 1.3rem 1.2rem; position:relative;
-  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+h1 { font-size: clamp(2.7rem, 6.2vw, 4.7rem); letter-spacing: -.045em; }
+h1 em { font-style: normal; color: var(--acc); }
+.lead {
+  margin-top: 24px; font-size: clamp(1.02rem, 1.6vw, 1.16rem); line-height: 1.62;
+  color: var(--text-2); max-width: 34em;
 }
-.card:hover{transform:translateY(-3px); box-shadow:0 18px 36px -28px rgba(26,22,19,.6); border-color:var(--ink-3)}
-.card .ic{
-  width:38px;height:38px;border:1px solid var(--oxblood); color:var(--oxblood);
-  display:grid;place-items:center;margin-bottom:.85rem; background:var(--oxblood-soft);
-}
-.card .ic svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.card h3{margin:0 0 .4rem; font-size:1.1rem}
-.card p{margin:0; font-size:.94rem; color:var(--ink-2); line-height:1.62}
+.lead b { color: var(--text); font-weight: 600; }
 
-/* --- how it works ------------------------------------------------------- */
-.steps{display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; counter-reset:step}
-@media (max-width:760px){ .steps{grid-template-columns:1fr} }
-.step{padding-top:.4rem; border-top:2px solid var(--oxblood)}
-.step .num{
-  font-family:var(--serif); color:var(--oxblood); font-size:.8rem;
-  letter-spacing:.28em; text-transform:uppercase; display:block; margin:.75rem 0 .5rem;
+.cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 13px 21px; border-radius: 11px; font-size: 15px; font-weight: 650;
+  text-decoration: none; border: 1px solid transparent; cursor: pointer;
+  transition: transform .12s ease, background .12s ease;
 }
-.step h3{font-size:1.08rem; margin-bottom:.35rem}
-.step p{font-size:.94rem; color:var(--ink-2); margin:0}
+.btn svg { width: 15px; height: 15px; }
+.btn-primary { background: var(--acc); color: var(--acc-fg); }
+.btn-primary:hover { background: var(--acc-2); color: var(--acc-fg); transform: translateY(-1px); }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--line-2); }
+.btn-ghost:hover { border-color: var(--text-3); color: var(--text); }
+.dl { margin-top: 16px; font-size: 13px; color: var(--text-3); font-family: var(--mono); }
+.dl a { color: var(--text-2); text-decoration: none; border-bottom: 1px solid var(--line-2); }
+.dl a:hover { color: var(--acc); border-color: var(--acc); }
 
-/* --- screenshots -------------------------------------------------------- */
-.shots{display:grid; grid-template-columns:1fr 1fr; gap:1.3rem}
-@media (max-width:820px){ .shots{grid-template-columns:1fr} }
-figure.shot{margin:0; border:1px solid var(--rule); background:var(--paper-2); padding:.7rem}
-figure.shot img{width:100%; display:block; border:1px solid var(--rule-soft)}
-figure.shot figcaption{
-  font-size:.82rem; color:var(--ink-3); text-align:center; padding:.6rem .3rem .2rem; font-style:italic;
+/* badges — local SVG files, never an image service */
+.badges { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 30px; align-items: center; }
+.badges img { height: 21px; width: auto; display: block; }
+
+/* the ledger: the one idea the page is built on */
+.ledger {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  box-shadow: var(--shadow); overflow: hidden;
+}
+.ledger-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 13px 18px; border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.ledger-rows { padding: 6px 0; }
+.lrow { display: flex; align-items: baseline; gap: 12px; padding: 12px 18px; }
+.lrow + .lrow { border-top: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.lpath { font-family: var(--mono); font-size: 10.5px; letter-spacing: .06em; color: var(--text-3); text-transform: uppercase; }
+.lname { font-size: 15.5px; font-weight: 600; margin-top: 3px; letter-spacing: -.01em; }
+.lgrade { margin-left: auto; display: flex; align-items: center; gap: 5px; flex: none; }
+.pip { width: 8px; height: 8px; border-radius: 50%; border: 1.4px solid var(--acc); }
+.pip.on { background: var(--acc); }
+.lnum { font-family: var(--mono); font-size: 11px; color: var(--text-3); min-width: 22px; text-align: right; }
+.ledger-foot {
+  padding: 12px 18px; border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; color: var(--text-3);
+  display: flex; justify-content: space-between; gap: 12px;
 }
 
-/* --- get started / code ------------------------------------------------- */
-.cols-2{display:grid; grid-template-columns:1.05fr .95fr; gap:2.2rem; align-items:start}
-@media (max-width:820px){ .cols-2{grid-template-columns:1fr} }
-pre{
-  background:#241f19; color:#f2e9d8; border:1px solid #3b332a;
-  padding:1rem 1.1rem; overflow-x:auto; font-size:.86rem; line-height:1.6;
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; margin:0 0 1rem;
-}
-pre .c{color:#b39d7d}
-code.inl{
-  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  background:var(--paper-3); border:1px solid var(--rule-soft);
-  padding:.05em .38em; font-size:.86em; color:var(--oxblood-2);
-}
-ol.steps-list{padding-left:1.3rem; margin:0 0 1rem}
-ol.steps-list li{margin-bottom:.55rem}
+/* ---------- bands ---------- */
+section { padding: 78px 0; }
+.rule { border-top: 1px solid var(--line); }
 
-/* --- faq ---------------------------------------------------------------- */
-.faq{border-top:1px solid var(--rule)}
-details{border-bottom:1px solid var(--rule); padding:.2rem 0}
-details summary{
-  cursor:pointer; list-style:none; padding:1rem .2rem; font-weight:600; font-size:1.04rem;
-  display:flex; align-items:center; gap:.8rem; color:var(--ink);
+.band {
+  background: var(--band-bg); color: var(--band-text);
+  border-top: 1px solid var(--band-line); border-bottom: 1px solid var(--band-line);
+  padding: 76px 0;
 }
-details summary::-webkit-details-marker{display:none}
-details summary::before{
-  content:"+"; color:var(--oxblood); font-size:1.3rem; line-height:1;
-  width:1.2rem; flex:0 0 1.2rem; text-align:center; transition:transform .2s ease;
-}
-details[open] summary::before{content:"\2013"; transform:rotate(0)}
-details .ans{padding:0 0 1.1rem 2rem; color:var(--ink-2); font-size:.97rem}
-@media (max-width:560px){ details .ans{padding-left:.2rem} }
+.band h2 { color: var(--band-text); }
+.band .eyebrow { color: var(--band-text-2); }
+.band p { color: var(--band-text-2); }
 
-/* --- footer ------------------------------------------------------------- */
-footer{
-  border-top:2px solid var(--ink); margin-top:1rem;
-  padding:2.4rem 0 3rem; background:var(--paper-2);
-}
-.foot-grid{display:flex; flex-wrap:wrap; gap:1.6rem; justify-content:space-between; align-items:flex-start}
-.foot-grid h4{margin:0 0 .5rem; font-size:.72rem; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-3); font-family:var(--smallcaps)}
-.foot-grid a{display:block; color:var(--ink-2); text-decoration:none; font-size:.92rem; margin-bottom:.35rem}
-.foot-grid a:hover{color:var(--oxblood); text-decoration:underline}
-.foot-bottom{
-  margin-top:2rem; padding-top:1.2rem; border-top:1px solid var(--rule);
-  display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; justify-content:space-between;
-  font-size:.85rem; color:var(--ink-3);
-}
-.foot-bottom .sig{font-style:italic}
-.disclaimer{
-  margin-top:1.6rem; border:1px solid var(--rule); background:var(--paper);
-  padding:.9rem 1.1rem; font-size:.84rem; color:var(--ink-2);
-}
-.disclaimer b{color:var(--oxblood)}
+h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
+.sub { margin-top: 14px; color: var(--text-2); max-width: 46em; }
 
-/* --- motion ------------------------------------------------------------- */
-.reveal{transition:opacity .6s ease, transform .6s ease}
-html.js .reveal{opacity:0; transform:translateY(16px)}
-html.js .reveal.in{opacity:1; transform:none}
-.skip{position:absolute; left:-9999px; top:0; background:var(--ink); color:var(--paper); padding:.6rem 1rem; z-index:100}
-.skip:focus{left:8px; top:8px}
-
-@media (prefers-reduced-motion: reduce){
-  html{scroll-behavior:auto}
-  *{transition:none !important; animation:none !important}
-  .reveal{opacity:1; transform:none}
-  .btn:hover,.card:hover{transform:none}
+/* ---------- live demo ---------- */
+.demo-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 26px; }
+.guided { display: flex; flex-wrap: wrap; gap: 8px; }
+.g {
+  font: inherit; font-size: 13px; font-weight: 600;
+  padding: 9px 15px; border-radius: 999px; cursor: pointer;
+  background: transparent; color: var(--band-text-2);
+  border: 1px solid var(--band-line);
 }
+.g:hover { color: var(--band-text); border-color: var(--band-acc); }
+.g[aria-pressed="true"] { background: var(--band-acc); border-color: var(--band-acc); color: #06231a; }
+
+.frame {
+  border: 1px solid var(--band-line); border-radius: 16px; overflow: hidden;
+  background: var(--band-card); box-shadow: 0 30px 70px -40px rgba(0, 0, 0, .9);
+}
+.frame-bar {
+  display: flex; align-items: center; gap: 7px; padding: 11px 14px;
+  border-bottom: 1px solid var(--band-line); background: color-mix(in srgb, var(--band-card) 70%, #000);
+}
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--band-line); }
+.url {
+  margin-left: 12px; font-family: var(--mono); font-size: 11px; color: var(--band-text-2);
+  background: color-mix(in srgb, var(--band-line) 55%, transparent);
+  padding: 4px 10px; border-radius: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.frame-body { position: relative; height: 640px; background: #fff; }
+@media (max-width: 820px) { .frame-body { height: 560px; } }
+.frame-body .poster {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top center;
+}
+.frame-body iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
+  opacity: 0; transition: opacity .35s ease; background: #fff;
+}
+.frame.ready .poster { display: none; }
+.frame.ready iframe { opacity: 1; }
+.demo-note { margin-top: 14px; font-size: 12.5px; font-family: var(--mono); color: var(--band-text-2); }
+
+/* ---------- cards ---------- */
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 38px; }
+@media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 26px 24px 28px;
+}
+.card .k {
+  font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--acc); margin-bottom: 14px;
+}
+.card h3 { font-size: 1.16rem; letter-spacing: -.02em; margin-bottom: 9px; }
+.card p { font-size: 15px; color: var(--text-2); line-height: 1.6; }
+.card code {
+  font-family: var(--mono); font-size: .86em; background: var(--acc-soft);
+  color: var(--acc-2); padding: 1px 6px; border-radius: 5px;
+}
+
+/* ---------- refusals ---------- */
+.refuse { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 44px; margin-top: 34px; }
+@media (max-width: 820px) { .refuse { grid-template-columns: 1fr; } }
+.rf { display: flex; gap: 14px; padding: 15px 0; border-top: 1px solid var(--line); }
+.rf .x { font-family: var(--mono); color: var(--text-3); flex: none; font-size: 13px; padding-top: 2px; }
+.rf b { display: block; font-size: 15px; font-weight: 650; }
+.rf span { font-size: 14px; color: var(--text-2); }
+
+/* ---------- numbers ---------- */
+.nums { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; margin-top: 36px; }
+@media (max-width: 820px) { .nums { grid-template-columns: repeat(2, 1fr); } }
+.num { background: var(--card); padding: 26px 22px; }
+.num b { display: block; font-family: var(--mono); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; letter-spacing: -.03em; }
+.num span { display: block; margin-top: 6px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); font-family: var(--mono); }
+
+/* ---------- sources / run ---------- */
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+@media (max-width: 900px) { .two { grid-template-columns: 1fr; gap: 40px; } }
+.prose p + p { margin-top: 16px; }
+.prose { color: var(--text-2); font-size: 15.5px; }
+.prose strong { color: var(--text); font-weight: 600; }
+blockquote {
+  margin: 22px 0 0; padding: 16px 20px; border-left: 3px solid var(--acc);
+  background: var(--acc-soft); border-radius: 0 10px 10px 0;
+  font-size: 14.5px; color: var(--text-2);
+}
+blockquote b { color: var(--text); }
+.steps { list-style: none; margin: 26px 0 0; padding: 0; counter-reset: s; }
+.steps li { position: relative; padding: 0 0 22px 44px; counter-increment: s; }
+.steps li::before {
+  content: counter(s); position: absolute; left: 0; top: 0;
+  width: 27px; height: 27px; border-radius: 50%; display: grid; place-items: center;
+  border: 1px solid var(--line-2); font-family: var(--mono); font-size: 12px; color: var(--acc);
+}
+.steps b { display: block; font-size: 15px; }
+.steps span { font-size: 14px; color: var(--text-2); }
+.steps code { font-family: var(--mono); font-size: 12.5px; background: var(--page-2); padding: 2px 6px; border-radius: 5px; }
+
+/* ---------- footer ---------- */
+footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 40px; border-top: 1px solid var(--band-line); }
+.foot { display: flex; flex-wrap: wrap; gap: 28px; justify-content: space-between; align-items: start; }
+.foot h4 { margin: 0 0 8px; font-size: 14px; color: var(--band-text); font-family: var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.foot p, .foot a { font-size: 13.5px; color: var(--band-text-2); }
+.foot a { text-decoration: none; border-bottom: 1px solid var(--band-line); }
+.foot a:hover { color: var(--band-acc); border-color: var(--band-acc); }
+.foot-links { display: flex; flex-direction: column; gap: 7px; }
+.stamp {
+  margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--band-line);
+  display: flex; flex-wrap: wrap; gap: 14px; justify-content: space-between;
+  font-family: var(--mono); font-size: 11.5px; color: var(--band-text-2);
+}
+.disc { font-size: 12.5px; max-width: 62em; margin-top: 16px; }
 </style>
-<style id="__overflow_fix__"> /* horizontal-overflow fixes */ img{max-width:100%} .shots>*,.figures>*,.cards>*,.steps>*,.cols-2>*,.hero-grid>*{min-width:0} a[href*="/releases/latest/download/"] svg{width:16px;height:16px;flex:none;display:inline-block;vertical-align:-2px}
-</style>
-<script>document.documentElement.className += ' js';</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- ============================ NAV ============================ -->
-<nav class="nav" aria-label="Primary">
-  <div class="nav-in">
-    <a class="brand" href="#top">
-      <span class="mark" aria-hidden="true">B</span>
-      Boericke&rsquo;s Repertory
+<div class="bar">
+  <div class="wrap bar-in">
+    <a class="mark" href="./">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect width="48" height="48" rx="11" fill="#9f1239"/><g fill="none" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 11h13a5 5 0 0 1 5 5v21H17a5 5 0 0 1-5-5z"/><path d="M17 11v26"/><path d="M24 20h5M24 26h5"/></g></svg>
+      <b>Boericke</b> <span>/ repertory</span>
     </a>
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
-      <a href="#shots">Screenshots</a>
-      <a href="#start">Get started</a>
-      <a href="#faq">FAQ</a>
-      <a href="https://drsamonline.github.io/">All projects</a>
-      <a class="btn ox btn-nav" href="#start">Open the app</a>
-    </div>
+    <nav class="nav">
+      <a href="#demo">Demo</a>
+      <a href="#what">What it does</a>
+      <a href="#refuses">What it refuses</a>
+      <a href="#run">Run it</a>
+      <a href="https://github.com/drsamonline/boericke-repertory">GitHub</a>
+      <button class="toggle" id="theme" type="button" aria-label="Switch between light and dark">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.6A8.6 8.6 0 0 1 9.4 3.5a8.6 8.6 0 1 0 11.1 11.1z"/></svg>
+      </button>
+    </nav>
   </div>
-</nav>
+</div>
 
 <main id="main">
 
-<!-- ============================ HERO ============================ -->
-<header class="hero" id="top">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div>
-        <p class="eyebrow">A digital edition &middot; Oscar E. Boericke, M.D. (1927)</p>
-        <h1>A classic repertory, <span class="ox">made searchable.</span></h1>
-        <p class="pitch">
-          Boericke&rsquo;s Repertory is a free, offline clinical repertory and repertorisation
-          tool that lives in a single HTML file. Six thousand rubrics, fourteen hundred
-          remedies &mdash; searchable in the browser, on any device, with nothing to install.
-        </p>
-        <div class="cta-row">
-          <a class="btn ox" href="#start">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
-            Open the live app
-          </a>
-          <a class="btn ghost" href="https://github.com/drsamonline/boericke-repertory">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-4 1.5-4-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1-.3-3.4 1.3a11.6 11.6 0 0 0-6 0C6.8 3.3 5.8 3.6 5.8 3.6a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4.4 10c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
-            View on GitHub
-          </a>
-                  <a class="btn ox" href="https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 5.1 10.5 4.1v6.9H3V5.1Zm8.5-1.16L21 2.5v8.5h-9.5V3.94ZM3 12h7.5v6.9L3 17.9V12Zm8.5 0H21v8.5l-9.5-1.44V12Z"/></svg>
-            Download for Windows (.exe)
-          </a>
-          <a class="btn ghost" href="https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.48l1.84-3.18a.38.38 0 0 0-.66-.38l-1.87 3.23a11.4 11.4 0 0 0-9.82 0L5.22 5.92a.38.38 0 0 0-.66.38l1.84 3.18A10.8 10.8 0 0 0 1.5 18h21a10.8 10.8 0 0 0-4.9-8.52zM7 15.25a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
-            Download for Android (.apk)
-          </a>
-</div>
-        <p class="dl-note" style="margin:.85rem 0 0;font-size:.85rem;line-height:1.55;opacity:.75;max-width:64ch">Free &amp; fully offline &mdash; nothing to install. The Android .apk is sideload-only (allow installs from unknown sources).</p>
+<!-- ================= hero ================= -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Oscar E. Boericke, M.D. · 1927 · digitised</p>
+      <h1>The repertory,<br><em>indexed.</em></h1>
+      <p class="lead">
+        A classic clinical repertory as <b>one HTML file</b> — 6,110 rubrics, 1,461 remedies,
+        25 chapters. Search a symptom, read the grades, build a chart that ranks the remedies.
+        <b>No server, no account, no network</b>, not even to load a font.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="play/">
+          Open the app
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/drsamonline/boericke-repertory/raw/main/index.html" download>
+          Download one file
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5M4 20h16"/></svg>
+        </a>
+      </div>
+      <p class="dl">
+        Also released as
+        <a href="https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe">Windows .exe</a> ·
+        <a href="https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk">Android .apk</a>
+      </p>
+      <div class="badges">
+        <img src="assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22">
+        <img src="assets/badge-remedies.svg" alt="remedies: 1,461" height="22">
+        <img src="assets/badge-chapters.svg" alt="chapters: 25" height="22">
+        <img src="assets/badge-offline.svg" alt="offline: no network" height="22">
+        <img src="assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22">
+      </div>
+    </div>
 
-
-        <!-- live shields badges -->
-        <div class="badges" aria-label="Repository badges">
-          <img src="https://img.shields.io/github/stars/drsamonline/boericke-repertory?style=flat-square&amp;color=7f1d1d&amp;labelColor=1a1613" alt="GitHub stars" onerror="this.style.display='none'">
-          <img src="https://img.shields.io/github/forks/drsamonline/boericke-repertory?style=flat-square&amp;color=7f1d1d&amp;labelColor=1a1613" alt="GitHub forks" onerror="this.style.display='none'">
-          <img src="https://img.shields.io/badge/licence-free%20use%20%C2%B7%20attribution%20required-7f1d1d?style=flat-square&amp;labelColor=1a1613" alt="Licence" onerror="this.style.display='none'">
-          <img src="https://img.shields.io/github/last-commit/drsamonline/boericke-repertory?style=flat-square&amp;color=7f1d1d&amp;labelColor=1a1613" alt="Last commit" onerror="this.style.display='none'">
-          <img src="https://img.shields.io/github/languages/code-size/drsamonline/boericke-repertory?style=flat-square&amp;color=7f1d1d&amp;labelColor=1a1613" alt="Code size" onerror="this.style.display='none'">
+    <div class="ledger" aria-hidden="true">
+      <div class="ledger-head"><span>The index</span><span>grade · remedies</span></div>
+      <div class="ledger-rows">
+        <div class="lrow">
+          <div>
+            <div class="lpath">Head › Headache › Character of pain</div>
+            <div class="lname">Burning, heat</div>
+          </div>
+          <div class="lgrade"><i class="pip on"></i><i class="pip on"></i><span class="lnum">20</span></div>
         </div>
-
-        <!-- custom in-page badges -->
-        <div class="chips" aria-label="Key facts">
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h10"/></svg><b>6,110</b> rubrics</span>
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/></svg><b>1,461</b> remedies</span>
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h7v15H4zM13 5h7v15h-7z"/></svg><b>25</b> chapters</span>
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg><b>Single</b> HTML file</span>
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg><b>Zero</b> dependencies</span>
-          <span class="chip"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 5v4l3 2"/></svg><b>Works</b> offline</span>
+        <div class="lrow">
+          <div>
+            <div class="lpath">Fever › Thirst › Burning thirst</div>
+            <div class="lname">Thirstlessness with heat</div>
+          </div>
+          <div class="lgrade"><i class="pip on"></i><i class="pip on"></i><span class="lnum">14</span></div>
+        </div>
+        <div class="lrow">
+          <div>
+            <div class="lpath">Head › Headache › Concomitants</div>
+            <div class="lname">Burning along spine</div>
+          </div>
+          <div class="lgrade"><i class="pip on"></i><i class="pip"></i><span class="lnum">1</span></div>
+        </div>
+        <div class="lrow">
+          <div>
+            <div class="lpath">Stomach › Nausea › During headache</div>
+            <div class="lname">Nausea, with burning in eyes</div>
+          </div>
+          <div class="lgrade"><i class="pip on"></i><i class="pip"></i><span class="lnum">3</span></div>
         </div>
       </div>
-
-      <aside class="plate" aria-label="Title plate">
-        <p class="plate-label">Reference &middot; Digital Edition</p>
-        <p class="title">Boericke&rsquo;s Repertory</p>
-        <p class="sub">after Oscar E. Boericke, M.D. &middot; 1927</p>
-        <div class="figures">
-          <div><span class="n">6,110</span><span class="k">Rubrics</span></div>
-          <div><span class="n">1,461</span><span class="k">Remedies</span></div>
-          <div><span class="n">25</span><span class="k">Chapters</span></div>
-        </div>
-        <p class="foot">Compiled &amp; designed by Dr. Sohil Momin</p>
-      </aside>
+      <div class="ledger-foot"><span>4 rubrics selected</span><span>29 remedies scored</span></div>
     </div>
   </div>
-</header>
+</div>
 
-<!-- ============================ FEATURES ============================ -->
-<section id="features">
+<!-- ================= live demo ================= -->
+<section class="band" id="demo">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">What it does</p>
-      <h2>Everything a repertory should do &mdash; in one file</h2>
-      <p class="lede dropcap">
-        Boericke&rsquo;s Repertory brings a printed clinical reference into the browser
-        without losing what makes it useful: fast lookup, graded remedies, and a
-        repertorisation chart you can actually read. No server, no build step, no tracking.
-      </p>
+    <div class="demo-head">
+      <div>
+        <p class="eyebrow">The app, not a picture of it</p>
+        <h2>Try it here</h2>
+      </div>
+      <div class="guided" role="group" aria-label="Guided demo">
+        <button class="g" type="button" data-src="play/?q=burning%20headache" aria-pressed="true">Burning headache</button>
+        <button class="g" type="button" data-src="play/?q=thirst%20fever&amp;pick=4&amp;tab=chart" aria-pressed="false">Build a chart</button>
+        <button class="g" type="button" data-src="play/?remedy=Gelsemium&amp;tab=rep" aria-pressed="false">Look up a remedy</button>
+        <button class="g" type="button" data-src="play/?tab=cases" aria-pressed="false">Save a case</button>
+      </div>
     </div>
+
+    <figure class="frame" id="frame" style="margin:0">
+      <div class="frame-bar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="url">drsamonline.github.io/boericke-repertory/play/</span>
+      </div>
+      <div class="frame-body">
+        <img class="poster" src="assets/app-desktop.png" alt="The repertory app showing search results for a symptom">
+        <iframe id="demo" src="play/?q=burning%20headache" title="Boericke's Repertory — live app" loading="lazy"></iframe>
+      </div>
+    </figure>
+    <p class="demo-note">↑ this frame is the real app, loaded from <b>play/</b>. Nothing is mocked. If it cannot load, the screenshot stays behind it.</p>
+  </div>
+</section>
+
+<!-- ================= what it does ================= -->
+<section id="what">
+  <div class="wrap">
+    <p class="eyebrow">What it does</p>
+    <h2>Three things, done properly</h2>
+    <p class="sub">A repertory is only useful if you can move through it faster than the book. That is the whole brief.</p>
 
     <div class="cards">
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
-        <h3>Instant search</h3>
-        <p>Results across 6,110 rubrics by symptom, path or remedy name, with matched terms highlighted and a chapter filter. Full keyboard control: <code class="inl">/</code> to focus, arrows to move, <code class="inl">Enter</code> to add.</p>
-      </article>
-
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div>
-        <h3>Repertorise</h3>
-        <p>Tap rubrics to build a chart that scores every remedy across them &mdash; italic <em>grade 2</em> counts two points, plain <em>grade 1</em> counts one &mdash; then ranks by total, rubric count or remedy name.</p>
-      </article>
-
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 3h6v5l4 9a2 2 0 0 1-2 3H7a2 2 0 0 1-2-3l4-9z"/><path d="M7 15h10"/></svg></div>
-        <h3>Remedy browser</h3>
-        <p>Tap any remedy inside a rubric to see <strong>every rubric that lists it</strong>, along with its grade &mdash; a fast way to check a remedy&rsquo;s full clinical picture.</p>
-      </article>
-
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 12h8M8 16h5M8 8h4"/></svg></div>
-        <h3>Case records</h3>
-        <p>Save patient details, notes and prescription alongside the rubric selection and chart; reload, print, export or import as JSON &mdash; entirely on your own device.</p>
-      </article>
-
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><path d="M6 18H4v-6h16v6h-2"/><path d="M8 21h8v-6H8z"/></svg></div>
-        <h3>Print &amp; export</h3>
-        <p>Print the repertorisation chart straight from the app &mdash; no pop-ups, no extra windows. Everything is sized for a clean sheet of paper.</p>
-      </article>
-
-      <article class="card reveal">
-        <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 9.5l-4 4 1 6-5-2.7L7 19.5l1-6-4-4 5.5-1z"/></svg></div>
-        <h3>Looks &amp; privacy</h3>
-        <p>Modern responsive interface with light, dark and auto themes and five accent colours. One self-contained file: no internet needed after loading, and no tracking of any kind.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ HOW IT WORKS ============================ -->
-<section id="how">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">How it works</p>
-      <h2>From symptom to chart in three moves</h2>
-      <p class="lede">There is no account and no setup. Open the page and the whole repertory is already there.</p>
-    </div>
-
-    <div class="steps">
-      <div class="step reveal">
-        <span class="num">Step One</span>
-        <h3>Search the rubric</h3>
-        <p>Type a symptom or a remedy name. Filter by chapter if you like. Matching terms are highlighted inside each rubric so you can see exactly why it surfaced.</p>
+      <div class="card">
+        <div class="k">01 — search</div>
+        <h3>Find the rubric</h3>
+        <p>Instant search across 6,110 rubrics by symptom, by path or by remedy name, with the
+        matched terms highlighted and a chapter filter. <code>/</code> focuses the box,
+        <code>↑</code> <code>↓</code> move, <code>Enter</code> adds to the chart.</p>
       </div>
-      <div class="step reveal">
-        <span class="num">Step Two</span>
-        <h3>Add it to the chart</h3>
-        <p>Tap a rubric to add it. Selected rubrics gather at the foot of the screen, and every remedy listed under them is scored by grade and ranked by total.</p>
+      <div class="card">
+        <div class="k">02 — repertorise</div>
+        <h3>Rank the remedies</h3>
+        <p>Every selected rubric scores the remedies it lists — grade 2 as two points, grade 1 as
+        one — and the chart ranks them by total, by rubric count or by name, with bars for the
+        top ten. Tap any remedy to see <em>every</em> rubric that lists it.</p>
       </div>
-      <div class="step reveal">
-        <span class="num">Step Three</span>
-        <h3>Read, save or print</h3>
-        <p>Sort the chart, tap a remedy to trace its full picture, attach patient notes to a case, then print the sheet or export the case as JSON.</p>
+      <div class="card">
+        <div class="k">03 — keep the case</div>
+        <h3>Save, print, export</h3>
+        <p>Patient details, notes and prescription sit alongside the selection and the chart.
+        Save it, reload it, print it, or export and import the whole case as JSON. It stays on
+        your device.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============================ SCREENSHOTS ============================ -->
-<section id="shots">
+<!-- ================= numbers ================= -->
+<section class="rule" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">From the app</p>
-      <h2>Search and repertorisation</h2>
-      <p class="lede">The two screens you will live in: the search list, and the graded repertorisation chart.</p>
-    </div>
-
-    <div class="shots">
-      <figure class="shot reveal">
-        <img src="assets/search.png" alt="Search screen of Boericke's Repertory showing a query for burning headache with three matching rubrics and their graded remedies." loading="lazy" width="1200" height="900">
-        <figcaption>Search &mdash; instant results with matched terms highlighted and graded remedies beneath each rubric.</figcaption>
-      </figure>
-      <figure class="shot reveal">
-        <img src="assets/chart.png" alt="Repertorisation chart ranking 49 remedies across 5 rubrics, with the top ten shown as bars and a full remedy-by-rubric grid below." loading="lazy" width="1200" height="1000">
-        <figcaption>Repertorisation &mdash; 49 remedies across 5 rubrics, ranked by total score with a remedy-by-rubric grid.</figcaption>
-      </figure>
-    </div>
-
-    <p class="small" style="margin-top:1.2rem">
-      Prefer to try it live? The full app is served alongside this page at
-      <a href="play/">/play/</a>.
-    </p>
-  </div>
-</section>
-
-<!-- ============================ GET STARTED ============================ -->
-<section id="start">
-  <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Get started</p>
-      <h2>Open it, download it, or self-host it</h2>
-      <p class="lede">Three ways in &mdash; pick whichever suits how you work.</p>
-    </div>
-
-    <div class="cols-2">
-      <div class="reveal">
-        <h3 style="margin-top:0">Use it in the browser</h3>
-        <p>Open the live app and start searching. It works offline once loaded, and on phone, tablet or desktop.</p>
-        <p><a class="btn ox" href="play/">Open the live app</a></p>
-
-        <h3>Download for offline use</h3>
-        <p>Grab the single <code class="inl">index.html</code> file and open it in any modern browser &mdash; that is the whole installation.</p>
-        <p>
-          <a class="btn ghost sm" href="https://github.com/drsamonline/boericke-repertory/raw/main/index.html">Download index.html</a>
-        </p>
-      </div>
-
-      <div class="reveal">
-        <h3 style="margin-top:0">Self-host or fork</h3>
-        <p>Clone the repository, then either serve it or publish your own copy through GitHub Pages.</p>
-<pre><span class="c"># clone the repository</span>
-git clone https://github.com/drsamonline/boericke-repertory.git
-cd boericke-repertory
-
-<span class="c"># open it directly, or serve it locally</span>
-python3 -m http.server 8000
-<span class="c"># then visit http://localhost:8000</span></pre>
-        <p class="small">To publish your own copy: fork the repo, then enable GitHub Pages under <em>Settings &rarr; Pages</em> and deploy from the default branch.</p>
-      </div>
+    <div class="nums">
+      <div class="num"><b>6,110</b><span>rubrics</span></div>
+      <div class="num"><b>1,461</b><span>remedies</span></div>
+      <div class="num"><b>25</b><span>chapters</span></div>
+      <div class="num"><b>0</b><span>dependencies</span></div>
     </div>
   </div>
 </section>
 
-<!-- ============================ FAQ ============================ -->
-<section id="faq">
+<!-- ================= refusals ================= -->
+<section class="rule" id="refuses">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Questions</p>
-      <h2>Frequently asked</h2>
-    </div>
+    <p class="eyebrow">What it refuses to do</p>
+    <h2>Nothing here phones home</h2>
+    <p class="sub">A clinical tool that needs a connection is a clinical tool that stops working
+    when you need it. These are limits, chosen on purpose.</p>
 
-    <div class="faq reveal">
-      <details>
-        <summary>Is it really free?</summary>
-        <div class="ans">Yes. The project is free to use, copy, modify and distribute, provided that attribution is given to the content and the design. See the <a href="https://github.com/drsamonline/boericke-repertory/blob/main/LICENSE">licence</a> for the full terms.</div>
-      </details>
-      <details>
-        <summary>Does it work offline?</summary>
-        <div class="ans">Yes. The app is one self-contained HTML file. Once it has loaded, no internet connection is required, and there is no server, no build step and no tracking.</div>
-      </details>
-      <details>
-        <summary>What exactly is in the dataset?</summary>
-        <div class="ans">6,110 rubrics, 1,461 unique remedies and 25 chapters. Remedies are de-duplicated so OCR variants merge into one canonical name, duplicate rubrics are merged, and remedy-less category headings are kept for structure but never appear in search results &mdash; so every rubric shown carries at least one remedy.</div>
-      </details>
-      <details>
-        <summary>What do the grades mean?</summary>
-        <div class="ans">In the repertorisation chart, an italic <em>grade 2</em> remedy counts two points and a plain <em>grade 1</em> remedy counts one. Remedies are then ranked by total score, rubric count or remedy name.</div>
-      </details>
-      <details>
-        <summary>Where does the content come from?</summary>
-        <div class="ans">The <em>Repertory</em> by Oscar E. Boericke, M.D. (1927), the companion to the <em>Pocket Manual of Homoeopathic Materia Medica</em>, 9th edition, by William Boericke, M.D. The text was digitised from the public-domain edition at homeoint.org (presented by M&eacute;di-T). The design and application are by Dr. Sohil Momin.</div>
-      </details>
-      <details>
-        <summary>Can I save my cases?</summary>
-        <div class="ans">Yes. Cases hold patient details, notes and the prescription alongside the rubric selection and chart. They can be reloaded, printed, and exported or imported as JSON &mdash; all stored on your own device.</div>
-      </details>
-      <details>
-        <summary>Is it a substitute for clinical judgement?</summary>
-        <div class="ans">No. It is provided <em>as is</em>, for study and reference by qualified practitioners, and is not a substitute for professional homoeopathic or medical judgment.</div>
-      </details>
+    <div class="refuse">
+      <div class="rf"><span class="x">✕</span><div><b>No account</b><span>There is nothing to sign in to and no profile to maintain.</span></div></div>
+      <div class="rf"><span class="x">✕</span><div><b>No server</b><span>No database, no API, no backend to be down. The app is a file.</span></div></div>
+      <div class="rf"><span class="x">✕</span><div><b>No network, ever</b><span>After the page loads it never opens a socket — from a USB stick, in a clinic with no signal, on a plane.</span></div></div>
+      <div class="rf"><span class="x">✕</span><div><b>No external assets</b><span>No CDN, no web font, no analytics, no badge service — including on this page.</span></div></div>
+      <div class="rf"><span class="x">✕</span><div><b>No telemetry</b><span>Your searches, your cases and your patients are not sent anywhere, because there is nowhere to send them.</span></div></div>
+      <div class="rf"><span class="x">✕</span><div><b>No silent changes</b><span>The version you downloaded is the version you run. Nothing updates behind your back.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= sources ================= -->
+<section class="rule" id="sources">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">The text</p>
+      <h2>Where it comes from</h2>
+      <div class="prose" style="margin-top:18px">
+        <p>The rubrics are <strong>Oscar E. Boericke's Repertory (1927)</strong>, the companion
+        volume to Boericke's <em>Pocket Manual of Homoeopathic Materia Medica</em>, 9th edition.
+        The text is digitised from the public-domain edition at homeoint.org, presented by Médi-T.</p>
+        <p>The dataset was cleaned rather than copied: OCR variants of a remedy name are merged
+        into one canonical name, duplicate rubrics are merged, and remedy-less category headings
+        are kept for structure but never appear in search results — so every rubric you see
+        carries at least one remedy.</p>
+      </div>
+      <blockquote>
+        <b>Attribution is compulsory.</b> Content: <em>Repertory by Oscar E. Boericke, M.D. (1927)</em>.
+        Design &amp; application: <em>Dr. Sohil Momin</em>. See the
+        <a href="https://github.com/drsamonline/boericke-repertory/blob/main/LICENSE">licence</a>.
+      </blockquote>
+    </div>
+    <div>
+      <p class="eyebrow">The app</p>
+      <h2>How it is built</h2>
+      <div class="prose" style="margin-top:18px">
+        <p>One <strong>821 kB HTML file</strong>: the stylesheet, the script and the entire dataset
+        are inline. System fonts, CSS variables for the theme, and no build step — open it in a
+        browser and it runs. The Windows executable and the Android APK are the same page in a
+        shell, built from the same commit as the demo above.</p>
+        <p>The grade marks are the book's own: <em>italic grade 2</em> counts two points,
+        plain grade 1 counts one. Nothing is re-weighted or re-scored, so the chart can be
+        checked by hand against the page.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= run ================= -->
+<section class="rule" id="run">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">Run it</p>
+      <h2>Three ways in</h2>
+      <ol class="steps">
+        <li><b>Open the live app</b><span>Nothing to install. <a href="play/">play/</a> — works on phone, tablet or desktop.</span></li>
+        <li><b>Keep the file</b><span>Download <code>index.html</code>, double-click it. That is the entire installation, and it works with the Wi-Fi off.</span></li>
+        <li><b>Self-host</b><span>Fork the repo, enable GitHub Pages, and it is yours — one file, no configuration.</span></li>
+      </ol>
+    </div>
+    <div>
+      <p class="eyebrow">On a machine with no internet</p>
+      <h2>Built for the clinic</h2>
+      <div class="prose" style="margin-top:18px">
+        <p>Copy the file to a USB stick, a shared drive, or an old laptop in the consulting room.
+        It opens the same way, with no licence check and no first-run download.</p>
+        <p>If you want it as an app icon on the home screen, use the browser's
+        <em>Install</em> / <em>Add to Home Screen</em> — the page carries its own manifest and
+        icon, so it launches full-screen and still never touches the network.</p>
+        <p><a href="https://github.com/drsamonline/boericke-repertory/releases/latest">Releases</a>
+        carry the portable Windows build and the signed Android APK, each with its own icon.</p>
+      </div>
     </div>
   </div>
 </section>
 
 </main>
 
-<!-- ============================ FOOTER ============================ -->
 <footer>
   <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <h4>Boericke&rsquo;s Repertory</h4>
-        <p class="small" style="max-width:34ch; margin:0">A free, offline digital edition of a classic clinical repertory &mdash; compiled and designed by Dr. Sohil Momin, after Oscar E. Boericke, M.D. (1927).</p>
+    <div class="foot">
+      <div style="max-width:26em">
+        <h4>Boericke's Repertory</h4>
+        <p>Digital edition, compiled and designed by Dr. Sohil Momin, after Oscar E. Boericke, M.D. (1927).</p>
       </div>
-      <div>
-        <h4>Explore</h4>
-        <a href="play/">Live app</a>
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
-        <a href="#start">Get started</a>
-        <a href="#faq">FAQ</a>
-      </div>
-      <div>
-        <h4>Repository</h4>
-        <a href="https://github.com/drsamonline/boericke-repertory">github.com/drsamonline/boericke-repertory</a>
-        <a href="https://github.com/drsamonline/boericke-repertory/blob/main/README.md">README</a>
+      <div class="foot-links">
+        <h4>The project</h4>
+        <a href="https://github.com/drsamonline/boericke-repertory">Source on GitHub</a>
+        <a href="https://github.com/drsamonline/boericke-repertory/releases/latest">Releases &amp; downloads</a>
         <a href="https://github.com/drsamonline/boericke-repertory/blob/main/LICENSE">Licence</a>
-        <a href="https://github.com/drsamonline/boericke-repertory/issues">Issues</a>
+        <a href="https://drsamonline.github.io/">All projects</a>
+      </div>
+      <div class="foot-links">
+        <h4>The app</h4>
+        <a href="play/">Open the repertory</a>
+        <a href="https://github.com/drsamonline/boericke-repertory/raw/main/index.html">Download index.html</a>
+        <a href="#demo">Guided demo</a>
       </div>
     </div>
-
-    <div class="disclaimer">
-      <b>Disclaimer.</b> Provided <em>as is</em>, for study and reference by qualified
-      practitioners. Not a substitute for professional homoeopathic or medical judgment.
-    </div>
-
-    <div class="foot-bottom">
-      <span class="sig">Boericke&rsquo;s Repertory &middot; Digital Edition</span>
-      <span>Built by Dr. Sohil Momin</span>
+    <p class="disc">Provided as is, for study and reference by qualified practitioners. Not a
+    substitute for professional homoeopathic or medical judgment.</p>
+    <div class="stamp">
+      <span>Landing page build <b id="build">2026-11-01</b> · no network requests</span>
+      <span>Content © Oscar E. Boericke (1927) · design &amp; application © 2026 Dr. Sohil Momin</span>
     </div>
   </div>
 </footer>
 
 <script>
-(function(){
-  "use strict";
-  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var items = document.querySelectorAll(".reveal");
-  function revealAll(){ items.forEach(function(el){ el.classList.add("in"); }); }
-  function revealInView(){ var vh=window.innerHeight||document.documentElement.clientHeight;
-    items.forEach(function(el){ var r=el.getBoundingClientRect(); if(r.top<vh+40&&r.bottom>-40) el.classList.add("in"); }); }
-  if (reduce || !("IntersectionObserver" in window)) {
-    revealAll();
-    return;
-  }
-  var io = new IntersectionObserver(function(entries){
-    entries.forEach(function(e){
-      if (e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+/* theme toggle — its own key, so it never moves the app's theme */
+(function () {
+  var btn = document.getElementById('theme');
+  btn.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('brl_theme', next); } catch (e) {}
+  });
+})();
+
+/* the guided demo drives the real app in the frame */
+(function () {
+  var frame = document.getElementById('frame');
+  var demo = document.getElementById('demo');
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.g'));
+
+  function reveal() { frame.classList.add('ready'); }
+  demo.addEventListener('load', reveal);
+  if (demo.complete) reveal();
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      buttons.forEach(function (o) { o.setAttribute('aria-pressed', 'false'); });
+      b.setAttribute('aria-pressed', 'true');
+      demo.src = b.getAttribute('data-src');
+      frame.classList.remove('ready');
     });
-  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
-  items.forEach(function(el){ io.observe(el); });
-  setTimeout(revealInView,1000);
-  setTimeout(revealAll,4000);
-  window.addEventListener('scroll',revealInView,{passive:true});
-  window.addEventListener('resize',revealInView,{passive:true});
-  window.addEventListener('load',function(){ setTimeout(revealInView,200); });
+  });
 })();
 </script>
 </body>
