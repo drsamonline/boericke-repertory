@@ -1,5 +1,48 @@
 # Changelog
 
+## 1.2.0 — 2026-11-01
+
+Everything below runs inside the same single file. No dependency was added, no request is
+made after load, and the app still opens from `file://` with the Wi-Fi off.
+
+**Search**
+- **Query operators.** `"exact phrase"`, `-exclude` and `a or b` are parsed properly instead of
+  being treated as literal words. Quoted phrases match across the path separators.
+- **Typo tolerance.** When nothing matches at all, terms are retried against a vocabulary built
+  from the rubric names at load time, at edit distance 1 including transpositions — so
+  `burnign headache` still finds *burning headache*.
+- **Browse by chapter.** The book's own tree, expanded lazily, with a count per chapter.
+- **Saved searches**, and a **remedy alias table** so *Gelsemium* finds the source's *Gels*.
+- **Similar rubrics** — computed from the words of the rubric name inside the same chapter, and
+  labelled as a heuristic rather than a curated cross-reference.
+
+**Repertorisation**
+- **Must-have rubrics** (Boenninghausen-style elimination): remedies that miss one are faded, or
+  filtered out entirely.
+- **Configurable grade weights** (1/2/3), printed on the chart and in the print sheet so a chart
+  stays auditable.
+- **Filter the chart** by remedy name; **undo** the last selection change with `Ctrl`/`Cmd + Z`.
+
+**Cases**
+- **Encrypted vault.** AES-256-GCM with a key derived by PBKDF2-SHA256 (200,000 rounds) in the
+  browser; the passphrase is never stored. Verified by `scripts/vault_test.mjs`.
+- **Patient grouping and case search**, autosaved draft, **one-page A4 case sheet**, **CSV export**
+  of a chart or of every case, **save to a file you choose** (File System Access, with a download
+  fallback), and a **backup reminder** when cases exist and nothing has ever been exported.
+
+**App**
+- **Command palette** (`Ctrl`/`Cmd + K`), **per-rubric notes**, **settings** sheet with text size
+  and a **high-contrast** theme alongside light/dark/auto.
+- **Service worker**: HTML network-first, assets cache-first, `CACHE` bumped per release,
+  `registration.update()` on load, and a **build stamp** so "am I on the new one?" is answerable
+  from the page. Installable manifest on `play/`.
+- **Data audit** panel in About, computed from the embedded dataset.
+- **Deep links** extended: `?browse=1`, `?palette=1`, `?settings=1`.
+- **Fixed** the blanket `button{background:accent}` rule that painted the tab control, the browse
+  rows and every icon-only control accent-on-accent, leaving their labels invisible.
+- **Tests**: `scripts/check.sh` runs a syntax check, 20 browser assertions and 6 crypto assertions.
+
+
 ## 1.1.0 — 2026-11-01
 
 - **The landing page is its own design now.** `docs/index.html` was a brochure in the app's own

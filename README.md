@@ -2,7 +2,7 @@
 
 # Boericke's Repertory
 
-<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 821 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
+<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 889 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
 
 ### A classic clinical repertory, made searchable — one HTML file, offline, no account, no server
 
@@ -11,6 +11,7 @@
 [**Landing page**](https://drsamonline.github.io/boericke-repertory/) &nbsp;·&nbsp;
 [**Live app**](https://drsamonline.github.io/boericke-repertory/play/) &nbsp;·&nbsp;
 [**Releases**](https://github.com/drsamonline/boericke-repertory/releases/latest) &nbsp;·&nbsp;
+[**Roadmap**](docs/ROADMAP.md) &nbsp;·&nbsp;
 [**Licence**](LICENSE)
 
 [Windows `.exe`](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe) &nbsp;·&nbsp;
@@ -37,8 +38,8 @@
 
 ## What it is
 
-Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and
-the remedies that belong to it, graded. This is that book as **one 821 kB HTML file** — the
+Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and the
+remedies that belong to it, graded. This is that book as **one 889 kB HTML file** — the
 stylesheet, the script and the whole dataset inline. Open it in a browser and it runs; there is
 no install, no build step, no server and no account.
 
@@ -48,26 +49,39 @@ analytics, no telemetry, no badge service — **including on the landing page th
 
 ## What it does
 
-**Search** — instant results across 6,110 rubrics by symptom, by path or by remedy name, with
-matched terms highlighted and a chapter filter. `/` focuses the box, `↑` `↓` move, `Enter` adds
-to the chart.
+**Search like a query.** Instant results across 6,110 rubrics with real operators —
+`"exact phrase"`, `-exclude`, `a or b` — and typo tolerance that only kicks in when nothing at
+all matched. Remedy aliases mean *Gelsemium* finds the source's own *Gels*. `/` focuses the box,
+`↑` `↓` move, `Enter` adds to the chart.
 
-**Repertorise** — tap rubrics to build a chart that scores every remedy across them (grade 2
-counts two points, grade 1 counts one) and ranks by total, rubric count or name, with bars for
-the top ten. Tap any remedy to see **every rubric that lists it**, with its grade.
+**Browse the book.** A **Browse** toggle walks the repertory by chapter and sub-rubric, expanded
+lazily, so you can navigate the way the book is laid out instead of guessing at words.
 
-**Cases** — patient details, notes and prescription sit alongside the selection and the chart.
-Save, reload, print, or export and import the whole case as JSON. It stays on your device.
+**Repertorise, then eliminate.** Every selected rubric scores its remedies — grade 2 counts two
+points, grade 1 counts one, and you can change both weights (the scale is printed on the chart
+and in the print sheet, so a chart stays auditable). Mark a rubric **must-have** and every remedy
+that misses one is faded, or filtered out entirely. Filter the table by name; tap any remedy to
+see every rubric that lists it.
 
-**Deep links** — the app reads a few query parameters, so a specific view can be linked or
-bookmarked: `play/?q=burning+headache`, `?q=thirst+fever&pick=4&tab=chart`,
-`?remedy=Gelsemium`, `?tab=cases`. This is what the landing page's guided demo drives.
+**Keep the case.** Patient details, notes and prescription sit alongside the selection and the
+chart, grouped by patient. Cases can be **locked with a passphrase** — AES-256-GCM, key derived
+with PBKDF2-SHA256 (200,000 rounds) in the browser and never stored. Print a one-page A4 case
+sheet, export the chart as CSV, export every case as JSON, or save straight to a file you choose.
 
-## What it refuses to do
+**Work fast.** A command palette on `Ctrl`/`Cmd + K`, undo on `Ctrl`/`Cmd + Z`, saved searches,
+per-rubric notes, and computed "similar rubrics" for a rubric you are unsure about.
 
-No account · no server · no network after load · no external assets · no telemetry ·
-no silent updates. A clinical tool that needs a connection is a clinical tool that stops
-working when you need it.
+**Refuses to phone home.** No account · no server · no network after load · no external assets ·
+no telemetry · no silent updates.
+
+## What's new in 1.2.0
+
+Query operators and typo tolerance · browse-by-chapter · must-have rubrics · configurable grade
+weights · chart filter · encrypted vault · patient grouping and case search · command palette ·
+undo · saved searches · per-rubric notes · similar rubrics · one-page case sheet · CSV export ·
+backup reminder · service worker and installable manifest · text-size and high-contrast settings ·
+data audit · remedy alias table. See the [changelog](CHANGELOG.md) and the
+[roadmap](docs/ROADMAP.md) for what is deliberately not done.
 
 ## Use it
 
@@ -85,28 +99,39 @@ working when you need it.
 | Rubrics | **6,110** |
 | Unique remedies | **1,461** |
 | Chapters | **25** |
+| Graded entries | **48,385** (15,737 at grade 2) |
+| Remedies with no rubric | **0** |
 | Runtime dependencies | **0** |
 
 The dataset is cleaned, not copied: OCR variants of a remedy name are merged into one canonical
 name, duplicate rubrics are merged, and remedy-less category headings are kept for structure but
-never appear in search results — so every rubric shown carries at least one remedy.
+never appear in search results — so every rubric shown carries at least one remedy. The **About →
+Data audit** panel recomputes these numbers in the app, so the cleaning can be checked rather than
+trusted.
 
 ## The repository
 
 ```
-index.html                 the app, standalone — this is the download
-docs/index.html            the landing page (its own design, not the app's)
-docs/play/index.html       the app as deployed
-docs/assets/               screenshots, local SVG badges, generated icons
-docs/ROADMAP.md            the offline-only enhancement list
-scripts/badges.py          draws docs/assets/badge-*.svg — no image service
-scripts/icons.py           rasterises docs/icon.svg into the PNG sizes
-scripts/shot.sh            headless-Chromium screenshots of both surfaces
+index.html                  the app, standalone — this is the download
+docs/index.html             the landing page (its own design, not the app's)
+docs/play/index.html        the app as deployed
+docs/play/sw.js             service worker: network-first HTML, cache-first assets
+docs/play/manifest.webmanifest
+docs/assets/                screenshots, local SVG badges, generated icons
+docs/ROADMAP.md             the offline-only enhancement list
+scripts/badges.py           draws docs/assets/badge-*.svg — no image service
+scripts/icons.py            rasterises the icon: PNG sizes, .ico, adaptive layers
+scripts/social.py           draws the 1280x630 social card
+scripts/shot.sh             headless-Chromium screenshots of both surfaces
+scripts/check.sh            syntax check + self-test + vault test, one command
+scripts/selftest.html       20 assertions driving the app through its own API
+scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
+bash scripts/check.sh         # syntax + 20 browser assertions + 6 crypto assertions
 python3 scripts/badges.py     # regenerate the badges
-python3 scripts/icons.py      # regenerate the icon PNGs
+python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers
 bash scripts/shot.sh landing  # screenshot the landing page
 bash scripts/shot.sh app app '?q=burning%20headache'
 ```

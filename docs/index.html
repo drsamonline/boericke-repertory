@@ -336,6 +336,14 @@ h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); }
 .num b { display: block; font-family: var(--mono); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; letter-spacing: -.03em; }
 .num span { display: block; margin-top: 6px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); font-family: var(--mono); }
 
+/* ---------- release list ---------- */
+.changes { list-style:none; margin:0; padding:0; }
+.changes li { display:flex; flex-direction:column; gap:3px; padding:12px 0; border-top:1px solid var(--band-line); }
+.changes li:first-child { border-top:0; }
+.changes b { font-size:14.5px; color:var(--band-text); font-weight:650; }
+.changes span { font-size:13px; color:var(--band-text-2); }
+.changes code { font-family:var(--mono); font-size:12px; background:color-mix(in srgb, var(--band-line) 60%, transparent); padding:1px 5px; border-radius:4px; }
+
 /* ---------- sources / run ---------- */
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
 @media (max-width: 900px) { .two { grid-template-columns: 1fr; gap: 40px; } }
@@ -408,8 +416,9 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
       <h1>The repertory,<br><em>indexed.</em></h1>
       <p class="lead">
         A classic clinical repertory as <b>one HTML file</b> — 6,110 rubrics, 1,461 remedies,
-        25 chapters. Search a symptom, read the grades, build a chart that ranks the remedies.
-        <b>No server, no account, no network</b>, not even to load a font.
+        25 chapters. Query it with operators, browse it by chapter, mark a rubric <b>must-have</b>
+        and let the chart eliminate what misses it. <b>No server, no account, no network</b>,
+        not even to load a font.
       </p>
       <div class="cta">
         <a class="btn btn-primary" href="play/">
@@ -484,7 +493,8 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
         <button class="g" type="button" data-src="play/?q=burning%20headache" aria-pressed="true">Burning headache</button>
         <button class="g" type="button" data-src="play/?q=thirst%20fever&amp;pick=4&amp;tab=chart" aria-pressed="false">Build a chart</button>
         <button class="g" type="button" data-src="play/?remedy=Gelsemium&amp;tab=rep" aria-pressed="false">Look up a remedy</button>
-        <button class="g" type="button" data-src="play/?tab=cases" aria-pressed="false">Save a case</button>
+        <button class="g" type="button" data-src="play/?browse=1" aria-pressed="false">Browse chapters</button>
+        <button class="g" type="button" data-src="play/?palette=1" aria-pressed="false">Jump to&hellip;</button>
       </div>
     </div>
 
@@ -511,25 +521,26 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
 
     <div class="cards">
       <div class="card">
-        <div class="k">01 — search</div>
-        <h3>Find the rubric</h3>
-        <p>Instant search across 6,110 rubrics by symptom, by path or by remedy name, with the
-        matched terms highlighted and a chapter filter. <code>/</code> focuses the box,
-        <code>↑</code> <code>↓</code> move, <code>Enter</code> adds to the chart.</p>
+        <div class="k">01 — find</div>
+        <h3>Search like a query</h3>
+        <p>Six thousand rubrics, searched instantly with the operators you would expect —
+        <code>"exact phrase"</code>, <code>-exclude</code>, <code>a or b</code> — plus typo
+        tolerance, and <b>Gelsemium</b> finds the source's own <b>Gels</b>. Prefer the book's
+        structure? <b>Browse</b> walks it chapter by chapter.</p>
       </div>
       <div class="card">
         <div class="k">02 — repertorise</div>
-        <h3>Rank the remedies</h3>
-        <p>Every selected rubric scores the remedies it lists — grade 2 as two points, grade 1 as
-        one — and the chart ranks them by total, by rubric count or by name, with bars for the
-        top ten. Tap any remedy to see <em>every</em> rubric that lists it.</p>
+        <h3>Rank, then eliminate</h3>
+        <p>Grade 2 counts two points, grade 1 one — or set your own weights, printed on the
+        chart so it stays auditable. Mark rubrics <b>must-have</b> and fade every remedy that
+        misses one. Tap any remedy to see every rubric that lists it.</p>
       </div>
       <div class="card">
         <div class="k">03 — keep the case</div>
-        <h3>Save, print, export</h3>
-        <p>Patient details, notes and prescription sit alongside the selection and the chart.
-        Save it, reload it, print it, or export and import the whole case as JSON. It stays on
-        your device.</p>
+        <h3>Encrypted, if you want</h3>
+        <p>Patient details, notes and prescription sit with the selection and the chart. Lock
+        them with a passphrase and they are sealed with <b>AES-256-GCM</b> in the browser — the
+        key is never stored. Print a one-page case sheet, or export JSON or CSV.</p>
       </div>
     </div>
   </div>
@@ -562,6 +573,35 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
       <div class="rf"><span class="x">✕</span><div><b>No external assets</b><span>No CDN, no web font, no analytics, no badge service — including on this page.</span></div></div>
       <div class="rf"><span class="x">✕</span><div><b>No telemetry</b><span>Your searches, your cases and your patients are not sent anywhere, because there is nowhere to send them.</span></div></div>
       <div class="rf"><span class="x">✕</span><div><b>No silent changes</b><span>The version you downloaded is the version you run. Nothing updates behind your back.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= release ================= -->
+<section class="band" id="release">
+  <div class="wrap two">
+    <div>
+      <p class="eyebrow">Release 1.2.0 &middot; 1 November 2026</p>
+      <h2>What changed</h2>
+      <p style="margin-top:14px">The repertory got the things a working repertory needs: a
+      search you can query, a chart that can eliminate, and cases that can be locked. Every one
+      of them runs in the same single file, with nothing added to fetch.</p>
+      <p style="margin-top:16px"><a class="btn btn-primary" href="https://github.com/drsamonline/boericke-repertory/releases/latest" style="margin-top:8px">
+        Release notes &amp; downloads
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a></p>
+    </div>
+    <div>
+      <ul class="changes">
+        <li><b>Query operators</b><span><code>"exact phrase"</code>, <code>-exclude</code>, <code>a or b</code>, and typo tolerance when nothing matches</span></li>
+        <li><b>Browse the chapters</b><span>the book's own tree, expanded lazily, with a count per chapter</span></li>
+        <li><b>Must-have rubrics</b><span>Boenninghausen-style elimination, with the misses faded in the chart</span></li>
+        <li><b>Grade weights you set</b><span>1 / 2 / 3, printed on the chart and in the print sheet</span></li>
+        <li><b>An encrypted vault</b><span>AES-256-GCM with a PBKDF2 passphrase, derived in the browser</span></li>
+        <li><b>Command palette, undo, saved searches, rubric notes</b><span>⌘K to jump anywhere, ⌘Z to take it back</span></li>
+        <li><b>One-page case sheet, CSV export, backup reminder</b><span>an A4 print stylesheet and a plain-data exit</span></li>
+        <li><b>Service worker, installable, build stamp</b><span>network-first HTML, so a new release is never hidden by the cache</span></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -657,7 +697,7 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
     <p class="disc">Provided as is, for study and reference by qualified practitioners. Not a
     substitute for professional homoeopathic or medical judgment.</p>
     <div class="stamp">
-      <span>Landing page build <b id="build">2026-11-01</b> · no network requests</span>
+      <span>Landing page build <b id="build">2026-11-01</b> · app v1.2.0 · no network requests</span>
       <span>Content © Oscar E. Boericke (1927) · design &amp; application © 2026 Dr. Sohil Momin</span>
     </div>
   </div>

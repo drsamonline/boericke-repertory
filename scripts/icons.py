@@ -57,6 +57,21 @@ def main():
     big.save(ico, "ICO", sizes=[(16, 16), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
     print("wrote", os.path.relpath(ico, ROOT), os.path.getsize(ico), "bytes")
 
+    # Android adaptive icon: a background layer and a foreground layer, with the
+    # glyph inside the 66% safe zone so a launcher can crop or mask it freely.
+    bg = Image.new("RGBA", (512, 512), (0x9F, 0x12, 0x39, 255))
+    bg_path = os.path.join(OUT, "icon-adaptive-bg.png")
+    bg.save(bg_path, "PNG", optimize=True)
+    print("wrote", os.path.relpath(bg_path, ROOT))
+
+    fg = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
+    inner = int(512 * 0.62)                     # 62% < the 66% safe circle
+    glyph = big.resize((inner, inner), Image.LANCZOS)
+    fg.paste(glyph, ((512 - inner) // 2, (512 - inner) // 2), glyph)
+    fg_path = os.path.join(OUT, "icon-adaptive-fg.png")
+    fg.save(fg_path, "PNG", optimize=True)
+    print("wrote", os.path.relpath(fg_path, ROOT))
+
 
 if __name__ == "__main__":
     main()
