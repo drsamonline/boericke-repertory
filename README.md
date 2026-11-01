@@ -2,7 +2,7 @@
 
 # Boericke's Repertory
 
-<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 891 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
+<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 918 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
 
 ### A classic clinical repertory, made searchable — one HTML file, offline, no account, no server
 
@@ -39,7 +39,7 @@
 ## What it is
 
 Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and the
-remedies that belong to it, graded. This is that book as **one 891 kB HTML file** — the
+remedies that belong to it, graded. This is that book as **one 918 kB HTML file** — the
 stylesheet, the script and the whole dataset inline. Open it in a browser and it runs; there is
 no install, no build step, no server and no account.
 
@@ -76,6 +76,11 @@ edition, and the remedies split by grade — ready to paste into a case note. Th
 prefatory note is quoted in full in About, because it explains the arrangement better than any
 summary could.
 
+**Checked against the source.** Every rubric was aligned to a complete transcription of the 1927
+text and compared remedy by remedy, grade by grade: **5,319 of 5,415** are identical, and the **96**
+that differ are listed in the app with the source's own line and the exact disagreement. About →
+Source check shows the totals; the ⚠ mark on a row means "look here". See [`SOURCES.md`](SOURCES.md).
+
 **Refuses to phone home.** No account · no server · no network after load · no external assets ·
 no telemetry · no silent updates.
 
@@ -83,6 +88,11 @@ no telemetry · no silent updates.
 toast and print heading — is available in **English, Hindi and Gujarati**, chosen in Settings.
 Boericke's text itself stays in the original English: translating the rubrics would be inventing
 a source.
+
+## What's new in 1.5.0
+
+Every rubric verified against the 1927 text · the 96 disagreements published, not hidden · the
+verdict shown in the citation sheet.
 
 ## What's new in 1.4.0
 
@@ -140,18 +150,18 @@ docs/play/manifest.webmanifest
 docs/play/icon.png          the mark app-builder embeds in the .exe and .apk
 docs/assets/                screenshots, local SVG badges, generated icons
 docs/ROADMAP.md             the offline-only enhancement list
-SOURCES.md                  provenance: what came from where, and what could not
+SOURCES.md                  provenance: what came from where, how it was verified, what could not
 scripts/badges.py           draws docs/assets/badge-*.svg — no image service
 scripts/icons.py            rasterises the icon: PNG sizes, .ico, adaptive layers
 scripts/social.py           draws the 1280x630 social card
 scripts/shot.sh             headless-Chromium screenshots of both surfaces
 scripts/check.sh            syntax check + self-test + vault test, one command
-scripts/selftest.html       27 assertions driving the app through its own API
+scripts/selftest.html       32 assertions driving the app through its own API
 scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
-bash scripts/check.sh         # syntax + 27 browser assertions + 6 crypto assertions
+bash scripts/check.sh         # syntax + 32 browser assertions + 6 crypto assertions
 python3 scripts/badges.py     # regenerate the badges
 python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers
 bash scripts/shot.sh landing  # screenshot the landing page

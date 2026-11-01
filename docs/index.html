@@ -543,7 +543,8 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
         <p>Patient details, notes and prescription sit with the selection and the chart. Lock
         them with a passphrase and they are sealed with <b>AES-256-GCM</b> in the browser — the
         key is never stored. Print a one-page case sheet, export JSON or CSV, or copy a citation
-        for any rubric that names the edition and the grades.</p>
+        for any rubric that names the edition and the grades &mdash; and a source check that says
+        whether the rubric matches the 1927 text exactly.</p>
       </div>
     </div>
   </div>
@@ -584,7 +585,7 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
 <section class="band" id="release">
   <div class="wrap two">
     <div>
-      <p class="eyebrow">Release 1.4.0 &middot; 1 November 2026</p>
+      <p class="eyebrow">Release 1.5.0 &middot; 1 November 2026</p>
       <h2>What changed</h2>
       <p style="margin-top:14px">The repertory got the things a working repertory needs: a
       search you can query, a chart that can eliminate, and cases that can be locked. Every one
@@ -606,6 +607,7 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
         <li><b>Service worker, installable, build stamp</b><span>network-first HTML, so a new release is never hidden by the cache</span></li>
         <li><b>Hindi and Gujarati interface</b><span>the chrome in three languages; Boericke's text stays in the original English</span></li>
         <li><b>A citation for any rubric</b><span>path, chapter, edition and the grade split, ready to paste into a case note &mdash; and the author's own prefatory note, quoted in full</span></li>
+        <li><b>Every rubric checked against the source</b><span>5,319 of 5,415 rubrics match the 1927 text remedy for remedy and grade for grade; the 96 that differ are listed, with the source's own line</span></li>
       </ul>
     </div>
   </div>
@@ -702,7 +704,7 @@ footer { background: var(--band-bg); color: var(--band-text-2); padding: 54px 0 
     <p class="disc">Provided as is, for study and reference by qualified practitioners. Not a
     substitute for professional homoeopathic or medical judgment.</p>
     <div class="stamp">
-      <span>Landing page build <b id="build">2026-11-01</b> · app v1.4.0 · no network requests</span>
+      <span>Landing page build <b id="build">2026-11-01</b> · app v1.5.0 · no network requests</span>
       <span>Content © Oscar E. Boericke (1927) · design &amp; application © 2026 Dr. Sohil Momin</span>
     </div>
   </div>

@@ -30,7 +30,7 @@ BADGES = [
     ("chapters", "chapters",  "25",             SLATE),
     ("offline",  "offline",   "no network",     GREEN),
     ("deps",     "deps",      "0 runtime",      GREEN),
-    ("file",     "single file", "891 kB",       INK),
+    ("file",     "single file", "918 kB",       INK),
     ("licence",  "licence",   "free · credit",  COPPER),
 ]
 

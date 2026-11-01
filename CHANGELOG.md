@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.5.0 — 2026-11-01
+
+**Every rubric is now checked against the source.** A complete transcription of the same
+public-domain 1927 text was obtained (see `SOURCES.md`), every rubric was aligned to its line, and
+the remedies and grades were compared one by one:
+
+- **5,415** rubrics carry remedies; **5,408** align to a line in the source (99.9%).
+- **5,319** are identical — same remedies, same grades (98.2%).
+- **96** differ, and **every one is listed in the app** with the source's own line and exactly what
+  disagrees: a remedy in the book missing here, a remedy here not in the book, or a grade that
+  disagrees. They are also marked ⚠ on the result row.
+
+The citation sheet now carries the verdict for the rubric you are looking at, and **About → Source
+check** shows the totals with a list of every difference. The whole check costs 22 kB, because
+source lines are carried only where they disagree.
+
+This replaces the "not shippable" note from 1.4.0: the earlier attempt failed because every
+homeoint chapter page truncates at a fixed response budget, which `SOURCES.md` still records — the
+verification text came from a complete transcription published on GitHub instead.
+
+**Also** — five new assertions (32 browser assertions now), and the seven new interface strings are
+translated into Hindi and Gujarati.
+
+
 ## 1.4.0 — 2026-11-01
 
 **A citation for any rubric.** Press the new `❝` button on a result row and the app produces a

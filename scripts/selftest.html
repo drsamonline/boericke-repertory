@@ -113,6 +113,17 @@ function run() {
     ok("D2 citation carries the path and grades", cite.indexOf("Chapter:") !== -1 && /Grade [12]/.test(cite));
     ok("D2 prefatory note is in the app", /How the repertory is arranged/.test(w.document.body.textContent));
 
+    /* D2 — the source check: every rubric verified against the 1927 text */
+    var SCd = w.SRCCHECK;
+    ok("D2 source-check data shipped", !!SCd && SCd.withRem > 5000, SCd ? (SCd.withRem + " rubrics") : "absent");
+    ok("D2 most rubrics verify identical", SCd && SCd.identicalRem / SCd.withRem > 0.95,
+       SCd ? (SCd.identicalRem + "/" + SCd.withRem) : "");
+    var diffIdx = Object.keys(SCd.diffs)[0];
+    ok("D2 a difference carries the source line", !!br.srcDiff(+diffIdx) && !!br.srcDiff(+diffIdx).line,
+       diffIdx ? br.srcDiff(+diffIdx).line.slice(0, 40) : "");
+    ok("D2 an identical rubric reports identical", br.srcIdentical(0) || br.srcIdentical(1) || br.srcIdentical(2) || br.srcIdentical(3));
+    ok("D2 source check is in About", /Source check/.test(w.document.body.textContent));
+
   /* The vault's crypto round-trip is tested in scripts/vault_test.mjs: WebCrypto
      promises do not settle under Chromium's virtual clock, so a browser harness
      would report a false failure. The browser checks what it can: no vault by

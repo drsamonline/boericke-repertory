@@ -36,6 +36,7 @@ is designed but not built; **declined** means it was considered and rejected wit
 | D1 | **Remedy alias table** | *Gelsemium* finds *Gels*; partial by design, it only ever widens a search |
 | D4 | **Data audit panel** | recomputed in the app from the embedded dataset |
 | D2b | **A citation for any rubric** | path, chapter, edition and the grade split, copyable offline — generated from the chart's own data so it cannot drift |
+| D2c | **Every rubric verified against the source** | all 5,415 remedy-bearing rubrics aligned; 5,319 identical; the 96 that differ are listed with the source's own line and marked ⚠ on the row |
 | E1 | **Table semantics and a focus trap** | `scope`, `caption`, trapped Tab in both overlays |
 | E2 | **Text size control** | three steps, remembered |
 | E3 | **Hindi and Gujarati interface** | the chrome in three languages, 76 keys, keyed by the English string so a gap falls back to English; the repertory text is never translated |
@@ -62,7 +63,6 @@ is designed but not built; **declined** means it was considered and rejected wit
 |---|---|---|
 | C4 | **Search index in a Web Worker** | **measured and declined.** A full scan of all 6,110 rubrics averages **2.75 ms** (`node` benchmark, 80 runs) — well inside one frame. A worker would add a second copy of the index and a `postMessage` round trip for no perceptible gain. Revisit only if a second book is bundled. |
 | C6 | **Print the whole repertory** | 6,110 rubrics is a book, not a sheet. A generated PDF is the honest artefact; the print stylesheet is tuned for a case sheet instead. |
-| D2 | **Original source line per rubric** | **attempted, not shippable.** Every chapter page of the digitisation returns truncated at a fixed response budget, so a chapter cannot be retrieved whole; partial alignment was rejected because a quotation present on some rubrics and absent on others reads as though the source were silent. The evidence and the reasoning are in [`SOURCES.md`](../SOURCES.md). |
 | D3 | **Chapter introductions from the book** | **delivered as the prefatory note** — the author's own five rules, quoted in full in About. There is no separate per-chapter introduction in the digitisation, and inventing one would be writing the book. |
 | D5 | **A second repertory (Kent, Boenninghausen)** | the shell is book-agnostic, but a second dataset of this size cannot be obtained whole by the same route, and bundling it would roughly double a single file that is deliberately one file. |
 | — | **Cloud sync or accounts** | a patient record that syncs is a patient record that leaks. |
