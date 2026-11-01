@@ -2,7 +2,7 @@
 
 # Boericke's Repertory
 
-<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 918 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
+<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 903 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
 
 ### A classic clinical repertory, made searchable — one HTML file, offline, no account, no server
 
@@ -39,7 +39,7 @@
 ## What it is
 
 Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and the
-remedies that belong to it, graded. This is that book as **one 918 kB HTML file** — the
+remedies that belong to it, graded. This is that book as **one 903 kB HTML file** — the
 stylesheet, the script and the whole dataset inline. Open it in a browser and it runs; there is
 no install, no build step, no server and no account.
 
@@ -84,10 +84,10 @@ Source check shows the totals; the ⚠ mark on a row means "look here". See [`SO
 **Refuses to phone home.** No account · no server · no network after load · no external assets ·
 no telemetry · no silent updates.
 
-**In three languages.** The interface — every tab, button, label, placeholder, empty state,
-toast and print heading — is available in **English, Hindi and Gujarati**, chosen in Settings.
-Boericke's text itself stays in the original English: translating the rubrics would be inventing
-a source.
+## What's new in 1.6.0
+
+English-only interface · elimination by repertory section · patient visit history with a "New
+visit" action · a versioned release strip on the landing page.
 
 ## What's new in 1.5.1
 
@@ -106,7 +106,7 @@ recording what came from where, and what could not be obtained.
 
 ## What's new in 1.3.0
 
-Hindi and Gujarati interface · `?lang=` deep links · the release pipeline now embeds the real icon
+The interface briefly shipped in three languages (removed in 1.6.0 — English only) · `?lang=` deep links · the release pipeline now embeds the real icon
 (`docs/play/icon.png` is the file `app-builder` looks for first).
 
 ## What's new in 1.2.0
@@ -162,12 +162,12 @@ scripts/social.py           draws the 1280x630 social card
 scripts/shot.sh             headless-Chromium screenshots of both surfaces
 scripts/check.sh            syntax check + self-test + vault test, one command
 scripts/audit.py            every claim in this repo, checked against this repo
-scripts/selftest.html       32 assertions driving the app through its own API
+scripts/selftest.html       28 assertions driving the app through its own API
 scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
-bash scripts/check.sh         # syntax + 32 browser assertions + 6 crypto assertions
+bash scripts/check.sh         # syntax + 28 browser assertions + 6 crypto assertions
 python3 scripts/audit.py      # 28 checks: offline promise, versions, counts, links
 python3 scripts/badges.py     # regenerate the badges
 python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers

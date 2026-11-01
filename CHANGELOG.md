@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.6.0 — 2026-11-01
+
+**The interface is English only.** The Hindi and Gujarati dictionaries, the language row in
+Settings, the `?lang=` deep link and the translation walker are gone — about 5 kB of code and 180
+translated strings removed. The decision: the app is for a practitioner reading Boericke, and one
+language done properly beats a half-translated clinical interface. The repertory text was never
+translated and still is not.
+
+**Elimination by repertory section.** The must-have rubrics now have a rule: *every rubric*, or
+*one per chapter*. Under the second, a remedy has to appear in at least one must rubric from each
+chapter that has one — which is how a case is actually reasoned when a symptom is required in the
+mental picture **and** in the generals. The choice is remembered between sessions.
+
+**Visit history per patient.** Each patient heading now shows its visit count and the date range
+covered, with a **New visit** button that pre-fills the patient, clears the clinical fields and
+leaves the earlier visit untouched.
+
+**A release strip on the landing page.** Six versions with dates and one line each, linking to the
+tags — the page is now a changelog you can read at a glance, not just a brochure.
+
+**Also** — the self-test is 28 assertions (the four language assertions retired with the feature),
+and the audit still passes 28 checks.
+
+
 ## 1.5.1 — 2026-11-01
 
 **A final audit, and it is now a script.** `scripts/audit.py` checks every claim the repository

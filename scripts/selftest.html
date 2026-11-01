@@ -93,21 +93,7 @@ function run() {
     return finish();
   }
 
-    /* E3 — the interface switches language, the repertory text does not */
-    var enTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
-    w.__br.setLang("hi");
-    var hiTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
-    ok("E3 Hindi tab label", hiTab !== enTab && /[\u0900-\u097F]/.test(hiTab), hiTab);
-    var hiRow = w.document.querySelector("#res .rrow .nm");
-    ok("E3 rubric text stays English", !hiRow || !/[\u0900-\u097F]/.test(hiRow.textContent), hiRow ? hiRow.textContent.slice(0, 30) : "no rows");
-    w.__br.setLang("gu");
-    var guTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
-    ok("E3 Gujarati tab label", /[\u0A80-\u0AFF]/.test(guTab), guTab);
-    w.__br.setLang("en");
-    var backTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
-    ok("E3 switching back restores English", backTab === enTab, backTab);
-
-    /* D2 — provenance: a citation exists for any rubric, and it names the source */
+  /* D2 — provenance: a citation exists for any rubric, and it names the source */
     var cite = br.cite(idx[0]);
     ok("D2 citation names the edition", /Boericke's Repertory, Oscar E\. Boericke, M\.D\. \(1927\)/.test(cite), cite.split("\n")[0]);
     ok("D2 citation carries the path and grades", cite.indexOf("Chapter:") !== -1 && /Grade [12]/.test(cite));

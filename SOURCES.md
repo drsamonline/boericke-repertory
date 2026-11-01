@@ -72,7 +72,7 @@ dataset would roughly double the file for a second book rather than a better one
 ## How to verify any of this
 
 ```bash
-bash scripts/check.sh          # 32 browser assertions + 6 crypto assertions
+bash scripts/check.sh          # 28 browser assertions + 6 crypto assertions
 ```
 
 Five assertions cover the source check: that the data shipped, that more than 95% of rubrics verify

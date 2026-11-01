@@ -88,11 +88,9 @@ check("roadmap drops the second repertory", "second repertory" not in roadmap.lo
 check("roadmap has no 'next' row left undone", "| F8 |" in roadmap)
 
 # ---------- 8. i18n dictionaries agree ----------
-hi = re.search(r'hi:\s*\{(.*?)\n    \},\n    gu:', app, re.S).group(1)
-gu = re.search(r'gu:\s*\{(.*?)\n    \}\n  \};', app, re.S).group(1)
-n_hi = len(re.findall(r'^\s{4}"', hi, re.M)); n_gu = len(re.findall(r'^\s{4}"', gu, re.M))
-check("Hindi and Gujarati have the same number of keys", n_hi == n_gu, "%d vs %d" % (n_hi, n_gu))
-check("i18n has a useful number of keys", n_hi >= 80, n_hi)
+check("the interface is English only (no i18n layer)", not re.search(r'\bI18N\b|\bsetLang\b|\bLANG\b', app))
+check("no language switch left in the app", '?lang=' not in app and "data-seg=\"lang\"" not in app)
+check("no translated strings left in the app", not re.search(r'[\u0900-\u097F\u0A80-\u0AFF]', app))
 
 # ---------- 9. structural hygiene ----------
 prof = tempfile.mkdtemp()

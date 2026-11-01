@@ -23,8 +23,10 @@ is designed but not built; **declined** means it was considered and rejected wit
 | A7 | **Per-rubric notes** | kept on the device, keyed by rubric path |
 | A8 | **Similar rubrics** — computed, not curated | word overlap within a chapter, labelled a heuristic |
 | A9 | **Filter the chart** by remedy name | plus a must-only filter |
+| A4b | **Elimination by repertory section** | "must: every rubric" or "must: one per chapter", remembered between sessions |
 | B1 | **Encrypted vault** — AES-256-GCM, PBKDF2-SHA256 200,000 | key never stored; round trip tested in `scripts/vault_test.mjs` |
 | B2 | **Patient grouping and case search** | grouped by patient, searchable across notes, prescription and top remedies |
+| B2b | **Visit history per patient** | each patient shows its visit count and date range, with a **New visit** action that keeps the earlier one |
 | B3 | **Autosaved draft and undo** | `Ctrl`/`Cmd + Z`, 30 steps |
 | B4 | **One-page A4 case sheet** | `@media print`, `@page` margins, page-break rules |
 | B5 | **CSV of a chart, CSV of every case, JSON of everything** | plain-text exit from every screen |
@@ -39,7 +41,7 @@ is designed but not built; **declined** means it was considered and rejected wit
 | D2c | **Every rubric verified against the source** | all 5,415 remedy-bearing rubrics aligned; 5,319 identical; the 96 that differ are listed with the source's own line and marked ⚠ on the row |
 | E1 | **Table semantics and a focus trap** | `scope`, `caption`, trapped Tab in both overlays |
 | E2 | **Text size control** | three steps, remembered |
-| E3 | **Hindi and Gujarati interface** | the chrome in three languages, 76 keys, keyed by the English string so a gap falls back to English; the repertory text is never translated |
+| — | **Interface language** | English only, by decision: the app is for a practitioner reading Boericke, and a half-translated clinical interface is worse than one language done properly |
 | E4 | **High-contrast theme** | alongside light / dark / auto |
 | F1 | **One icon source, all sizes** | SVG → PNG 512/192/180/32, `.ico` |
 | F2 | **The release pipeline embeds the real mark** | `docs/play/icon.png` is the file `make_icons.py` reads first, so the `.exe` and `.apk` stop falling back to a monogram |
@@ -52,10 +54,7 @@ is designed but not built; **declined** means it was considered and rejected wit
 
 | # | Enhancement | Why it is not done yet |
 |---|---|---|
-| F7 | **A release strip on the landing page** | the page links the latest release; a full versioned history needs the tags to accumulate first |
 | F8 | **Repo social preview set from the card** | GitHub only accepts it from the web UI, not the API |
-| A4b | **Elimination by repertory section** | today a rubric is must or optional; sections of the case would be better |
-| B2b | **Multiple cases per patient, with a visit history** | the schema supports it; the UI does not show the thread yet |
 
 ## Declined, with the reason
 
