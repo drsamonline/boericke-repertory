@@ -2208,7 +2208,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
   }
 
   /* ---------- build stamp + service worker ---------- */
-  var BUILD = "Boericke's Repertory \u00b7 v1.5.0 \u00b7 build 2026-11-01";
+  var BUILD = "Boericke's Repertory \u00b7 v1.5.1 \u00b7 build 2026-11-01";
   function renderStamp() {
     var el = $("#build-stamp"); if (el) el.textContent = BUILD + " \u00b7 single file \u00b7 no network";
     var sw = $("#sw-state");
@@ -2710,11 +2710,6 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
      for each - so the cleaning is checkable at the rubric, not just in aggregate. */
   var SC = window.SRCCHECK || null;
 
-  function srcState(i) {
-    if (!SC || i < 0 || i >= SC.n) return "none";
-    var byte = SC.bits.charAt((i >> 3) * 1);
-    return "checked";
-  }
   function srcIdentical(i) {
     if (!SC) return false;
     var b64 = SC.bits, idx = i >> 3;
