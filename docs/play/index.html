@@ -1116,6 +1116,44 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     renderChips(); updateBadges(); renderTray(); renderCases(); buildChart();
     $("#c-save").disabled = !selected.length;
     $("#res").innerHTML = emptyState('Search the repertory to begin<br><span class="small">try <b>burning headache</b>, <b>thirst fever</b> or a remedy like <b>gels</b></span>');
+
+    /* ---------- deep links (dependency-free, works from file://) ----------
+       ?q=<terms>             run a search
+       ?pick=<n>              add the first n results to the chart
+       ?remedy=<name|index>   open the remedy sheet
+       ?tab=rep|chart|cases|about
+       Used by the landing page's guided demo; harmless when absent. */
+    function deepLink() {
+      var p = new URLSearchParams(location.search);
+      var q = p.get("q"), tab = p.get("tab"), pick = parseInt(p.get("pick") || "0", 10), rem = p.get("remedy");
+      if (q) { $("#q").value = q; doSearch(); }
+      if (pick > 0) {
+        var rows = $$("#res .rrow");
+        var n = Math.min(pick, rows.length);
+        for (var k = 0; k < n; k++) {
+          var i = parseInt(rows[k].getAttribute("data-i"), 10);
+          if (!isNaN(i) && SEL[i] && selected.indexOf(i) < 0) toggleSel(i);
+        }
+      }
+      if (rem) {
+        /* The source abbreviates (Gels, Nat. m), so accept either form:
+           an exact name, an abbreviation the query starts with, or a name
+           the query is a prefix of. Longest match wins. */
+        var idx = /^\d+$/.test(rem) ? parseInt(rem, 10) : -1, key = SEARCHKEY(rem), j, nm, best = -1, bestLen = -1;
+        if (idx < 0 && key) {
+          for (j = 0; j < R.remedies.length; j++) {
+            nm = SEARCHKEY(fixText(R.remedies[j]));
+            if (!nm) continue;
+            if (nm === key) { best = j; break; }
+            if ((nm.indexOf(key) === 0 || key.indexOf(nm) === 0) && nm.length > bestLen) { best = j; bestLen = nm.length; }
+          }
+          idx = best;
+        }
+        if (idx >= 0) openRemedy(idx);
+      }
+      if (tab) switchTab(tab);
+    }
+    try { deepLink(); } catch (e) { if (window.console && console.error) console.error("[Boericke] deep link:", e); }
   } catch (e) { if (window.console && console.error) console.error("[Boericke] init error:", e); }
 })();
 
@@ -1170,6 +1208,10 @@ window.addEventListener("error", function () { window.__bootError = true; });
   input,textarea,select{border-radius:6px !important}
   .card,[class*="card"]{border-radius:10px !important}
   button:not(.ghost):not(.tab){background:var(--acc) !important}
+  /* tabs are a segmented control, not primary buttons: the blanket rule above
+     was painting them accent-on-accent, so the active label disappeared. */
+  .tabs button[data-tab]{background:transparent !important;color:var(--mut) !important;box-shadow:none !important}
+  .tabs button[data-tab][aria-selected="true"]{background:var(--card) !important;color:var(--acc) !important}
 </style>
 </body>
 </html>
