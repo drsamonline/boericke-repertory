@@ -64,7 +64,6 @@ is designed but not built; **declined** means it was considered and rejected wit
 | C4 | **Search index in a Web Worker** | **measured and declined.** A full scan of all 6,110 rubrics averages **2.75 ms** (`node` benchmark, 80 runs) — well inside one frame. A worker would add a second copy of the index and a `postMessage` round trip for no perceptible gain. Revisit only if a second book is bundled. |
 | C6 | **Print the whole repertory** | 6,110 rubrics is a book, not a sheet. A generated PDF is the honest artefact; the print stylesheet is tuned for a case sheet instead. |
 | D3 | **Chapter introductions from the book** | **delivered as the prefatory note** — the author's own five rules, quoted in full in About. There is no separate per-chapter introduction in the digitisation, and inventing one would be writing the book. |
-| D5 | **A second repertory (Kent, Boenninghausen)** | the shell is book-agnostic, but a second dataset of this size cannot be obtained whole by the same route, and bundling it would roughly double a single file that is deliberately one file. |
 | — | **Cloud sync or accounts** | a patient record that syncs is a patient record that leaks. |
 | — | **"AI repertorisation"** | a ranked chart you cannot check by hand is worse than no chart. |
 | — | **Analytics, crash reporting, A/B tests** | there is no server to receive them, by design. |

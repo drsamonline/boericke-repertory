@@ -1,5 +1,33 @@
 # Changelog
 
+## 1.5.1 — 2026-11-01
+
+**A final audit, and it is now a script.** `scripts/audit.py` checks every claim the repository
+makes against the repository itself, reading the built files rather than the intent:
+
+- the app loads nothing from the network — no `src`/`href` to a remote host, no `fetch`, no
+  `XMLHttpRequest`, no `@import`, no external font; the landing page likewise;
+- the version agrees in five places — `VERSION`, the app's build stamp, the service-worker `CACHE`,
+  the landing page footer, and the top entry of this changelog;
+- the counts in the README are the counts in the data (6,110 / 1,461 / 25), and the source-check
+  totals in README and `SOURCES.md` are the ones the app actually ships (5,415 / 5,319);
+- the assertion count quoted in the docs is the number of assertions in `selftest.html`;
+- every local `src`/`href` in both surfaces resolves to a file that exists, and every file listed
+  in the README tree exists;
+- the Hindi and Gujarati dictionaries have the same number of keys;
+- no element id is duplicated in the rendered page (checked against the DOM, with the inline
+  scripts stripped — counting ids in the source counts the same id twice whenever it appears in two
+  branches of a ternary, which is not a defect).
+
+28 checks, all passing. It caught three things, all now fixed.
+
+**The second repertory is off the roadmap.** This app is one book. A second dataset would roughly
+double a file whose entire value is being one file, so the plan is gone from `ROADMAP.md` and the
+scope is stated plainly in `SOURCES.md`.
+
+**Dead code removed** — an unused helper left over from the source-check work.
+
+
 ## 1.5.0 — 2026-11-01
 
 **Every rubric is now checked against the source.** A complete transcription of the same

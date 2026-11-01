@@ -63,11 +63,11 @@ homeoint.org directly (the host is not on the egress allowlist). That is why the
 a complete transcription obtained through GitHub instead — the same public-domain text, in a form
 that can actually be read whole.
 
-## What is still not here
+## Scope
 
-**A second repertory (Kent, Boenninghausen).** The shell is book-agnostic, but no second dataset of
-this size was obtained, and bundling one would roughly double a file whose whole value is being one
-file. It stays a plan, not a promise.
+This is **one book**. A second repertory is not planned: the app's value is a single file that opens
+with no signal and produces a chart a practitioner can check by hand against the page, and a second
+dataset would roughly double the file for a second book rather than a better one.
 
 ## How to verify any of this
 

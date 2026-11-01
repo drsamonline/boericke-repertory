@@ -89,6 +89,11 @@ toast and print heading — is available in **English, Hindi and Gujarati**, cho
 Boericke's text itself stays in the original English: translating the rubrics would be inventing
 a source.
 
+## What's new in 1.5.1
+
+A final audit as a script (`scripts/audit.py`, 28 checks) · the second-repertory plan removed ·
+dead code removed.
+
 ## What's new in 1.5.0
 
 Every rubric verified against the 1927 text · the 96 disagreements published, not hidden · the
@@ -156,12 +161,14 @@ scripts/icons.py            rasterises the icon: PNG sizes, .ico, adaptive layer
 scripts/social.py           draws the 1280x630 social card
 scripts/shot.sh             headless-Chromium screenshots of both surfaces
 scripts/check.sh            syntax check + self-test + vault test, one command
+scripts/audit.py            every claim in this repo, checked against this repo
 scripts/selftest.html       32 assertions driving the app through its own API
 scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
 bash scripts/check.sh         # syntax + 32 browser assertions + 6 crypto assertions
+python3 scripts/audit.py      # 28 checks: offline promise, versions, counts, links
 python3 scripts/badges.py     # regenerate the badges
 python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers
 bash scripts/shot.sh landing  # screenshot the landing page

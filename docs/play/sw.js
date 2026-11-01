@@ -7,7 +7,7 @@
  *
  * SPDX-FileCopyrightText: 2026 Dr Sohil Momin
  */
-var CACHE = "boericke-1.5.0";
+var CACHE = "boericke-1.5.1";
 var ASSETS = [
   "./",
   "./index.html",
