@@ -7,13 +7,14 @@
  *
  * SPDX-FileCopyrightText: 2026 Dr Sohil Momin
  */
-var CACHE = "boericke-1.2.0";
+var CACHE = "boericke-1.3.0";
 var ASSETS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./sw.js",
   "../icon.svg",
+  "./icon.png",
   "../assets/icon-192.png",
   "../assets/icon-512.png"
 ];

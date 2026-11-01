@@ -10,7 +10,7 @@ is designed but not built; **declined** means it was considered and rejected wit
 
 ---
 
-## Delivered in 1.2.0
+## Delivered
 
 | # | Enhancement | Note |
 |---|---|---|
@@ -37,9 +37,10 @@ is designed but not built; **declined** means it was considered and rejected wit
 | D4 | **Data audit panel** | recomputed in the app from the embedded dataset |
 | E1 | **Table semantics and a focus trap** | `scope`, `caption`, trapped Tab in both overlays |
 | E2 | **Text size control** | three steps, remembered |
+| E3 | **Hindi and Gujarati interface** | the chrome in three languages, 76 keys, keyed by the English string so a gap falls back to English; the repertory text is never translated |
 | E4 | **High-contrast theme** | alongside light / dark / auto |
 | F1 | **One icon source, all sizes** | SVG → PNG 512/192/180/32, `.ico` |
-| F2 | **Windows `.ico` with six embedded sizes** | asset ready; still to be wired into `app-builder` |
+| F2 | **The release pipeline embeds the real mark** | `docs/play/icon.png` is the file `make_icons.py` reads first, so the `.exe` and `.apk` stop falling back to a monogram |
 | F3 | **Android adaptive icon layers** | foreground inside the 62% safe zone + background |
 | F4 | **Locally drawn social card** | replaced the external socialify image |
 | F5 | **Tagged release with notes** | `v1.2.0`, not just the rolling `app-latest` |
@@ -53,7 +54,6 @@ is designed but not built; **declined** means it was considered and rejected wit
 | F8 | **Repo social preview set from the card** | GitHub only accepts it from the web UI, not the API |
 | A4b | **Elimination by repertory section** | today a rubric is must or optional; sections of the case would be better |
 | B2b | **Multiple cases per patient, with a visit history** | the schema supports it; the UI does not show the thread yet |
-| E3 | **Hindi and Gujarati interface** | needs a string-by-string pass through ~1,200 lines of inline markup and script; a half-translated interface reads as broken, so it is one dedicated pass, not a slice of another one |
 
 ## Declined, with the reason
 

@@ -85,12 +85,27 @@ function run() {
     ok("D4 audit rendered", audit >= 7, "cells=" + audit);
 
     /* build stamp */
-    ok("build stamp present", /v1\.2\.0/.test(w.document.querySelector("#build-stamp").textContent));
+    ok("build stamp present", /\bv\d+\.\d+\.\d+\b/.test(w.document.querySelector("#build-stamp").textContent),
+       w.document.querySelector("#build-stamp").textContent);
   } catch (e) {
     fail++;
     lines.push("FAIL threw: " + e.message + "\n" + (e.stack || "").split("\n").slice(0, 3).join("\n"));
     return finish();
   }
+
+    /* E3 — the interface switches language, the repertory text does not */
+    var enTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
+    w.__br.setLang("hi");
+    var hiTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
+    ok("E3 Hindi tab label", hiTab !== enTab && /[\u0900-\u097F]/.test(hiTab), hiTab);
+    var hiRow = w.document.querySelector("#res .rrow .nm");
+    ok("E3 rubric text stays English", !hiRow || !/[\u0900-\u097F]/.test(hiRow.textContent), hiRow ? hiRow.textContent.slice(0, 30) : "no rows");
+    w.__br.setLang("gu");
+    var guTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
+    ok("E3 Gujarati tab label", /[\u0A80-\u0AFF]/.test(guTab), guTab);
+    w.__br.setLang("en");
+    var backTab = w.document.querySelector('.tabs button[data-tab="rep"]').textContent.trim();
+    ok("E3 switching back restores English", backTab === enTab, backTab);
 
   /* The vault's crypto round-trip is tested in scripts/vault_test.mjs: WebCrypto
      promises do not settle under Chromium's virtual clock, so a browser harness

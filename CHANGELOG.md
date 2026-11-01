@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.3.0 — 2026-11-01
+
+**The interface in Hindi and Gujarati.** The chrome — tabs, buttons, labels, placeholders, empty
+states, toasts, chart headings, the print sheet and the settings panel — is now in English, Hindi
+and Gujarati, chosen in Settings and remembered under `br_lang`. The repertory text itself stays in
+Boericke's English: translating the rubrics would be inventing a source. Strings are keyed by their
+English form, so a missing key falls back to English rather than to a blank, and the four new
+assertions in `scripts/check.sh` prove the switch works in both directions without touching the
+rubric text.
+
+**The release pipeline now carries the real mark.** `docs/play/icon.png` is the file
+`app-builder`'s `make_icons.py` looks for first, so the portable `.exe` and the `.apk` pick up the
+book icon instead of the deterministic monogram fallback. Nothing in the kit changed; the app repo
+was simply missing the file it reads.
+
+**Also** — `?lang=hi` / `?lang=gu` deep links, so a language can be linked or bookmarked.
+
+
 ## 1.2.0 — 2026-11-01
 
 Everything below runs inside the same single file. No dependency was added, no request is

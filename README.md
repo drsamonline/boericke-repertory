@@ -2,7 +2,7 @@
 
 # Boericke's Repertory
 
-<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 889 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
+<img src="docs/assets/badge-rubrics.svg" alt="rubrics: 6,110" height="22"> <img src="docs/assets/badge-remedies.svg" alt="remedies: 1,461" height="22"> <img src="docs/assets/badge-chapters.svg" alt="chapters: 25" height="22"> <img src="docs/assets/badge-offline.svg" alt="offline: no network" height="22"> <img src="docs/assets/badge-deps.svg" alt="dependencies: 0 runtime" height="22"> <img src="docs/assets/badge-file.svg" alt="single file: 885 kB" height="22"> <img src="docs/assets/badge-licence.svg" alt="licence: free use, attribution required" height="22">
 
 ### A classic clinical repertory, made searchable — one HTML file, offline, no account, no server
 
@@ -39,7 +39,7 @@
 ## What it is
 
 Boericke's *Repertory* is the index to a homeopathic practice: a symptom path, a rubric, and the
-remedies that belong to it, graded. This is that book as **one 889 kB HTML file** — the
+remedies that belong to it, graded. This is that book as **one 885 kB HTML file** — the
 stylesheet, the script and the whole dataset inline. Open it in a browser and it runs; there is
 no install, no build step, no server and no account.
 
@@ -73,6 +73,16 @@ per-rubric notes, and computed "similar rubrics" for a rubric you are unsure abo
 
 **Refuses to phone home.** No account · no server · no network after load · no external assets ·
 no telemetry · no silent updates.
+
+**In three languages.** The interface — every tab, button, label, placeholder, empty state,
+toast and print heading — is available in **English, Hindi and Gujarati**, chosen in Settings.
+Boericke's text itself stays in the original English: translating the rubrics would be inventing
+a source.
+
+## What's new in 1.3.0
+
+Hindi and Gujarati interface · `?lang=` deep links · the release pipeline now embeds the real icon
+(`docs/play/icon.png` is the file `app-builder` looks for first).
 
 ## What's new in 1.2.0
 
@@ -117,6 +127,7 @@ docs/index.html             the landing page (its own design, not the app's)
 docs/play/index.html        the app as deployed
 docs/play/sw.js             service worker: network-first HTML, cache-first assets
 docs/play/manifest.webmanifest
+docs/play/icon.png          the mark app-builder embeds in the .exe and .apk
 docs/assets/                screenshots, local SVG badges, generated icons
 docs/ROADMAP.md             the offline-only enhancement list
 scripts/badges.py           draws docs/assets/badge-*.svg — no image service
@@ -124,12 +135,12 @@ scripts/icons.py            rasterises the icon: PNG sizes, .ico, adaptive layer
 scripts/social.py           draws the 1280x630 social card
 scripts/shot.sh             headless-Chromium screenshots of both surfaces
 scripts/check.sh            syntax check + self-test + vault test, one command
-scripts/selftest.html       20 assertions driving the app through its own API
+scripts/selftest.html       24 assertions driving the app through its own API
 scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
-bash scripts/check.sh         # syntax + 20 browser assertions + 6 crypto assertions
+bash scripts/check.sh         # syntax + 24 browser assertions + 6 crypto assertions
 python3 scripts/badges.py     # regenerate the badges
 python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers
 bash scripts/shot.sh landing  # screenshot the landing page
