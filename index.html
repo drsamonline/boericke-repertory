@@ -482,6 +482,23 @@ html[data-theme="contrast"] .rrow.sel { outline: 2px solid #000; }
 /* chart tools */
 .charttools { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:12px; }
 .mustlbl { flex:1 1 220px; min-width:180px; line-height:1.35; }
+
+.citebox {
+  margin: 0; padding: 14px 16px; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  color: var(--text); max-height: 46vh; overflow: auto;
+}
+.srcnote {
+  margin: 14px 0 0; padding: 14px 18px; border-left: 3px solid var(--accent);
+  background: var(--accent-soft); border-radius: 0 10px 10px 0; font-size: 13.5px;
+  line-height: 1.62; color: var(--text-2);
+}
+.srcnote p { margin: 0 0 10px; }
+.srcnote p:last-child { margin-bottom: 0; }
+.srcnote b { color: var(--text); }
+
 .charttools input[type="search"] {
   flex:1 1 180px; min-width:140px; padding:8px 11px; font:inherit; font-size:13px;
   border:1px solid var(--border-2); border-radius:8px; background:var(--surface); color:var(--text);
@@ -554,9 +571,8 @@ tr.mustmiss td, tr.mustmiss th { opacity:.45; }
   border:1px solid var(--border-2); border-radius:9px; background:var(--surface-2); color:var(--text); resize:vertical; }
 
 /* data audit */
-.audit { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--surface); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-top:12px; }
-.audit div { border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
-.audit div { background:var(--surface); padding:12px 14px; }
+.audit { display:flex; flex-wrap:wrap; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; margin-top:12px; }
+.audit div { flex:1 1 150px; background:var(--surface); padding:12px 14px; }
 .audit b { display:block; font-family:ui-monospace,monospace; font-size:1.05rem; }
 .audit span { font-size:11px; color:var(--text-3); letter-spacing:.06em; text-transform:uppercase; }
 .stamp { font-family:ui-monospace,monospace; font-size:11px; color:var(--text-3); margin-top:14px; }
@@ -727,6 +743,17 @@ tr.mustmiss td, tr.mustmiss th { opacity:.45; }
       <h3 class="sec">How to repertorise</h3>
       <p>1. In <b>Repertory</b>, search symptoms and tap every rubric that matches the case. 2. Open <b>Repertorisation</b>: remedies are scored across the selected rubrics (grade 2 = 2 points, grade 1 = 1 point) and ranked by total. 3. Fill in the case details and your prescription, then <b>Save repertorisation</b>. Saved cases can be reloaded, printed, exported or imported back as JSON.</p>
       <p class="muted small">Tip: tap any remedy chip inside a rubric to see every rubric that lists it. Press <kbd>/</kbd> anywhere to jump to search.</p>
+
+      <h3 class="sec">How the repertory is arranged</h3>
+      <p class="muted small" style="margin-top:-4px">Oscar Boericke's own prefatory note, quoted in full from the 1927 edition. It is the clearest explanation of why a rubric path looks the way it does.</p>
+      <blockquote class="srcnote">
+        <p><b>1. The order of the sections.</b> &ldquo;In conformity with established repertorial methods, the division of the sections in somewhat the old Hahnemannian order is adhered to, and may be stated as follows: Mind; Head; Eyes; Ears, etc.&rdquo;</p>
+        <p><b>2. Alphabetical within a section.</b> &ldquo;For the purpose of convenience, solely, headings and sub-headings and specific conditions or symptoms comprised under the latter are arranged in alphabetical order &hellip; under Mind the headings read, Awkward, brain-fag, catalepsy, etc.; likewise the heading Delirium embraces its various phases in alphabetical order.&rdquo;</p>
+        <p><b>3. The captions under a big heading.</b> &ldquo;All headings when extensive in scope &mdash; e.g., Headache, are presented under definite captions in the following order: Cause, Type, Location, Character of pain, Concomitants, Modalities &mdash; i.e., Aggravations and Ameliorations. &hellip; some headings include only a few, whereas others include all of these divisions.&rdquo;</p>
+        <p><b>4. Disease names are bracketed.</b> &ldquo;To preserve uniformity, the technical names of diseases are bracketed, thereby assuming a subsidiary place, which is in strict accord with the hom&oelig;opathic requirement, to prescribe for the symptoms of each specific case, and not for a mere name of a disease.&rdquo;</p>
+        <p><b>5. What the italics mean.</b> &ldquo;The remedies are arranged in alphabetical order, and the italics indicate the more frequently verified clinical remedy. The abbreviations of the remedies are purely arbitrary and self-explanatory.&rdquo;</p>
+        <p class="muted small" style="margin-bottom:0">&mdash; Oscar E. Boericke, M.D., Philadelphia, June 1927. Public-domain text, digitised by M&eacute;di-T (2000).</p>
+      </blockquote>
 
       <h3 class="sec">Grade legend</h3>
       <p><span class="rem g2">Italic remedy</span> &mdash; grade 2: &ldquo;the more frequently verified clinical remedy&rdquo; (prefatory note).<br><span class="rem g1">Plain remedy</span> &mdash; grade 1: listed in the rubric.</p>
@@ -1096,6 +1123,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
         '<div class="rowacts">' +
           '<button class="ract" type="button" data-note="' + i + '" title="Add a note to this rubric" aria-label="Note">\u270E</button>' +
           '<button class="ract" type="button" data-sim="' + i + '" title="Find similar rubrics" aria-label="Similar">\u2248</button>' +
+          '<button class="ract" type="button" data-cite="' + i + '" title="Cite this rubric" aria-label="Cite">\u275D</button>' +
           '<button class="ract" type="button" data-must="' + i + '" title="Mark as must-have" aria-pressed="' + (MUST[i] ? "true" : "false") + '" aria-label="Must-have">' + (MUST[i] ? "\u2605" : "\u2606") + '</button>' +
         "</div>" +
         '<button class="expand" type="button" tabindex="-1" aria-label="Show remedies"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>' +
@@ -2159,7 +2187,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
   }
 
   /* ---------- build stamp + service worker ---------- */
-  var BUILD = "Boericke's Repertory \u00b7 v1.3.0 \u00b7 build 2026-11-01";
+  var BUILD = "Boericke's Repertory \u00b7 v1.4.0 \u00b7 build 2026-11-01";
   function renderStamp() {
     var el = $("#build-stamp"); if (el) el.textContent = BUILD + " \u00b7 single file \u00b7 no network";
     var sw = $("#sw-state");
@@ -2226,6 +2254,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
         if (ract.dataset.note != null) { editNote(+ract.dataset.note); return; }
         if (ract.dataset.sim != null) { showSimilar(+ract.dataset.sim); return; }
         if (ract.dataset.must != null) { toggleMust(+ract.dataset.must); return; }
+        if (ract.dataset.cite != null) { openCite(+ract.dataset.cite); return; }
       }
     }, true);
 
@@ -2297,7 +2326,7 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     wipe: function () { try { LS.removeItem(VKEY); LS.removeItem(CASES_KEY); LS.removeItem(K_MUST); LS.removeItem(K_NOTES); LS.removeItem(K_SEARCHES); LS.removeItem(K_DRAFT); LS.removeItem(K_EXPORTED); } catch (e) {} },
     cases: loadCases, setCase: function (cs) { storeCases(cs); },
     renderCases: renderCases, setTab: switchTab, refresh: function () { renderCases(); buildChart(); },
-    setLang: setLang, lang: function () { return LANG; }, undo: undo, version: BUILD
+    setLang: setLang, lang: function () { return LANG; }, cite: citeFor, showCite: openCite, undo: undo, version: BUILD
   };
 
 
@@ -2403,7 +2432,12 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     "must-have rubric": "मस्ट-हैव रूब्रिक",
     "Top": "टॉप",
     "Notes": "नोट्स",
-    "Rx": "Rx"
+    "Rx": "Rx",
+    "Cite": "साइट",
+    "Copy": "कॉपी",
+    "Copied": "कॉपी हो गया",
+    "How the repertory is arranged": "रेपर्टरी को कैसे व्यवस्थित किया गया है",
+    "Copy citation": "साइटेशन कॉपी करें"
     },
     gu: {
     "Repertory": "રેપર્ટરી",
@@ -2497,7 +2531,12 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     "must-have rubric": "મસ્ટ-હેવ રૂબ્રિક",
     "Top": "ટોપ",
     "Notes": "નોંધો",
-    "Rx": "Rx"
+    "Rx": "Rx",
+    "Cite": "સાઇટેશન",
+    "Copy": "કૉપિ કરો",
+    "Copied": "કૉપિ થઈ ગઈ",
+    "How the repertory is arranged": "રિપર્ટરી કેવી રીતે ગોઠવવામાં આવે છે",
+    "Copy citation": "સાઇટેશનની નકલ કરો"
     }
   };
 
@@ -2569,6 +2608,61 @@ window.REPERTORY={"meta":{"title":"Boericke's Clinical Repertory","book":"Repert
     var b = $("#c-lock");
     if (b) b.textContent = t(vaultRecord() ? (vaultLocked ? "Unlock" : "Remove lock") : "Lock cases");
     toast(LANG === "en" ? "Language: English" : LANG === "hi" ? "भाषा: हिन्दी" : "ભાષા: ગુજરાતી");
+  }
+
+
+  /* ---------- D2: provenance ----------
+     A line-level quotation of the source is not obtainable: every chapter page of
+     the digitisation returns truncated mid-sentence through the fetch tools (see
+     SOURCES.md), so a per-rubric quotation could only be partly aligned - and a
+     partly aligned quotation beside a clinical rubric is worse than none. What is
+     exact, and what this ships, is the citation: where in the book the rubric
+     sits, which edition, and what the grades mean. */
+  function citeFor(i) {
+    var rb = R.rubrics[i], lines = [];
+    lines.push(PATHS[i]);
+    lines.push("");
+    lines.push("Boericke's Repertory, Oscar E. Boericke, M.D. (1927)");
+    lines.push("Chapter: " + CHAPNAME[rb.c]);
+    lines.push("Rubric: " + PATHS[i].split(" \u203A ").join(" > "));
+    if (rb.m && rb.m.length) {
+      var g2 = [], g1 = [];
+      rb.m.forEach(function (x) { (x[1] === 2 ? g2 : g1).push(fixText(R.remedies[x[0]])); });
+      if (g2.length) lines.push("Grade 2 (the more frequently verified clinical remedy): " + g2.join(", "));
+      if (g1.length) lines.push("Grade 1: " + g1.join(", "));
+    }
+    lines.push("");
+    lines.push("Digitised from the public-domain edition at homeoint.org (M\u00e9di-T).");
+    lines.push("Application: Boericke's Repertory, digital edition \u2014 Dr. Sohil Momin.");
+    return lines.join("\n");
+  }
+
+  function openCite(i) {
+    var txt = citeFor(i);
+    var body = openOverlay(sheetHead(t("Cite")) + '<div class="sheet-body">' +
+      '<pre class="citebox" id="cite-text">' + esc(txt) + "</pre>" +
+      '<div class="btnrow" style="margin-top:12px">' +
+        '<button class="btn primary" type="button" id="cite-copy">' + esc(t("Copy citation")) + "</button>" +
+        '<button class="btn ghost" type="button" data-x>' + esc(t("Cancel")) + "</button>" +
+      "</div></div>");
+    wireSheetClose(body);
+    body.querySelector("#cite-copy").addEventListener("click", function () {
+      var done = function () { toast(t("Copied")); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).then(done, function () { fallbackCopy(txt, done); });
+      } else fallbackCopy(txt, done);
+    });
+  }
+
+  /* clipboard without a permission prompt, and without a library */
+  function fallbackCopy(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.cssText = "position:fixed;left:-9999px;top:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); done(); } catch (e) { toast("Select the text and copy it"); }
+    ta.remove();
   }
 
   /* ---------- init ---------- */
