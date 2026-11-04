@@ -1,0 +1,31 @@
+{
+  "schema": 1,
+  "locked": false,
+  "files": {
+    "README.md": {
+      "sha": "8e1cd6cafd45af5baa042f4a9ad4361cf9138b3f",
+      "producer": "bootstrap@2026-11-04",
+      "class": "generated",
+      "at": "2026-11-04T20:03:09Z"
+    },
+    "docs/index.html": {
+      "sha": "6e9548c0f0d9826caaf3341dbdba0fec314f152f",
+      "producer": "bootstrap@2026-11-04",
+      "class": "generated",
+      "at": "2026-11-04T20:03:09Z"
+    },
+    "docs/play/index.html": {
+      "sha": "9f35e0430039c5354657a0df9e502af160890499",
+      "producer": "bootstrap@2026-11-04",
+      "class": "generated",
+      "at": "2026-11-04T20:03:09Z"
+    },
+    ".github/workflows/build-apps.yml": {
+      "sha": "bc6ba2426bf9f9b4e66848397f6b36d40aac57a6",
+      "producer": "bootstrap@2026-11-04",
+      "class": "canonical",
+      "at": "2026-11-04T20:03:10Z"
+    }
+  },
+  "updated": "2026-11-04T20:03:10Z"
+}
