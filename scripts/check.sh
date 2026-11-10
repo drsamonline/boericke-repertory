@@ -7,7 +7,7 @@ REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
-for f in "$REPO/docs/play/index.html" "$REPO/index.html"; do
+for f in "$REPO/docs/play/index.html"; do
   python3 - "$f" "$TMP/app.js" <<'PY'
 import io, re, sys
 src, out = sys.argv[1], sys.argv[2]
@@ -26,7 +26,7 @@ CHROME="$(command -v chromium || command -v chromium-browser || command -v googl
 PROFILE="$(mktemp -d)"
 "$CHROME" --headless --no-sandbox --disable-gpu --allow-file-access-from-files \
   --user-data-dir="$PROFILE" --virtual-time-budget=15000 --dump-dom \
-  "file://$REPO/scripts/selftest.html" 2>/dev/null |
+  "file://$REPO/tools/selftest.html" 2>/dev/null |
   python3 -c "import sys,re,html; d=sys.stdin.read(); m=re.search(r'<pre id=\"out\">(.*?)</pre>', d, re.S); print(html.unescape(m.group(1)) if m else 'NO OUTPUT')"
 rm -rf "$PROFILE"
 

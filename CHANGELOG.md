@@ -1,5 +1,34 @@
 # Changelog
 
+## 1.7.0 — 2026-11-10
+
+**The audit runs again.** `scripts/audit.py` had been crashing on its twenty-fifth line since
+5 November, when the page audit deleted the root `index.html` and `scripts/selftest.html`: the
+script opened a file that no longer existed and died before a single check ran. Nobody noticed,
+because nothing ran it — the pipeline builds and deploys, and the audit was a thing you did by
+hand. It now reads only what exists, and it passes: **29 checks, all green.**
+
+**The 28-assertion self-test is back**, at `tools/selftest.html` — the same harness, restored from
+history, in a folder the page audit does not treat as a page. `scripts/check.sh` points at it
+again, so `bash scripts/check.sh` once more runs the syntax check, the browser assertions and the
+vault round trip in one command.
+
+**The offline promise is measured properly.** The support block added three anchors — Ko-fi,
+PayPal, the author's books — and the "loads nothing from the network" check counted them as
+network dependencies, because it matched any `href` that began with `https`. A link a reader may
+click is not a request the page makes. The check now looks at `src` and at `<link href>`, and
+still fails the build if the app ever fetches an asset from somewhere else. The same fix stops
+`upi://` payment links being reported as missing local files.
+
+**The README's download link works again.** It pointed at `/raw/main/index.html`, a file the page
+audit deleted on 5 November — a 404 in the first screen of the repository. It now points at
+`docs/play/index.html`, which is the app as deployed, and the file tree in the README matches the
+tree in the repository.
+
+**Also** — the landing page's release strip gains this version, the build stamps move to
+2026-11-10, and the service worker cache is `boericke-1.7.0` so the new build is not served from
+the old cache.
+
 ## 1.6.0 — 2026-11-01
 
 **The interface is English only.** The Hindi and Gujarati dictionaries, the language row in

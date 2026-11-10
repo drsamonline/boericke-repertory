@@ -16,7 +16,7 @@
 
 [Windows `.exe`](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory-portable.exe) &nbsp;·&nbsp;
 [Android `.apk`](https://github.com/drsamonline/boericke-repertory/releases/latest/download/boericke-repertory.apk) &nbsp;·&nbsp;
-[`index.html`](https://github.com/drsamonline/boericke-repertory/raw/main/index.html)
+[`index.html`](https://github.com/drsamonline/boericke-repertory/raw/main/docs/play/index.html)
 
 </div>
 
@@ -91,7 +91,7 @@ visit" action · a versioned release strip on the landing page.
 
 ## What's new in 1.5.1
 
-A final audit as a script (`scripts/audit.py`, 28 checks) · the second-repertory plan removed ·
+A final audit as a script (`scripts/audit.py`, 29 checks) · the second-repertory plan removed ·
 dead code removed.
 
 ## What's new in 1.5.0
@@ -147,7 +147,6 @@ trusted.
 ## The repository
 
 ```
-index.html                  the app, standalone — this is the download
 docs/index.html             the landing page (its own design, not the app's)
 docs/play/index.html        the app as deployed
 docs/play/sw.js             service worker: network-first HTML, cache-first assets
@@ -162,13 +161,13 @@ scripts/social.py           draws the 1280x630 social card
 scripts/shot.sh             headless-Chromium screenshots of both surfaces
 scripts/check.sh            syntax check + self-test + vault test, one command
 scripts/audit.py            every claim in this repo, checked against this repo
-scripts/selftest.html       28 assertions driving the app through its own API
+tools/selftest.html         28 assertions driving the app through its own API
 scripts/vault_test.mjs      6 assertions on the encryption round trip
 ```
 
 ```bash
 bash scripts/check.sh         # syntax + 28 browser assertions + 6 crypto assertions
-python3 scripts/audit.py      # 28 checks: offline promise, versions, counts, links
+python3 scripts/audit.py      # 29 checks: offline promise, versions, counts, links
 python3 scripts/badges.py     # regenerate the badges
 python3 scripts/icons.py      # regenerate the icons, .ico and adaptive layers
 bash scripts/shot.sh landing  # screenshot the landing page

@@ -22,7 +22,6 @@ def check(name, cond, detail=""):
 
 os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 app = io.open('docs/play/index.html', encoding='utf-8').read()
-root = io.open('index.html', encoding='utf-8').read()
 landing = io.open('docs/index.html', encoding='utf-8').read()
 readme = io.open('README.md', encoding='utf-8').read()
 changelog = io.open('CHANGELOG.md', encoding='utf-8').read()
@@ -35,12 +34,28 @@ R = json.loads(re.search(r'window\.REPERTORY\s*=\s*(\{.*?\});\s*\n', app, re.S).
 SC = json.loads(re.search(r'window\.SRCCHECK = (\{.*?\});\n', app, re.S).group(1))
 
 # ---------- 1. the offline promise ----------
-ext = re.findall(r'(?:src|href)\s*=\s*["\']https?://[^"\']+', app)
+def external_refs(html):
+    """Requests the page makes, not links a reader may click.
+
+    A <a href="https://ko-fi.com/…"> costs nothing at load: nobody fetches it
+    until it is clicked. A <script src>, <img src> or <link href> is a request
+    the page makes by existing. The support block added three anchors, and this
+    check was counting them as network dependencies.
+    """
+    out = []
+    for tag in re.findall(r'<[a-zA-Z][^>]*>', html):
+        if re.match(r'<a\b', tag, re.I):
+            continue
+        for m in re.finditer(r'\b(?:src|href)\s*=\s*["\'](https?://[^"\']+)', tag, re.I):
+            out.append(m.group(1))
+    return out
+
+ext = external_refs(app)
 check("app loads nothing from the network", not ext, str(ext[:3]))
 check("app has no fetch/XHR", not re.search(r'\bfetch\s*\(|XMLHttpRequest', app))
 check("app has no @import", '@import' not in app)
 check("app has no external font", not re.search(r'fonts\.googleapis|@font-face\s*\{[^}]*url\(', app))
-land_ext = [m for m in re.findall(r'(?:src|href)\s*=\s*["\'](https?://[^"\']+)', landing)
+land_ext = [m for m in external_refs(landing)
             if not re.search(r'github\.com|drsamonline\.github\.io|schema\.org|w3\.org', m)]
 check("landing page loads no external assets", not land_ext, str(land_ext[:3]))
 
@@ -62,7 +77,7 @@ check("README quotes the source-check totals", "5,319" in readme and "5,415" in 
 check("SOURCES quotes the same totals", "5,319" in sources and "5,415" in sources and "5,408" in sources)
 
 # ---------- 4. test counts claimed vs present ----------
-selftest = io.open('scripts/selftest.html', encoding='utf-8').read()
+selftest = io.open('tools/selftest.html', encoding='utf-8').read()
 n_assert = len(re.findall(r'\bok\("', selftest))
 claimed = re.findall(r'(\d+) browser assertions', readme)
 check("README assertion count is real", claimed and all(int(c) == n_assert for c in claimed),
@@ -74,7 +89,7 @@ missing = []
 for html, base in ((landing, 'docs'), (app, 'docs/play')):
     for m in re.finditer(r'(?:src|href)="([^"#][^"]*)"', html):
         u = m.group(1).split('?')[0]
-        if u.startswith(('http', 'mailto:', 'data:', '#')): continue
+        if u.startswith('#') or re.match(r'^[a-zA-Z][a-zA-Z0-9+.-]*:', u): continue  # http:, mailto:, upi:, tel:
         if not os.path.exists(os.path.join(base, u)): missing.append((base, u))
 check("every local asset/link exists", not missing, str(missing[:4]))
 
@@ -104,7 +119,13 @@ dom = re.sub(r'<style\b.*?</style>', '', dom, flags=re.S|re.I)
 ids = re.findall(r'\bid="([^"]+)"', dom)
 dupes = {i for i in ids if ids.count(i) > 1}
 check("no duplicate element ids in the rendered page", not dupes, str(sorted(dupes)[:6]))
-check("app and standalone copy are the same app", len(root) > 900000 and "function initV2" in root)
+# The root index.html was deleted by the page audit (p054) as a duplicate of the
+# app, which left this script reading a file that no longer existed and failing on
+# line 25 before a single check ran. There is one copy of the app now, and this
+# asserts it rather than assuming it.
+stray = [f for f in ("index.html", "app.html", "boericke.html") if os.path.exists(f)]
+check("the app exists exactly once (no root copy)", not stray and len(app) > 900000 and "function initV2" in app,
+      str(stray))
 check("no TODO/FIXME left in the shipped sources",
       not re.search(r'\b(TODO|FIXME|XXX)\b', app + landing + sw))
 check("service worker HTML is network-first", "fetch(req).then" in sw and "isDoc" in sw)

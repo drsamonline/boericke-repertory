@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>RUNNING</title>
+<style>body{font:13px ui-monospace,monospace;padding:16px;white-space:pre-wrap} .f{color:#b00} .p{color:#060}</style>
+<pre id="out">running…</pre>
+<iframe id="app" src="../docs/play/index.html" style="width:1100px;height:600px;border:1px solid #ccc"></iframe>
+<script>
+/* A self-test, not a feature test: it drives the app's own API surface and
+   says exactly which promise broke. Run it with headless Chromium:
+     chromium --headless --allow-file-access-from-files --dump-dom scripts/selftest.html */
+var out = document.getElementById("out"), lines = [], pass = 0, fail = 0;
+
+function ok(name, cond, detail) {
+  if (cond) { pass++; lines.push("PASS " + name); }
+  else { fail++; lines.push("FAIL " + name + (detail ? "  \u2014 " + detail : "")); }
+}
+
+function run() {
+  var w = document.getElementById("app").contentWindow;
+  var br = w.__br;
+  if (!br) { document.title = "DONE"; out.textContent = "FAIL app did not expose __br\n"; return; }
+
+  try {
+    /* A1 — query operators */
+    var q1 = br.parse('"burning headache"');
+    ok("A1 phrase parses", q1.length === 1 && q1[0].phrases.length === 1, JSON.stringify(q1));
+    var q2 = br.parse("thirst -fever");
+    ok("A1 exclusion parses", q2.length === 1 && q2[0].terms.length === 1 && q2[0].exclude.length === 1, JSON.stringify(q2));
+    var q3 = br.parse("thirst or nausea");
+    ok("A1 or-split parses", q3.length === 2, JSON.stringify(q3));
+
+    /* A1 — the operators actually change the result set */
+    var plain = br.search("thirst");
+    var negated = br.search("thirst -burning");
+    ok("A1 exclusion narrows", plain > 0 && negated > 0 && negated < plain, plain + " -> " + negated);
+    var either = br.search("thirst or nausea");
+    ok("A1 or widens", either > plain, plain + " -> " + either);
+    ok("A1 phrase works", br.search('"burning"') > 0 && br.search('"zzz qqq"') === 0);
+
+    /* A2 — typo tolerance */
+    var typo = br.search("burnign headache");
+    ok("A2 typo tolerance finds results", typo > 0, "burnign -> " + typo);
+
+    /* D1 — remedy aliases */
+    ok("D1 full name finds abbreviation", br.search("gelsemium") > 0);
+    ok("D1 abbreviation still works", br.search("gels") > 0);
+
+    /* A4/A5 — must rubrics and weights */
+    var n = br.search("thirst fever");
+    var idx = [];
+    var rows = w.document.querySelectorAll("#res .rrow");
+    for (var i = 0; i < Math.min(4, rows.length); i++) idx.push(+rows[i].dataset.i);
+    idx.forEach(function (k) { br.select(k); });
+    var before = br.chart().rows.length;
+    ok("A5 chart builds from selection", before > 0, "rows=" + before);
+    var t0 = br.chart().rows[0].total;
+    br.must(idx[0]);
+    var cd = br.chart();
+    ok("A4 must flag recorded", cd.rows[0].mustHit !== undefined, JSON.stringify(cd.rows[0]));
+    var covered = cd.rows.filter(function (r) { return r.mustHit === 1; }).length;
+    ok("A4 must coverage counted", covered > 0 && covered <= cd.rows.length, covered + "/" + cd.rows.length);
+
+    /* A3 — browse tree */
+    ok("A3 browse renders chapters", br.browse() === 25, "nodes=" + br.browse());
+
+    /* A8 — similar rubrics */
+    var sim = br.similar(idx[0]);
+    ok("A8 similar returns a list", Array.isArray(sim), "n=" + sim.length);
+
+    /* E1 — the chart table is a real table */
+    var tbl = w.document.querySelector("#chart-body table.chart");
+    ok("E1 chart is a table with scoped headers", !!tbl && !!tbl.querySelector("th[scope]") && !!tbl.querySelector("caption"));
+
+    /* B3 — undo: make a change, then take it back */
+    var countBefore = w.document.querySelectorAll("#chips .chip").length;
+    br.select(idx[1]);
+    var countMid = w.document.querySelectorAll("#chips .chip").length;
+    br.undo();
+    var countAfter = w.document.querySelectorAll("#chips .chip").length;
+    ok("B3 undo restores the previous selection", countMid !== countBefore && countAfter === countBefore,
+       countBefore + " -> " + countMid + " -> " + countAfter);
+
+    /* D4 — audit */
+    var audit = w.document.querySelectorAll("#audit div").length;
+    ok("D4 audit rendered", audit >= 7, "cells=" + audit);
+
+    /* build stamp */
+    ok("build stamp present", /\bv\d+\.\d+\.\d+\b/.test(w.document.querySelector("#build-stamp").textContent),
+       w.document.querySelector("#build-stamp").textContent);
+  } catch (e) {
+    fail++;
+    lines.push("FAIL threw: " + e.message + "\n" + (e.stack || "").split("\n").slice(0, 3).join("\n"));
+    return finish();
+  }
+
+  /* D2 — provenance: a citation exists for any rubric, and it names the source */
+    var cite = br.cite(idx[0]);
+    ok("D2 citation names the edition", /Boericke's Repertory, Oscar E\. Boericke, M\.D\. \(1927\)/.test(cite), cite.split("\n")[0]);
+    ok("D2 citation carries the path and grades", cite.indexOf("Chapter:") !== -1 && /Grade [12]/.test(cite));
+    ok("D2 prefatory note is in the app", /How the repertory is arranged/.test(w.document.body.textContent));
+
+    /* D2 — the source check: every rubric verified against the 1927 text */
+    var SCd = w.SRCCHECK;
+    ok("D2 source-check data shipped", !!SCd && SCd.withRem > 5000, SCd ? (SCd.withRem + " rubrics") : "absent");
+    ok("D2 most rubrics verify identical", SCd && SCd.identicalRem / SCd.withRem > 0.95,
+       SCd ? (SCd.identicalRem + "/" + SCd.withRem) : "");
+    var diffIdx = Object.keys(SCd.diffs)[0];
+    ok("D2 a difference carries the source line", !!br.srcDiff(+diffIdx) && !!br.srcDiff(+diffIdx).line,
+       diffIdx ? br.srcDiff(+diffIdx).line.slice(0, 40) : "");
+    ok("D2 an identical rubric reports identical", br.srcIdentical(0) || br.srcIdentical(1) || br.srcIdentical(2) || br.srcIdentical(3));
+    ok("D2 source check is in About", /Source check/.test(w.document.body.textContent));
+
+  /* The vault's crypto round-trip is tested in scripts/vault_test.mjs: WebCrypto
+     promises do not settle under Chromium's virtual clock, so a browser harness
+     would report a false failure. The browser checks what it can: no vault by
+     default, and the lock button present. */
+  ok("B1 no vault until asked", br.hasVault() === false);
+  ok("B1 lock control present", !!w.document.querySelector("#c-lock"));
+  finish();
+}
+
+function finish() {
+  lines.push("");
+  lines.push((fail ? "FAILED " + fail : "ALL PASS") + "  (" + pass + " passed, " + fail + " failed)");
+  out.textContent = lines.join("\n");
+  document.title = "DONE";
+}
+
+document.getElementById("app").addEventListener("load", function () {
+  setTimeout(run, 600);
+});
+</script>

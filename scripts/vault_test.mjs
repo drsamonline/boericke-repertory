@@ -3,8 +3,14 @@
    in Node (which has the same webcrypto API) against functions lifted verbatim
    out of the app file. */
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
 
-const html = readFileSync("/scratch/work/boericke/docs/play/index.html", "utf8");
+/* Relative to this file, not to whatever machine wrote it. This carried an
+   absolute path into somebody's home directory, so the crypto suite only ever
+   ran where it was written. */
+const here = dirname(fileURLToPath(import.meta.url));
+const html = readFileSync(join(here, "..", "docs", "play", "index.html"), "utf8");
 
 function grab(name) {
   const i = html.indexOf("  function " + name + "(");

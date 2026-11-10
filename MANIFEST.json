@@ -3,29 +3,71 @@
   "locked": false,
   "files": {
     "README.md": {
-      "sha": "8e1cd6cafd45af5baa042f4a9ad4361cf9138b3f",
-      "producer": "bootstrap@2026-11-04",
-      "class": "generated",
-      "at": "2026-11-04T20:03:09Z"
+      "sha": "3f25da0573d0c2dd60ca35a78d2641152a046b8d",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
     },
     "docs/index.html": {
-      "sha": "6e9548c0f0d9826caaf3341dbdba0fec314f152f",
-      "producer": "bootstrap@2026-11-04",
-      "class": "generated",
-      "at": "2026-11-04T20:03:09Z"
+      "sha": "d09a06bf28aa9856e874bb1ace12cde9ce4c675d",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
     },
     "docs/play/index.html": {
-      "sha": "9f35e0430039c5354657a0df9e502af160890499",
-      "producer": "bootstrap@2026-11-04",
-      "class": "generated",
-      "at": "2026-11-04T20:03:09Z"
+      "sha": "a8307a1249f6bdc2ae8f01401b62527c521dc543",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
     },
     ".github/workflows/build-apps.yml": {
       "sha": "bc6ba2426bf9f9b4e66848397f6b36d40aac57a6",
       "producer": "bootstrap@2026-11-04",
       "class": "canonical",
       "at": "2026-11-04T20:03:10Z"
+    },
+    "VERSION": {
+      "sha": "bd8bf882d06184bb54615a59477e3c5e35f522fc",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "docs/play/sw.js": {
+      "sha": "ca0002a3b30becd3fd8ed04620f197b438d3e1cb",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "CHANGELOG.md": {
+      "sha": "295fa720902763ec373626a5a8ecb708b04b0334",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "scripts/audit.py": {
+      "sha": "e5463d62fc1721eb980f1a6e1596a4ba156305e0",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "scripts/check.sh": {
+      "sha": "9f0613b3da1056a3c2fd1d44cacce06f8fc84c27",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "scripts/vault_test.mjs": {
+      "sha": "6fff55df846a8553a7482693d9ed9a5db62e5e80",
+      "producer": "audit-2026-11-10",
+      "class": "agent",
+      "at": "2026-11-10T11:50:26Z"
+    },
+    "tools/selftest.html": {
+      "sha": "db1d3eb9bff940a7df921908ff3c94157450d52c",
+      "producer": "restored from 6a2c951^",
+      "class": "hand",
+      "at": "2026-11-10T11:50:27Z"
     }
   },
-  "updated": "2026-11-04T20:03:10Z"
+  "updated": "2026-11-10T11:50:27Z"
 }
