@@ -2794,6 +2794,10 @@ window.addEventListener("error", function () { window.__bootError = true; });
      was painting them accent-on-accent, so the active label disappeared. */
   .tabs button[data-tab]{background:transparent !important;color:var(--mut) !important;box-shadow:none !important}
   .tabs button[data-tab][aria-selected="true"]{background:var(--card) !important;color:var(--acc) !important}
+
+/* ---- a11y: button contrast (measured, WCAG AA) ---------------------------
+   Labels that measured under 2:1 — present, and unreadable. */
+.clr{background:transparent!important;color:var(--ink)!important} /* 1.00 -> the tray's own ink */
 </style>
 </body>
 </html>
