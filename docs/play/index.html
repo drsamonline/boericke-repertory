@@ -2798,6 +2798,11 @@ window.addEventListener("error", function () { window.__bootError = true; });
 /* ---- a11y: button contrast (measured, WCAG AA) ---------------------------
    Labels that measured under 2:1 — present, and unreadable. */
 .clr{background:transparent!important;color:var(--ink)!important} /* 1.00 -> the tray's own ink */
+
+/* ---- a11y: the same rule, the other two controls ------------------------- */
+[data-theme=dark] .go{color:#2a1508!important}                     /* 3.07 -> 5.66 on #c9834e */
+.act-btn{color:var(--text)!important}                              /* 4.07 light / 3.80 dark: it set no colour at all */
+.act-btn .kbd{color:var(--text)!important}                          /* 4.07/3.80: the shortcut hint was the low-contrast text */
 </style>
 </body>
 </html>
