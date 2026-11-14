@@ -2158,7 +2158,7 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
       ? "Cases are <b>encrypted in this browser</b> (AES-256-GCM, PBKDF2-SHA256 200,000 rounds). " + (vaultLocked ? "They are locked \u2014 unlock them in the Cases panel." : "Unlocked for this session only.")
       : "Cases are stored in this browser only. Use <b>Lock cases</b> in the Cases panel to encrypt them with a passphrase (AES-256-GCM, key derived with PBKDF2 in this browser).";
     var btn = $("#c-lock");
-    if (btn) btn.textContent = t(rec ? (vaultLocked ? "Unlock" : "Remove lock") : "Lock cases");
+    if (btn) btn.textContent = rec ? (vaultLocked ? "Unlock" : "Remove lock") : "Lock cases";
   }
 
   /* ---------- B3: draft ---------- */
@@ -2446,20 +2446,17 @@ window.SRCCHECK = {"v":1,"n":6110,"aligned":6093,"identical":5996,"bits":"7/v37/
 
   /* ---------- init for everything above ---------- */
   function initV2() {
-    applyFont();
-    syncWeightSelects();
+    /* Boot steps first, but each one is on its own: updateVaultState threw a
+       ReferenceError and took the rest of initV2 with it, so browse, settings,
+       the palette and save-search were never wired and the page looked fine. */
+    [applyFont, syncWeightSelects, renderSearches, renderMustBar, renderAudit,
+     renderSourceCheck, renderStamp, updateVaultState, registerSW, restoreDraft
+    ].forEach(function (step) {
+      try { step(); } catch (e) { if (window.console && console.error) console.error("[Boericke] boot step failed:", step.name, e); }
+    });
     try { var mm = LS.getItem("br_must_mode"); if (mm && $("#must-mode")) $("#must-mode").value = mm; } catch (e) {}
-    renderSearches();
-    renderMustBar();
-    renderAudit();
-    renderSourceCheck();
-    renderStamp();
-    updateVaultState();
-    registerSW();
-    restoreDraft();
-    trapFocus($("#overlay"));
-    trapFocus($("#modal"));
-    if (vaultRecord()) { vaultLocked = true; }
+    try { trapFocus($("#overlay")); trapFocus($("#modal")); } catch (e) {}
+    try { if (vaultRecord()) { vaultLocked = true; } } catch (e) {}
 
     /* browse */
     $("#btn-browse").addEventListener("click", function () { toggleBrowse(!browseMode); });
